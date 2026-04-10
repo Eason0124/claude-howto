@@ -11,16 +11,16 @@
 
 ## Зміст
 
-1. [Slash Commands](#slash-commands)
-2. [Subagents](#subagents)
-3. [Memory](#memory)
-4. [MCP Protocol](#mcp-protocol)
-5. [Agent Skills](#agent-skills)
-6. [Plugins](#claude-code-plugins)
-7. [Hooks](#hooks)
-8. [Checkpoints and Rewind](#checkpoints-and-rewind)
-9. [Advanced Features](#advanced-features)
-10. [Comparison & Integration](#comparison--integration)
+1. [Слеш-команди](#слеш-команди)
+2. [Субагенти](#субагенти)
+3. [Пам'ять](#память)
+4. [Протокол MCP](#протокол-mcp)
+5. [Навички агентів](#навички-агентів)
+6. [Плагіни](#плагіни-claude-code)
+7. [Хуки](#хуки)
+8. [Контрольні точки та відкат](#контрольні-точки-та-відкат)
+9. [Просунуті функції](#просунуті-функції)
+10. [Порівняння та інтеграція](#порівняння-та-інтеграція)
 
 ---
 
