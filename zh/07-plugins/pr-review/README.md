@@ -1,60 +1,60 @@
 ---
-name: PR 审查插件
-description: 为 Pull Request 提供完整的代码审查工作流
+name: PR 審查外掛
+description: 為 Pull Request 提供完整的程式碼審查工作流
 tags: plugins, code-review, pull-request
 ---
 
-# PR 审查插件
+# PR 審查外掛
 
-完整的 PR 审查工作流，包含安全、测试和文档检查。
+完整的 PR 審查工作流，包含安全、測試和檔案檢查。
 
 ## 功能
 
 ✅ 安全分析
-✅ 测试覆盖率检查
-✅ 文档校验
-✅ 代码质量评估
-✅ 性能影响分析
+✅ 測試覆蓋率檢查
+✅ 檔案校驗
+✅ 程式碼質量評估
+✅ 效能影響分析
 
-## 安装
+## 安裝
 
 ```bash
 /plugin install pr-review
 ```
 
-## 包含内容
+## 包含內容
 
 ### Slash 命令
-- `/review-pr` - 全面 PR 审查
-- `/check-security` - 面向安全的审查
-- `/check-tests` - 测试覆盖率分析
+- `/review-pr` - 全面 PR 審查
+- `/check-security` - 面向安全的審查
+- `/check-tests` - 測試覆蓋率分析
 
 ### 子 agents
-- `security-reviewer` - 安全漏洞检测
-- `test-checker` - 测试覆盖率分析
-- `performance-analyzer` - 性能影响评估
+- `security-reviewer` - 安全漏洞檢測
+- `test-checker` - 測試覆蓋率分析
+- `performance-analyzer` - 效能影響評估
 
-### MCP 服务器
-- 用于 PR 数据的 GitHub 集成
+### MCP 伺服器
+- 用於 PR 資料的 GitHub 整合
 
 ### Hooks
-- `pre-review.js` - 审查前验证
+- `pre-review.js` - 審查前驗證
 
 ## 使用
 
-### 基础 PR 审查
+### 基礎 PR 審查
 
 ```
 /review-pr
 ```
 
-### 仅安全检查
+### 僅安全檢查
 
 ```
 /check-security
 ```
 
-### 仅测试覆盖率检查
+### 僅測試覆蓋率檢查
 
 ```
 /check-tests
@@ -63,12 +63,12 @@ tags: plugins, code-review, pull-request
 ## 要求
 
 - Claude Code 1.0+
-- GitHub 访问权限
-- Git 仓库
+- GitHub 訪問許可權
+- Git 倉庫
 
 ## 配置
 
-设置 GitHub token：
+設定 GitHub token：
 
 ```bash
 export GITHUB_TOKEN="your_github_token"
@@ -77,20 +77,20 @@ export GITHUB_TOKEN="your_github_token"
 ## 示例工作流
 
 ```
-用户：/review-pr
+使用者：/review-pr
 
 Claude:
-1. 运行 pre-review hook（验证 git 仓库）
-2. 通过 GitHub MCP 获取 PR 数据
-3. 将安全审查委派给 security-reviewer subagent
-4. 将测试分析委派给 test-checker subagent
-5. 将性能分析委派给 performance-analyzer subagent
-6. 汇总所有发现
-7. 提供完整审查报告
+1. 執行 pre-review hook（驗證 git 倉庫）
+2. 透過 GitHub MCP 獲取 PR 資料
+3. 將安全審查委派給 security-reviewer subagent
+4. 將測試分析委派給 test-checker subagent
+5. 將效能分析委派給 performance-analyzer subagent
+6. 彙總所有發現
+7. 提供完整審查報告
 
-结果：
-✅ 安全：未发现关键问题
-⚠️  测试：覆盖率为 65%，建议达到 80%+
-✅ 性能：没有明显影响
-📝 建议：为边界情况添加测试
+結果：
+✅ 安全：未發現關鍵問題
+⚠️  測試：覆蓋率為 65%，建議達到 80%+
+✅ 效能：沒有明顯影響
+📝 建議：為邊界情況新增測試
 ```

@@ -3,33 +3,33 @@
   <img alt="Claude How To" src="../resources/logos/claude-howto-logo.svg">
 </picture>
 
-# Hooks 参考
+# Hooks 參考
 
-Hooks 是在 Claude Code 事件发生时自动执行的 shell 命令，用来做格式化、校验、通知、审计等自动化工作。
+Hooks 是在 Claude Code 事件發生時自動執行的 shell 命令，用來做格式化、校驗、通知、審計等自動化工作。
 
-## 概览
+## 概覽
 
-Hooks 是事件驱动的自动化机制。它们会在 Claude Code 发生某些动作时自动运行，不需要你手动触发。
+Hooks 是事件驅動的自動化機制。它們會在 Claude Code 發生某些動作時自動執行，不需要你手動觸發。
 
-常见用途：
+常見用途：
 
-- 写文件前自动格式化
-- 提交前运行测试
-- 扫描安全问题
-- 记录 bash 命令
-- 校验用户提示词
-- 发送团队通知
+- 寫檔案前自動格式化
+- 提交前執行測試
+- 掃描安全問題
+- 記錄 bash 命令
+- 校驗使用者提示詞
+- 傳送團隊通知
 
-## Hook 类型
+## Hook 型別
 
-Claude Code 提供 4 类、25 个事件：
+Claude Code 提供 4 類、25 個事件：
 
 - **Tool Hooks**：`PreToolUse`、`PostToolUse`、`PostToolUseFailure`、`PermissionRequest`
 - **Session Hooks**：`SessionStart`、`SessionEnd`、`Stop`、`StopFailure`、`SubagentStart`、`SubagentStop`
 - **Task Hooks**：`UserPromptSubmit`、`TaskCompleted`、`TaskCreated`、`TeammateIdle`
 - **Lifecycle Hooks**：`ConfigChange`、`CwdChanged`、`FileChanged`、`PreCompact`、`PostCompact`、`WorktreeCreate`、`WorktreeRemove`、`Notification`、`InstructionsLoaded`、`Elicitation`、`ElicitationResult`
 
-## 安装
+## 安裝
 
 ```bash
 mkdir -p ~/.claude/hooks
@@ -37,7 +37,7 @@ cp 06-hooks/*.sh ~/.claude/hooks/
 chmod +x ~/.claude/hooks/*.sh
 ```
 
-然后在 `~/.claude/settings.json` 里配置：
+然後在 `~/.claude/settings.json` 裡配置：
 
 ```json
 {
@@ -56,33 +56,33 @@ chmod +x ~/.claude/hooks/*.sh
 
 ## 使用方法
 
-Hooks 会在匹配到事件时自动执行。你可以把它理解成 Claude Code 的事件回调。
+Hooks 會在匹配到事件時自動執行。你可以把它理解成 Claude Code 的事件回撥。
 
-## 常见示例
+## 常見示例
 
-- `format-code.sh` - 写入前自动格式化
-- `pre-commit.sh` - 提交前跑测试
-- `security-scan.sh` - 做安全扫描
-- `log-bash.sh` - 记录 bash 命令
-- `validate-prompt.sh` - 校验输入
-- `notify-team.sh` - 发通知
+- `format-code.sh` - 寫入前自動格式化
+- `pre-commit.sh` - 提交前跑測試
+- `security-scan.sh` - 做安全掃描
+- `log-bash.sh` - 記錄 bash 命令
+- `validate-prompt.sh` - 校驗輸入
+- `notify-team.sh` - 發通知
 
-## 最佳实践
+## 最佳實踐
 
-- 把 hooks 保持短小明确
-- 只做单一职责
-- 先在本地测试
-- 不要在 hook 里放复杂业务逻辑
-- 对副作用保持谨慎
+- 把 hooks 保持短小明確
+- 只做單一職責
+- 先在本地測試
+- 不要在 hook 裡放複雜業務邏輯
+- 對副作用保持謹慎
 
 ## 故障排查
 
-- 检查文件路径和权限
-- 确认脚本可执行
-- 检查 settings.json 语法
-- 查看 Claude Code 版本兼容性
+- 檢查檔案路徑和許可權
+- 確認指令碼可執行
+- 檢查 settings.json 語法
+- 檢視 Claude Code 版本相容性
 
-## 相关概念
+## 相關概念
 
 - [Checkpoints and Rewind](../08-checkpoints/README.md)
 - [Slash Commands](../01-slash-commands/README.md)
@@ -91,7 +91,7 @@ Hooks 会在匹配到事件时自动执行。你可以把它理解成 Claude Cod
 - [Plugins](../07-plugins/README.md)
 - [Advanced Features](../09-advanced-features/README.md)
 
-## 更多资源
+## 更多資源
 
 - [Memory Guide](../02-memory/README.md)
 - [Official Hooks Documentation](https://code.claude.com/docs/en/hooks)

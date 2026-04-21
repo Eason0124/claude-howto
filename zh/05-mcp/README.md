@@ -5,31 +5,31 @@
 
 # MCP（Model Context Protocol）
 
-## 概览
+## 概覽
 
-MCP 是 Claude Code 访问外部工具、服务和 API 的标准协议。你可以把 GitHub、数据库、文件系统、聊天系统等都接到 Claude 里。
+MCP 是 Claude Code 訪問外部工具、服務和 API 的標準協議。你可以把 GitHub、資料庫、檔案系統、聊天系統等都接到 Claude 裡。
 
-## MCP 架构
+## MCP 架構
 
-MCP 通常由三部分构成：
+MCP 通常由三部分構成：
 
 1. Claude Code
 2. MCP server
-3. 外部工具或数据源
+3. 外部工具或資料來源
 
-Claude 会通过 MCP 协议向 server 发起工具调用，并把结果带回当前会话。
+Claude 會透過 MCP 協議向 server 發起工具呼叫，並把結果帶回當前會話。
 
-## MCP 生态
+## MCP 生態
 
-- GitHub 集成
-- 数据库集成
-- 文件系统集成
-- 组织内部工具
-- 第三方服务
+- GitHub 整合
+- 資料庫整合
+- 檔案系統整合
+- 組織內部工具
+- 第三方服務
 
-## 安装方式
+## 安裝方式
 
-### HTTP 传输（推荐）
+### HTTP 傳輸（推薦）
 
 ```bash
 # Basic HTTP connection
@@ -37,7 +37,7 @@ Claude 会通过 MCP 协议向 server 发起工具调用，并把结果带回当
 # HTTP with authentication header
 ```
 
-### Stdio 传输（本地）
+### Stdio 傳輸（本地）
 
 ```bash
 # Local Node.js server
@@ -45,45 +45,45 @@ Claude 会通过 MCP 协议向 server 发起工具调用，并把结果带回当
 # With environment variables
 ```
 
-### SSE 传输（已弃用）
+### SSE 傳輸（已棄用）
 
-旧版本中可能仍能见到 SSE 方式，但新配置一般优先考虑 HTTP 或 stdio。
+舊版本中可能仍能見到 SSE 方式，但新配置一般優先考慮 HTTP 或 stdio。
 
-### WebSocket 传输
+### WebSocket 傳輸
 
-适用于需要实时双向通信的场景。
+適用於需要實時雙向通訊的場景。
 
-### Windows 说明
+### Windows 說明
 
-在 Windows 上配置本地 server 时，要注意 shell、环境变量和路径写法。
+在 Windows 上配置本地 server 時，要注意 shell、環境變數和路徑寫法。
 
-### OAuth 2.0 认证
+### OAuth 2.0 認證
 
-对于支持 OAuth 的 MCP server，Claude 可以通过交互式流程或预配置凭据完成认证。
+對於支援 OAuth 的 MCP server，Claude 可以透過互動式流程或預配置憑據完成認證。
 
-## MCP 设置流程
+## MCP 設定流程
 
-1. 确认你要接入的服务
-2. 选择 transport
-3. 配置环境变量或认证
-4. 在 Claude Code 中添加 server
-5. 验证工具是否可用
+1. 確認你要接入的服務
+2. 選擇 transport
+3. 配置環境變數或認證
+4. 在 Claude Code 中新增 server
+5. 驗證工具是否可用
 
-## MCP 工具搜索
+## MCP 工具搜尋
 
-Claude 会根据当前上下文自动查找可用工具。
+Claude 會根據當前上下文自動查詢可用工具。
 
-## 动态工具更新
+## 動態工具更新
 
-当 MCP server 增加或移除工具时，Claude 可以在运行时感知变化。
+當 MCP server 增加或移除工具時，Claude 可以在執行時感知變化。
 
-## MCP 提示补充（Elicitation）
+## MCP 提示補充（Elicitation）
 
-有些 MCP server 会在需要用户补充信息时触发 elicitation，Claude 再把问题转给用户。
+有些 MCP server 會在需要使用者補充資訊時觸發 elicitation，Claude 再把問題轉給使用者。
 
-## 工具描述与指令上限
+## 工具描述與指令上限
 
-每个 MCP 工具都应该有清晰的描述，帮助 Claude 选择正确的工具。
+每個 MCP 工具都應該有清晰的描述，幫助 Claude 選擇正確的工具。
 
 ## 把 MCP Prompts 暴露成 Slash Commands
 
@@ -101,23 +101,23 @@ Claude 会根据当前上下文自动查找可用工具。
 
 ## Server 去重
 
-如果多个配置都指向同一个 server，Claude 会尽量避免重复加载。
+如果多個配置都指向同一個 server，Claude 會盡量避免重複載入。
 
-## 通过 `@` 提及使用 MCP 资源
+## 透過 `@` 提及使用 MCP 資源
 
-你可以把某些资源当作引用对象，在 prompt 中直接提及。
+你可以把某些資源當作引用物件，在 prompt 中直接提及。
 
 ## MCP 作用域
 
-MCP 配置通常有不同作用域，例如项目级和用户级。
+MCP 配置通常有不同作用域，例如專案級和使用者級。
 
-### 使用项目作用域
+### 使用專案作用域
 
-适合把团队共享的 server 配置写进项目内。
+適合把團隊共享的 server 配置寫進專案內。
 
 ## MCP 配置管理
 
-### 添加 MCP server
+### 新增 MCP server
 
 ```bash
 # Add HTTP-based server
@@ -137,24 +137,24 @@ MCP 配置通常有不同作用域，例如项目级和用户级。
 
 ## 可用 MCP Server 表
 
-你可以在配置中维护一张 server 清单，记录用途、认证方式和安装命令。
+你可以在配置中維護一張 server 清單，記錄用途、認證方式和安裝命令。
 
-## 实战示例
+## 實戰示例
 
 ### 示例 1：GitHub MCP 配置
 
-你可以用 GitHub MCP 做这些事：
+你可以用 GitHub MCP 做這些事：
 
 - PR 管理
 - Issue 管理
-- 仓库信息查询
+- 倉庫資訊查詢
 - commit 操作
 
-### 环境变量展开
+### 環境變數展開
 
-在配置中可以使用环境变量，让同一份配置适配不同环境。
+在配置中可以使用環境變數，讓同一份配置適配不同環境。
 
-### 示例 2：数据库 MCP
+### 示例 2：資料庫 MCP
 
 ```bash
 # Using MCP database tool:
@@ -164,179 +164,179 @@ MCP 配置通常有不同作用域，例如项目级和用户级。
 
 ### 示例 3：多 MCP 工作流
 
-适合日常报告、跨系统同步和自动化文档生成。
+適合日常報告、跨系統同步和自動化檔案生成。
 
-### 示例 4：文件系统 MCP 操作
+### 示例 4：檔案系統 MCP 操作
 
-可用于读写文件、批量整理、生成报告或导出结果。
+可用於讀寫檔案、批次整理、生成報告或匯出結果。
 
-## MCP vs Memory：决策矩阵
+## MCP vs Memory：決策矩陣
 
-- **Memory**：适合长期规则、偏好和上下文
-- **MCP**：适合实时工具访问和外部数据
+- **Memory**：適合長期規則、偏好和上下文
+- **MCP**：適合實時工具訪問和外部資料
 
-## 请求 / 响应模式
+## 請求 / 響應模式
 
 MCP 一般遵循：
 
-1. Claude 发起请求
-2. Server 处理
-3. 返回结构化结果
+1. Claude 發起請求
+2. Server 處理
+3. 返回結構化結果
 
-## 环境变量
+## 環境變數
 
-常见环境变量包括：
+常見環境變數包括：
 
 - API token
-- 数据库地址
-- 服务端口
-- 认证信息
+- 資料庫地址
+- 服務埠
+- 認證資訊
 
-## Claude 作为 MCP Server（`claude mcp serve`）
+## Claude 作為 MCP Server（`claude mcp serve`）
 
 ```bash
 # Start Claude Code as an MCP server on stdio
 ```
 
-## 受管 MCP 配置（企业）
+## 受管 MCP 配置（企業）
 
-企业可通过受管设置统一分发 MCP 配置。
+企業可透過受管設定統一分發 MCP 配置。
 
-## 插件提供的 MCP Servers
+## 外掛提供的 MCP Servers
 
-插件可以把自己的 MCP server 一起打包分发。
+外掛可以把自己的 MCP server 一起打包分發。
 
 ## Subagent 作用域 MCP
 
-某些 MCP 只允许特定 subagent 使用。
+某些 MCP 只允許特定 subagent 使用。
 
-## MCP 输出限制
+## MCP 輸出限制
 
-如果输出过大，可以限制 token 数或分页获取。
+如果輸出過大，可以限制 token 數或分頁獲取。
 
-### 增大最大输出
+### 增大最大輸出
 
 ```bash
 # Increase the max output to 50,000 tokens
 ```
 
-## 用代码执行解决上下文膨胀
+## 用程式碼執行解決上下文膨脹
 
-当重复把大量数据回传给 Claude 会浪费 token 时，可以把 MCP 当作代码 API 来用，减少来回传输。
+當重複把大量資料回傳給 Claude 會浪費 token 時，可以把 MCP 當作程式碼 API 來用，減少來回傳輸。
 
-### 问题
+### 問題
 
-- 两个信息源都在耗 token
-- 大数据集不适合全量塞进上下文
+- 兩個資訊源都在耗 token
+- 大資料集不適合全量塞進上下文
 
 ### 方案
 
-- 用 MCP 工具做实时查询
-- 只把必要结果传给 Claude
+- 用 MCP 工具做實時查詢
+- 只把必要結果傳給 Claude
 
 #### 工作方式
 
-Claude 通过工具调用从外部系统取回需要的数据，而不是把所有数据先写进上下文。
+Claude 透過工具呼叫從外部系統取回需要的資料，而不是把所有資料先寫進上下文。
 
-### 好处
+### 好處
 
-- 更少 token 浪费
-- 更清晰的数据边界
-- 更适合大规模查询
+- 更少 token 浪費
+- 更清晰的資料邊界
+- 更適合大規模查詢
 
-#### 示例：过滤大数据集
+#### 示例：過濾大資料集
 
-#### 示例：循环而不做 round-trip
+#### 示例：迴圈而不做 round-trip
 
-### 取舍
+### 取捨
 
-- 实现复杂度更高
-- 需要维护 server
-- 但扩展性更好
+- 實現複雜度更高
+- 需要維護 server
+- 但擴充套件性更好
 
-### MCPorter：MCP 工具组合运行时
+### MCPorter：MCP 工具組合執行時
 
-这是更高级的工具编排思路，可以把多个 MCP 工具串成一个流程。
+這是更高階的工具編排思路，可以把多個 MCP 工具串成一個流程。
 
-## 最佳实践
+## 最佳實踐
 
-### 安全注意事项
+### 安全注意事項
 
-#### 应该做的
+#### 應該做的
 
-- 只授权必要的工具
-- 优先使用最小权限
-- 检查输出是否可信
+- 只授權必要的工具
+- 優先使用最小許可權
+- 檢查輸出是否可信
 
 #### 不要做的
 
-- 不要把高风险 token 写死在仓库里
-- 不要默认开放所有工具
-- 不要忽视网络和认证风险
+- 不要把高風險 token 寫死在倉庫裡
+- 不要預設開放所有工具
+- 不要忽視網路和認證風險
 
-### 配置建议
+### 配置建議
 
-- 给每个 server 写清楚用途
-- 用环境变量存认证信息
-- 把项目级配置版本化
+- 給每個 server 寫清楚用途
+- 用環境變數存認證資訊
+- 把專案級配置版本化
 
-### 性能建议
+### 效能建議
 
-- 避免一次性拉回过多数据
-- 优先做过滤和分页
-- 只返回 Claude 真正需要的结果
+- 避免一次性拉回過多資料
+- 優先做過濾和分頁
+- 只返回 Claude 真正需要的結果
 
-## 安装说明
+## 安裝說明
 
-### 前置条件
+### 前置條件
 
 - Claude Code
-- 对应的 MCP server
-- 必要的认证信息
+- 對應的 MCP server
+- 必要的認證資訊
 
-### 分步设置
+### 分步設定
 
-1. 安装 server
-2. 设置环境变量
-3. 添加到 Claude
-4. 测试工具
+1. 安裝 server
+2. 設定環境變數
+3. 新增到 Claude
+4. 測試工具
 
-### 特定服务的安装
+### 特定服務的安裝
 
-不同服务会有不同的安装命令和认证方式。
+不同服務會有不同的安裝命令和認證方式。
 
 ## 故障排查
 
 ### 找不到 MCP Server
 
-- 检查是否安装
-- 检查路径
-- 检查配置是否正确
+- 檢查是否安裝
+- 檢查路徑
+- 檢查配置是否正確
 
-### 认证失败
+### 認證失敗
 
-- 检查环境变量是否设置
-- 确认 token 权限正确
-- 重新导出变量后再试
+- 檢查環境變數是否設定
+- 確認 token 許可權正確
+- 重新匯出變數後再試
 
-### 连接超时
+### 連線超時
 
-- 检查网络
-- 检查 server 是否可用
+- 檢查網路
+- 檢查 server 是否可用
 
-### MCP Server 崩溃
+### MCP Server 崩潰
 
-- 查看 server 日志
-- 降低并发
-- 简化请求
+- 檢視 server 日誌
+- 降低併發
+- 簡化請求
 
-## 相关概念
+## 相關概念
 
 - [Memory 中文指南](../02-memory/README.md)
-- [Subagents 中文参考](../04-subagents/README.md)
+- [Subagents 中文參考](../04-subagents/README.md)
 - [Plugins 中文指南](../07-plugins/README.md)
 
-## 更多资源
+## 更多資源
 
-- [根目录中文指南](../README.md)
-- [MCP 规范](https://modelcontextprotocol.io)
+- [根目錄中文指南](../README.md)
+- [MCP 規範](https://modelcontextprotocol.io)

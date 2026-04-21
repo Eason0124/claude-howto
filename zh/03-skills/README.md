@@ -5,48 +5,48 @@
 
 # Agent Skills 指南
 
-## 概览
+## 概覽
 
-Skills 是可以复用、可自动触发的能力包。一个 skill 通常包含 `SKILL.md`、参考文件、脚本和模板。Claude 在合适的场景下会自动加载它。
+Skills 是可以複用、可自動觸發的能力包。一個 skill 通常包含 `SKILL.md`、參考檔案、指令碼和模板。Claude 在合適的場景下會自動載入它。
 
-### 主要好处
+### 主要好處
 
-- 可复用
-- 可渐进加载
-- 可以把脚本、模板、说明放在一起
-- 适合标准化流程
+- 可複用
+- 可漸進載入
+- 可以把指令碼、模板、說明放在一起
+- 適合標準化流程
 
-## Skills 的工作方式：渐进式披露
+## Skills 的工作方式：漸進式披露
 
-Skills 不会一次性把所有内容都塞进上下文，而是按需加载。
+Skills 不會一次性把所有內容都塞進上下文，而是按需載入。
 
-### 三层加载
+### 三層載入
 
-1. **只看描述**：先判断这个 skill 是否相关
-2. **加载 `SKILL.md`**：读取核心说明
-3. **按需加载支持文件**：脚本、模板、参考资料
+1. **只看描述**：先判斷這個 skill 是否相關
+2. **載入 `SKILL.md`**：讀取核心說明
+3. **按需載入支援檔案**：指令碼、模板、參考資料
 
-## Skill 加载流程
+## Skill 載入流程
 
-1. Claude 扫描技能目录
-2. 根据描述判断是否匹配当前任务
-3. 读取 `SKILL.md`
-4. 如有需要，再加载脚本和辅助文件
+1. Claude 掃描技能目錄
+2. 根據描述判斷是否匹配當前任務
+3. 讀取 `SKILL.md`
+4. 如有需要，再載入指令碼和輔助檔案
 
-## Skill 类型与位置
+## Skill 型別與位置
 
 Skills 可以放在：
 
-- 项目目录下的 `.claude/skills/`
-- 用户目录下的 `~/.claude/skills/`
+- 專案目錄下的 `.claude/skills/`
+- 使用者目錄下的 `~/.claude/skills/`
 
-### 自动发现
+### 自動發現
 
-只要目录结构正确，Claude 就会自动发现这些 Skills。
+只要目錄結構正確，Claude 就會自動發現這些 Skills。
 
-## 创建自定义 Skills
+## 建立自定義 Skills
 
-### 基本目录结构
+### 基本目錄結構
 
 ```text
 my-skill/
@@ -58,7 +58,7 @@ my-skill/
 ```yaml
 ---
 name: my-skill
-description: 这个 skill 的用途，以及什么时候触发
+description: 這個 skill 的用途，以及什麼時候觸發
 ---
 
 # Your Skill Name
@@ -68,12 +68,12 @@ description: 这个 skill 的用途，以及什么时候触发
 ## Examples
 ```
 
-### 必填字段
+### 必填欄位
 
 - `name`
 - `description`
 
-### 可选 frontmatter 字段
+### 可選 frontmatter 欄位
 
 - `argument-hint`
 - `allowed-tools`
@@ -84,68 +84,68 @@ description: 这个 skill 的用途，以及什么时候触发
 - `agent`
 - `hooks`
 
-## Skill 内容类型
+## Skill 內容型別
 
-### 参考内容
+### 參考內容
 
-适合放规则、标准、文档片段和示例。
+適合放規則、標準、檔案片段和示例。
 
-### 任务内容
+### 任務內容
 
-适合放具体步骤、执行流程和结果格式要求。
+適合放具體步驟、執行流程和結果格式要求。
 
-## 控制 Skill 的调用
+## 控制 Skill 的呼叫
 
-你可以通过 `disable-model-invocation`、`user-invocable` 和工具白名单来控制 Claude 是否能自动调用这个 skill。
+你可以透過 `disable-model-invocation`、`user-invocable` 和工具白名單來控制 Claude 是否能自動呼叫這個 skill。
 
-## 字符串替换
+## 字串替換
 
-Skills 支持 `$ARGUMENTS`、`$0`、`$1` 等参数替换。
+Skills 支援 `$ARGUMENTS`、`$0`、`$1` 等引數替換。
 
-### 动态上下文注入
+### 動態上下文注入
 
-你可以在 prompt 里插入 shell 命令结果：
+你可以在 prompt 裡插入 shell 命令結果：
 
 ```md
-- 当前 git 状态：!`git status`
-- 当前 diff：!`git diff HEAD`
-- 当前分支：!`git branch --show-current`
+- 當前 git 狀態：!`git status`
+- 當前 diff：!`git diff HEAD`
+- 當前分支：!`git branch --show-current`
 ```
 
-## 在 subagent 中运行 Skills
+## 在 subagent 中執行 Skills
 
-某些 skill 适合在隔离上下文中运行，这样可以降低对主会话的影响。
+某些 skill 適合在隔離上下文中執行，這樣可以降低對主會話的影響。
 
-## 实战示例
+## 實戰示例
 
-### 示例 1：代码审查 Skill
+### 示例 1：程式碼審查 Skill
 
-一个典型的审查 skill 会包含：
+一個典型的審查 skill 會包含：
 
-- 审查模板
-- 风险等级
-- 输出格式
-- 需要关注的维度
+- 審查模板
+- 風險等級
+- 輸出格式
+- 需要關注的維度
 
-### 示例 2：代码库可视化 Skill
+### 示例 2：程式碼庫視覺化 Skill
 
-可以把代码库结构、依赖关系和模块边界总结给 Claude，便于快速理解。
+可以把程式碼庫結構、依賴關係和模組邊界總結給 Claude，便於快速理解。
 
-### 示例 3：部署 Skill（只允许用户触发）
+### 示例 3：部署 Skill（只允許使用者觸發）
 
-适合带副作用的操作，比如生产环境部署。通常会配合 `disable-model-invocation: true`。
+適合帶副作用的操作，比如生產環境部署。通常會配合 `disable-model-invocation: true`。
 
-### 示例 4：品牌语气 Skill
+### 示例 4：品牌語氣 Skill
 
-用于检查输出是否符合品牌语气、语调和表达风格。
+用於檢查輸出是否符合品牌語氣、語調和表達風格。
 
 ### 示例 5：`CLAUDE.md` 生成 Skill
 
-可以从项目文档中生成或补充 `CLAUDE.md`。
+可以從專案檔案中生成或補充 `CLAUDE.md`。
 
-### 示例 6：带脚本的重构 Skill
+### 示例 6：帶指令碼的重構 Skill
 
-常见组合是：
+常見組合是：
 
 - `SKILL.md`
 - `scripts/`
@@ -154,118 +154,118 @@ Skills 支持 `$ARGUMENTS`、`$0`、`$1` 等参数替换。
 
 ## 管理 Skills
 
-### 查看可用 Skills
+### 檢視可用 Skills
 
 ```bash
 /skills
 ```
 
-### 测试一个 Skill
+### 測試一個 Skill
 
-把它放到测试目录或者临时项目里，然后通过相应命令触发。
+把它放到測試目錄或者臨時專案裡，然後透過相應命令觸發。
 
 ### 更新 Skill
 
-修改 `SKILL.md` 或支持文件后，重新打开会话或重新加载即可。
+修改 `SKILL.md` 或支援檔案後，重新開啟會話或重新載入即可。
 
-### 限制 Claude 对 Skill 的访问
+### 限制 Claude 對 Skill 的訪問
 
-你可以通过权限配置，只允许 Claude 访问某些 skill。
+你可以透過許可權配置，只允許 Claude 訪問某些 skill。
 
-## 最佳实践
+## 最佳實踐
 
-### 1. 描述要具体
+### 1. 描述要具體
 
-让 `description` 明确说明这个 skill 在什么时候触发。
+讓 `description` 明確說明這個 skill 在什麼時候觸發。
 
 ### 2. 保持聚焦
 
-一个 skill 解决一个问题，不要什么都塞进去。
+一個 skill 解決一個問題，不要什麼都塞進去。
 
-### 3. 包含触发词
+### 3. 包含觸發詞
 
-在描述里加入相关关键词，帮助 Claude 更准确地选择它。
+在描述里加入相關關鍵詞，幫助 Claude 更準確地選擇它。
 
-### 4. `SKILL.md` 不要太长
+### 4. `SKILL.md` 不要太長
 
-尽量控制在 500 行以内，超过就拆分支持文件。
+儘量控制在 500 行以內，超過就拆分支援檔案。
 
-### 5. 引用支持文件
+### 5. 引用支援檔案
 
-把重复内容移到脚本或参考文件中，主文件只保留核心说明。
+把重複內容移到指令碼或參考檔案中，主檔案只保留核心說明。
 
 ## 故障排查
 
-### 快速参考
+### 快速參考
 
-- 检查目录结构是否正确
-- 检查 `SKILL.md` frontmatter 是否有效
-- 检查 skill 名称是否和调用名一致
+- 檢查目錄結構是否正確
+- 檢查 `SKILL.md` frontmatter 是否有效
+- 檢查 skill 名稱是否和呼叫名一致
 
-### Skill 没有触发
+### Skill 沒有觸發
 
-- 检查描述是否足够具体
-- 检查目录是否在 Claude 可见范围内
-- 检查是否被更高优先级的 skill 覆盖
+- 檢查描述是否足夠具體
+- 檢查目錄是否在 Claude 可見範圍內
+- 檢查是否被更高優先順序的 skill 覆蓋
 
-### Skill 触发太频繁
+### Skill 觸發太頻繁
 
-- 收紧描述
-- 增加约束条件
-- 用更具体的触发词
+- 收緊描述
+- 增加約束條件
+- 用更具體的觸發詞
 
 ### Claude 看不到全部 Skills
 
-- 检查路径
-- 检查权限
-- 重新加载会话
+- 檢查路徑
+- 檢查許可權
+- 重新載入會話
 
-## 安全注意事项
+## 安全注意事項
 
-- 不要在 skill 中硬编码密钥
-- 对副作用操作保持用户触发
-- 给自动触发的 skill 设置清晰边界
+- 不要在 skill 中硬編碼金鑰
+- 對副作用操作保持使用者觸發
+- 給自動觸發的 skill 設定清晰邊界
 
 ## Skills vs 其他功能
 
-| 功能 | 触发方式 | 适合场景 |
+| 功能 | 觸發方式 | 適合場景 |
 |------|----------|----------|
-| Skills | 自动/半自动 | 复用能力、流程标准化 |
-| Slash Commands | 手动 | 快捷命令 |
-| Subagents | 自动委派 | 隔离任务 |
-| Hooks | 事件触发 | 自动化和验证 |
+| Skills | 自動/半自動 | 複用能力、流程標準化 |
+| Slash Commands | 手動 | 快捷命令 |
+| Subagents | 自動委派 | 隔離任務 |
+| Hooks | 事件觸發 | 自動化和驗證 |
 
-## 内置 Skills
+## 內建 Skills
 
-Claude Code 自带一些 Skills，例如批处理、调试、简化和 Claude API 相关内容。
+Claude Code 自帶一些 Skills，例如批處理、除錯、簡化和 Claude API 相關內容。
 
 ## 共享 Skills
 
-### 项目 Skills（团队共享）
+### 專案 Skills（團隊共享）
 
-把 skill 放在项目目录里，团队成员都能用。
+把 skill 放在專案目錄裡，團隊成員都能用。
 
-### 个人 Skills
+### 個人 Skills
 
 ```bash
-# 复制到个人目录
+# 複製到個人目錄
 mkdir -p ~/.claude/skills
 
-# 让脚本可执行
+# 讓指令碼可執行
 chmod +x ~/.claude/skills/*/scripts/*
 ```
 
-### Plugin 分发
+### Plugin 分發
 
-你也可以把 Skills 作为插件的一部分发布出去。
+你也可以把 Skills 作為外掛的一部分發布出去。
 
-## 继续深入
+## 繼續深入
 
-如果你要管理一整套 Skills，可以再做一个 skill collection 或 skill manager，用来统一发现、更新和分发。
+如果你要管理一整套 Skills，可以再做一個 skill collection 或 skill manager，用來統一發現、更新和分發。
 
-## 更多资源
+## 更多資源
 
-- [根目录中文指南](../README.md)
-- [Slash Commands 中文参考](../01-slash-commands/README.md)
+- [根目錄中文指南](../README.md)
+- [Slash Commands 中文參考](../01-slash-commands/README.md)
 - [Memory 中文指南](../02-memory/README.md)
-- [Subagents 中文参考](../04-subagents/README.md)
+- [Subagents 中文參考](../04-subagents/README.md)

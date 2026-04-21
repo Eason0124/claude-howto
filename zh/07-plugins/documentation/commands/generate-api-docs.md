@@ -1,15 +1,15 @@
 ---
-name: 生成 API 文档
-description: 从源代码生成完整的 API 文档
+name: 生成 API 檔案
+description: 從原始碼生成完整的 API 檔案
 ---
 
-# API 文档生成器
+# API 檔案生成器
 
-生成完整的 API 文档：
+生成完整的 API 檔案：
 
-1. 扫描 API 端点
-2. 提取函数签名和 JSDoc
-3. 按模块 / 端点组织内容
-4. 创建带示例的 Markdown
-5. 包含请求 / 响应 schema
-6. 添加错误文档
+1. 掃描 API 端點
+2. 提取函式簽名和 JSDoc
+3. 按模組 / 端點組織內容
+4. 建立帶示例的 Markdown
+5. 包含請求 / 響應 schema
+6. 新增錯誤檔案

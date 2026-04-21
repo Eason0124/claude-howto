@@ -1,38 +1,38 @@
-# 重构目录
+# 重構目錄
 
-这是 Martin Fowler《Refactoring》（第 2 版）中的一份精选重构目录。每个重构都包含动机、操作步骤和示例。
+這是 Martin Fowler《Refactoring》（第 2 版）中的一份精選重構目錄。每個重構都包含動機、操作步驟和示例。
 
-> “重构由它的操作步骤来定义，也就是你执行这个变化时遵循的精确过程。” — Martin Fowler
-
----
-
-## 如何使用这个目录
-
-1. **识别异味**：先用代码异味目录定位问题
-2. **找到对应重构**：在这里查找匹配的手法
-3. **按步骤执行**：一步一步来
-4. **每步都测试**：确保行为不变
-
-**黄金法则**：如果某一步超过 10 分钟，就把它拆得更小。
+> “重構由它的操作步驟來定義，也就是你執行這個變化時遵循的精確過程。” — Martin Fowler
 
 ---
 
-## 最常见的重构
+## 如何使用這個目錄
+
+1. **識別異味**：先用程式碼異味目錄定位問題
+2. **找到對應重構**：在這裡查詢匹配的手法
+3. **按步驟執行**：一步一步來
+4. **每步都測試**：確保行為不變
+
+**黃金法則**：如果某一步超過 10 分鐘，就把它拆得更小。
+
+---
+
+## 最常見的重構
 
 ### Extract Method
 
-**何时使用**：长函数、重复代码、需要为概念命名
+**何時使用**：長函式、重複程式碼、需要為概念命名
 
-**动机**：把一段代码抽成一个名字能说明意图的方法。
+**動機**：把一段程式碼抽成一個名字能說明意圖的方法。
 
-**步骤**：
-1. 创建一个新方法，名字应描述“做什么”而不是“怎么做”
-2. 把代码片段复制到新方法里
-3. 检查片段里用了哪些局部变量
-4. 把局部变量作为参数传入，或在方法内声明
-5. 正确处理返回值
-6. 用新方法调用替换原始片段
-7. 测试
+**步驟**：
+1. 建立一個新方法，名字應描述“做什麼”而不是“怎麼做”
+2. 把程式碼片段複製到新方法裡
+3. 檢查片段裡用了哪些區域性變數
+4. 把區域性變數作為引數傳入，或在方法內宣告
+5. 正確處理返回值
+6. 用新方法呼叫替換原始片段
+7. 測試
 
 **前：**
 ```javascript
@@ -54,7 +54,7 @@ function printOwing(invoice) {
 }
 ```
 
-**后：**
+**後：**
 ```javascript
 function printOwing(invoice) {
   printBanner();
@@ -82,16 +82,16 @@ function printDetails(invoice, outstanding) {
 
 ### Inline Method
 
-**何时使用**：方法体和名字一样清楚，或者只是多余转发
+**何時使用**：方法體和名字一樣清楚，或者只是多餘轉發
 
-**动机**：当方法没有额外价值时，去掉不必要的间接层。
+**動機**：當方法沒有額外價值時，去掉不必要的間接層。
 
-**步骤**：
-1. 确认这个方法不是多态方法
-2. 找到所有调用点
-3. 用方法体替换每个调用
-4. 每替换一次就测试一次
-5. 删除方法定义
+**步驟**：
+1. 確認這個方法不是多型方法
+2. 找到所有呼叫點
+3. 用方法體替換每個呼叫
+4. 每替換一次就測試一次
+5. 刪除方法定義
 
 **前：**
 ```javascript
@@ -104,7 +104,7 @@ function moreThanFiveLateDeliveries(driver) {
 }
 ```
 
-**后：**
+**後：**
 ```javascript
 function getRating(driver) {
   return driver.numberOfLateDeliveries > 5 ? 2 : 1;
@@ -115,16 +115,16 @@ function getRating(driver) {
 
 ### Extract Variable
 
-**何时使用**：复杂表达式难以理解
+**何時使用**：複雜表示式難以理解
 
-**动机**：给复杂表达式的一部分起名字。
+**動機**：給複雜表示式的一部分起名字。
 
-**步骤**：
-1. 确保表达式没有副作用
-2. 声明一个不可变变量
-3. 将表达式结果赋给变量
-4. 用变量替换原表达式
-5. 测试
+**步驟**：
+1. 確保表示式沒有副作用
+2. 宣告一個不可變變數
+3. 將表示式結果賦給變數
+4. 用變數替換原表示式
+5. 測試
 
 **前：**
 ```javascript
@@ -133,7 +133,7 @@ return order.quantity * order.itemPrice -
   Math.min(order.quantity * order.itemPrice * 0.1, 100);
 ```
 
-**后：**
+**後：**
 ```javascript
 const basePrice = order.quantity * order.itemPrice;
 const quantityDiscount = Math.max(0, order.quantity - 500) * order.itemPrice * 0.05;
@@ -145,37 +145,37 @@ return basePrice - quantityDiscount + shipping;
 
 ### Inline Variable
 
-**何时使用**：变量名没有比表达式更清楚
+**何時使用**：變數名沒有比表示式更清楚
 
-**动机**：移除没必要的间接层。
+**動機**：移除沒必要的間接層。
 
-**步骤**：
-1. 检查右侧表达式没有副作用
-2. 如果变量不是不可变的，先改成不可变并测试
-3. 找到第一次引用并替换成表达式
-4. 测试
-5. 对所有引用重复
-6. 删除变量声明和赋值
-7. 测试
+**步驟**：
+1. 檢查右側表示式沒有副作用
+2. 如果變數不是不可變的，先改成不可變並測試
+3. 找到第一次引用並替換成表示式
+4. 測試
+5. 對所有引用重複
+6. 刪除變數宣告和賦值
+7. 測試
 
 ---
 
 ### Rename Variable
 
-**何时使用**：名字没有清楚表达用途
+**何時使用**：名字沒有清楚表達用途
 
-**动机**：好名字是清晰代码的基础。
+**動機**：好名字是清晰程式碼的基礎。
 
-**步骤**：
-1. 如果变量使用范围很广，先考虑封装
+**步驟**：
+1. 如果變數使用範圍很廣，先考慮封裝
 2. 找到所有引用
-3. 逐个修改引用
-4. 测试
+3. 逐個修改引用
+4. 測試
 
 **提示**：
-- 使用能体现意图的名字
-- 避免缩写
-- 使用领域术语
+- 使用能體現意圖的名字
+- 避免縮寫
+- 使用領域術語
 
 ```javascript
 // Bad
@@ -191,24 +191,24 @@ const activeUsers = users.filter(user => user.isActive);
 
 ### Change Function Declaration
 
-**何时使用**：函数名不能清楚说明用途，参数也需要变化
+**何時使用**：函式名不能清楚說明用途，引數也需要變化
 
-**动机**：好函数名能让代码自解释。
+**動機**：好函式名能讓程式碼自解釋。
 
-**步骤（简单情况）**：
-1. 删除不需要的参数
-2. 修改函数名
-3. 添加需要的参数
-4. 测试
+**步驟（簡單情況）**：
+1. 刪除不需要的引數
+2. 修改函式名
+3. 新增需要的引數
+4. 測試
 
-**步骤（迁移式，适用于复杂改动）**：
-1. 如果要删除参数，确保它没有被使用
-2. 创建一个新函数，声明符合新设计
-3. 让旧函数调用新函数
-4. 测试
-5. 让调用方逐步改用新函数
-6. 每改一个调用点就测试
-7. 删除旧函数
+**步驟（遷移式，適用於複雜改動）**：
+1. 如果要刪除引數，確保它沒有被使用
+2. 建立一個新函式，宣告符合新設計
+3. 讓舊函式呼叫新函式
+4. 測試
+5. 讓呼叫方逐步改用新函式
+6. 每改一個呼叫點就測試
+7. 刪除舊函式
 
 **前：**
 ```javascript
@@ -217,7 +217,7 @@ function circum(radius) {
 }
 ```
 
-**后：**
+**後：**
 ```javascript
 function circumference(radius) {
   return 2 * Math.PI * radius;
@@ -228,17 +228,17 @@ function circumference(radius) {
 
 ### Encapsulate Variable
 
-**何时使用**：多个地方直接访问某个数据
+**何時使用**：多個地方直接訪問某個資料
 
-**动机**：为数据访问提供明确入口。
+**動機**：為資料訪問提供明確入口。
 
-**步骤**：
-1. 创建 getter 和 setter
+**步驟**：
+1. 建立 getter 和 setter
 2. 找到所有引用
-3. 用 getter 替换读取
-4. 用 setter 替换写入
-5. 每次改动后测试
-6. 降低变量可见性
+3. 用 getter 替換讀取
+4. 用 setter 替換寫入
+5. 每次改動後測試
+6. 降低變數可見性
 
 **前：**
 ```javascript
@@ -248,7 +248,7 @@ let defaultOwner = { firstName: "Martin", lastName: "Fowler" };
 spaceship.owner = defaultOwner;
 ```
 
-**后：**
+**後：**
 ```javascript
 let defaultOwnerData = { firstName: "Martin", lastName: "Fowler" };
 
@@ -262,17 +262,17 @@ spaceship.owner = defaultOwner();
 
 ### Introduce Parameter Object
 
-**何时使用**：一组参数经常一起出现
+**何時使用**：一組引數經常一起出現
 
-**动机**：把自然属于一起的数据打包起来。
+**動機**：把自然屬於一起的資料打包起來。
 
-**步骤**：
-1. 为这组参数创建一个新类 / 结构
-2. 测试
-3. 用 Change Function Declaration 引入新对象
-4. 测试
-5. 逐个移除参数，改用对象字段
-6. 每次移除后测试
+**步驟**：
+1. 為這組引數建立一個新類 / 結構
+2. 測試
+3. 用 Change Function Declaration 引入新物件
+4. 測試
+5. 逐個移除引數，改用物件欄位
+6. 每次移除後測試
 
 **前：**
 ```javascript
@@ -281,7 +281,7 @@ function amountReceived(startDate, endDate) { ... }
 function amountOverdue(startDate, endDate) { ... }
 ```
 
-**后：**
+**後：**
 ```javascript
 class DateRange {
   constructor(start, end) {
@@ -299,15 +299,15 @@ function amountOverdue(dateRange) { ... }
 
 ### Combine Functions into Class
 
-**何时使用**：多个函数操作同一份数据
+**何時使用**：多個函式操作同一份資料
 
-**动机**：把函数和它操作的数据放到一起。
+**動機**：把函式和它操作的資料放到一起。
 
-**步骤**：
-1. 对公共数据先做 Encapsulate Record
-2. 把每个函数移动到类里
-3. 每移动一次就测试
-4. 用类字段替代数据参数
+**步驟**：
+1. 對公共資料先做 Encapsulate Record
+2. 把每個函式移動到類裡
+3. 每移動一次就測試
+4. 用類欄位替代資料引數
 
 **前：**
 ```javascript
@@ -316,7 +316,7 @@ function taxableCharge(reading) { ... }
 function calculateBaseCharge(reading) { ... }
 ```
 
-**后：**
+**後：**
 ```javascript
 class Reading {
   constructor(data) { this._data = data; }
@@ -331,17 +331,17 @@ class Reading {
 
 ### Split Phase
 
-**何时使用**：代码在处理两件不同的事
+**何時使用**：程式碼在處理兩件不同的事
 
-**动机**：把代码拆成边界清晰的两个阶段。
+**動機**：把程式碼拆成邊界清晰的兩個階段。
 
-**步骤**：
-1. 为第二阶段创建新函数
-2. 测试
-3. 在两个阶段之间引入中间数据结构
-4. 测试
-5. 把第一阶段提取成独立函数
-6. 测试
+**步驟**：
+1. 為第二階段建立新函式
+2. 測試
+3. 在兩個階段之間引入中間資料結構
+4. 測試
+5. 把第一階段提取成獨立函式
+6. 測試
 
 **前：**
 ```javascript
@@ -356,7 +356,7 @@ function priceOrder(product, quantity, shippingMethod) {
 }
 ```
 
-**后：**
+**後：**
 ```javascript
 function priceOrder(product, quantity, shippingMethod) {
   const priceData = calculatePricingData(product, quantity);
@@ -380,85 +380,85 @@ function applyShipping(priceData, shippingMethod) {
 
 ---
 
-## 移动特性
+## 移動特性
 
 ### Move Method
 
-**何时使用**：方法更依赖另一个类的数据而不是自己类的数据
+**何時使用**：方法更依賴另一個類的資料而不是自己類的資料
 
-**动机**：把函数放到它最依赖的数据所在的类里。
+**動機**：把函式放到它最依賴的資料所在的類裡。
 
-**步骤**：
-1. 检查方法使用到的所有程序元素
-2. 确认方法不是多态的
-3. 把方法复制到目标类
-4. 调整上下文
-5. 让原方法委托给目标方法
-6. 测试
-7. 视情况删除原方法
+**步驟**：
+1. 檢查方法使用到的所有程式元素
+2. 確認方法不是多型的
+3. 把方法複製到目標類
+4. 調整上下文
+5. 讓原方法委託給目標方法
+6. 測試
+7. 視情況刪除原方法
 
 ---
 
 ### Move Field
 
-**何时使用**：字段更多被另一个类使用
+**何時使用**：欄位更多被另一個類使用
 
-**动机**：让数据和使用它的函数靠在一起。
+**動機**：讓資料和使用它的函式靠在一起。
 
-**步骤**：
-1. 如果还没有，先封装字段
-2. 测试
-3. 在目标类中创建字段
-4. 把引用改成使用目标字段
-5. 测试
-6. 删除原字段
+**步驟**：
+1. 如果還沒有，先封裝欄位
+2. 測試
+3. 在目標類中建立欄位
+4. 把引用改成使用目標欄位
+5. 測試
+6. 刪除原欄位
 
 ---
 
 ### Move Statements into Function
 
-**何时使用**：相同代码总是跟着函数调用一起出现
+**何時使用**：相同程式碼總是跟著函式呼叫一起出現
 
-**动机**：把重复语句移入函数，去掉重复。
+**動機**：把重複語句移入函式，去掉重複。
 
-**步骤**：
-1. 如果还没有，先把重复代码提取成函数
-2. 把语句移入函数
-3. 测试
-4. 如果调用方不再需要独立语句，就删除它们
+**步驟**：
+1. 如果還沒有，先把重複程式碼提取成函式
+2. 把語句移入函式
+3. 測試
+4. 如果呼叫方不再需要獨立語句，就刪除它們
 
 ---
 
 ### Move Statements to Callers
 
-**何时使用**：不同调用方需要不同的行为
+**何時使用**：不同呼叫方需要不同的行為
 
-**动机**：当行为需要差异化时，把它从函数里移出去。
+**動機**：當行為需要差異化時，把它從函式裡移出去。
 
-**步骤**：
-1. 先对要移动的代码做 Extract Method
-2. 再对原函数做 Inline Method
-3. 删除被内联后的调用
-4. 把提取出的代码移到各个调用方
-5. 测试
+**步驟**：
+1. 先對要移動的程式碼做 Extract Method
+2. 再對原函式做 Inline Method
+3. 刪除被內聯後的呼叫
+4. 把提取出的程式碼移到各個呼叫方
+5. 測試
 
 ---
 
-## 数据组织
+## 資料組織
 
 ### Replace Primitive with Object
 
-**何时使用**：数据项需要的不只是简单值
+**何時使用**：資料項需要的不只是簡單值
 
-**动机**：把数据和行为封装在一起。
+**動機**：把資料和行為封裝在一起。
 
-**步骤**：
+**步驟**：
 1. 先做 Encapsulate Variable
-2. 创建一个简单值对象
-3. 修改 setter，让它创建新实例
-4. 修改 getter，让它返回值
-5. 测试
-6. 给新类增加更丰富的行为
+2. 建立一個簡單值物件
+3. 修改 setter，讓它建立新例項
+4. 修改 getter，讓它返回值
+5. 測試
+6. 給新類增加更豐富的行為
 
 **前：**
 ```javascript
@@ -472,7 +472,7 @@ class Order {
 if (order.priority === "high" || order.priority === "rush") { ... }
 ```
 
-**后：**
+**後：**
 ```javascript
 class Priority {
   constructor(value) {
@@ -498,16 +498,16 @@ if (order.priority.higherThan(new Priority("normal"))) { ... }
 
 ### Replace Temp with Query
 
-**何时使用**：临时变量保存的是一个表达式结果
+**何時使用**：臨時變數儲存的是一個表示式結果
 
-**动机**：把表达式提取成函数，让代码更清晰。
+**動機**：把表示式提取成函式，讓程式碼更清晰。
 
-**步骤**：
-1. 确保变量只被赋值一次
-2. 把赋值右侧提取成一个方法
-3. 用方法调用替换临时变量引用
-4. 测试
-5. 删除临时变量声明和赋值
+**步驟**：
+1. 確保變數只被賦值一次
+2. 把賦值右側提取成一個方法
+3. 用方法呼叫替換臨時變數引用
+4. 測試
+5. 刪除臨時變數宣告和賦值
 
 **前：**
 ```javascript
@@ -519,7 +519,7 @@ if (basePrice > 1000) {
 }
 ```
 
-**后：**
+**後：**
 ```javascript
 get basePrice() {
   return this._quantity * this._itemPrice;
@@ -535,18 +535,18 @@ if (this.basePrice > 1000) {
 
 ---
 
-## 简化条件逻辑
+## 簡化條件邏輯
 
 ### Decompose Conditional
 
-**何时使用**：复杂条件语句
+**何時使用**：複雜條件語句
 
-**动机**：把条件和分支动作分别提取出来，让意图更清楚。
+**動機**：把條件和分支動作分別提取出來，讓意圖更清楚。
 
-**步骤**：
-1. 对条件做 Extract Method
-2. 对 then 分支做 Extract Method
-3. 对 else 分支也做 Extract Method（如果有）
+**步驟**：
+1. 對條件做 Extract Method
+2. 對 then 分支做 Extract Method
+3. 對 else 分支也做 Extract Method（如果有）
 
 **前：**
 ```javascript
@@ -557,7 +557,7 @@ if (!aDate.isBefore(plan.summerStart) && !aDate.isAfter(plan.summerEnd)) {
 }
 ```
 
-**后：**
+**後：**
 ```javascript
 if (isSummer(aDate, plan)) {
   charge = summerCharge(quantity, plan);
@@ -582,14 +582,14 @@ function regularCharge(quantity, plan) {
 
 ### Consolidate Conditional Expression
 
-**何时使用**：多个条件最后都返回同一个结果
+**何時使用**：多個條件最後都返回同一個結果
 
-**动机**：让人一眼看出这些条件其实是一道检查。
+**動機**：讓人一眼看出這些條件其實是一道檢查。
 
-**步骤**：
-1. 确认条件没有副作用
-2. 用 and / or 合并条件
-3. 视情况对合并后的条件做 Extract Method
+**步驟**：
+1. 確認條件沒有副作用
+2. 用 and / or 合併條件
+3. 視情況對合並後的條件做 Extract Method
 
 **前：**
 ```javascript
@@ -598,7 +598,7 @@ if (employee.monthsDisabled > 12) return 0;
 if (employee.isPartTime) return 0;
 ```
 
-**后：**
+**後：**
 ```javascript
 if (isNotEligibleForDisability(employee)) return 0;
 
@@ -613,14 +613,14 @@ function isNotEligibleForDisability(employee) {
 
 ### Replace Nested Conditional with Guard Clauses
 
-**何时使用**：深层嵌套条件让流程难以追踪
+**何時使用**：深層巢狀條件讓流程難以追蹤
 
-**动机**：用 guard clause 提前返回，让正常流程更清楚。
+**動機**：用 guard clause 提前返回，讓正常流程更清楚。
 
-**步骤**：
-1. 找出特殊情况
-2. 用提前返回的 guard clause 替换它们
-3. 每改一步就测试
+**步驟**：
+1. 找出特殊情況
+2. 用提前返回的 guard clause 替換它們
+3. 每改一步就測試
 
 **前：**
 ```javascript
@@ -639,7 +639,7 @@ function payAmount(employee) {
 }
 ```
 
-**后：**
+**後：**
 ```javascript
 function payAmount(employee) {
   if (employee.isSeparated) return { amount: 0, reasonCode: "SEP" };
@@ -652,16 +652,16 @@ function payAmount(employee) {
 
 ### Replace Conditional with Polymorphism
 
-**何时使用**：按类型分支的 switch / 条件逻辑
+**何時使用**：按型別分支的 switch / 條件邏輯
 
-**动机**：让对象自己处理自己的行为。
+**動機**：讓物件自己處理自己的行為。
 
-**步骤**：
-1. 创建类层次（如果还没有）
-2. 用 Factory Function 创建对象
-3. 把条件逻辑移到超类方法里
-4. 给每种情况创建子类方法
-5. 删除原条件
+**步驟**：
+1. 建立類層次（如果還沒有）
+2. 用 Factory Function 建立物件
+3. 把條件邏輯移到超類方法裡
+4. 給每種情況建立子類方法
+5. 刪除原條件
 
 **前：**
 ```javascript
@@ -683,7 +683,7 @@ function plumage(bird) {
 }
 ```
 
-**后：**
+**後：**
 ```javascript
 class Bird {
   get plumage() { return "unknown"; }
@@ -719,16 +719,16 @@ function createBird(data) {
 
 ### Introduce Special Case (Null Object)
 
-**何时使用**：重复出现 null 检查
+**何時使用**：重複出現 null 檢查
 
-**动机**：返回一个特殊对象来处理特殊情况。
+**動機**：返回一個特殊物件來處理特殊情況。
 
-**步骤**：
-1. 创建一个具备预期接口的特殊情况类
-2. 增加 isSpecialCase 检查
-3. 引入工厂方法
-4. 用特殊对象替换 null 检查
-5. 测试
+**步驟**：
+1. 建立一個具備預期介面的特殊情況類
+2. 增加 isSpecialCase 檢查
+3. 引入工廠方法
+4. 用特殊物件替換 null 檢查
+5. 測試
 
 **前：**
 ```javascript
@@ -741,7 +741,7 @@ if (customer === "unknown") {
 }
 ```
 
-**后：**
+**後：**
 ```javascript
 class UnknownCustomer {
   get name() { return "occupant"; }
@@ -761,20 +761,20 @@ const customerName = customer.name;
 
 ---
 
-## 重构 API
+## 重構 API
 
 ### Separate Query from Modifier
 
-**何时使用**：函数既返回值又有副作用
+**何時使用**：函式既返回值又有副作用
 
-**动机**：明确哪些操作会产生副作用。
+**動機**：明確哪些操作會產生副作用。
 
-**步骤**：
-1. 创建新的查询函数
-2. 复制原函数的返回逻辑
-3. 修改原函数，让它只负责副作用
-4. 替换依赖返回值的调用点
-5. 测试
+**步驟**：
+1. 建立新的查詢函式
+2. 複製原函式的返回邏輯
+3. 修改原函式，讓它只負責副作用
+4. 替換依賴返回值的呼叫點
+5. 測試
 
 **前：**
 ```javascript
@@ -793,7 +793,7 @@ function alertForMiscreant(people) {
 }
 ```
 
-**后：**
+**後：**
 ```javascript
 function findMiscreant(people) {
   for (const p of people) {
@@ -812,17 +812,17 @@ function alertForMiscreant(people) {
 
 ### Parameterize Function
 
-**何时使用**：有多个做类似事情但数值不同的函数
+**何時使用**：有多個做類似事情但數值不同的函式
 
-**动机**：通过参数化减少重复。
+**動機**：透過引數化減少重複。
 
-**步骤**：
-1. 选择一个函数
-2. 为变化的字面值增加参数
-3. 修改函数体使用该参数
-4. 测试
-5. 让调用方改用参数化版本
-6. 删除不再使用的旧函数
+**步驟**：
+1. 選擇一個函式
+2. 為變化的字面值增加引數
+3. 修改函式體使用該引數
+4. 測試
+5. 讓呼叫方改用引數化版本
+6. 刪除不再使用的舊函式
 
 **前：**
 ```javascript
@@ -835,7 +835,7 @@ function fivePercentRaise(person) {
 }
 ```
 
-**后：**
+**後：**
 ```javascript
 function raise(person, factor) {
   person.salary = person.salary * (1 + factor);
@@ -850,15 +850,15 @@ raise(person, 0.05);
 
 ### Remove Flag Argument
 
-**何时使用**：布尔参数改变函数行为
+**何時使用**：布林引數改變函式行為
 
-**动机**：通过拆分成明确函数，让行为更清楚。
+**動機**：透過拆分成明確函式，讓行為更清楚。
 
-**步骤**：
-1. 针对不同旗标值创建显式函数
-2. 替换每个调用点
-3. 每次改动后测试
-4. 删除原函数
+**步驟**：
+1. 針對不同旗標值建立顯式函式
+2. 替換每個呼叫點
+3. 每次改動後測試
+4. 刪除原函式
 
 **前：**
 ```javascript
@@ -874,7 +874,7 @@ bookConcert(customer, true);
 bookConcert(customer, false);
 ```
 
-**后：**
+**後：**
 ```javascript
 function bookPremiumConcert(customer) {
   // premium booking logic
@@ -890,70 +890,70 @@ bookRegularConcert(customer);
 
 ---
 
-## 继承相关
+## 繼承相關
 
 ### Pull Up Method
 
-**何时使用**：多个子类里有相同方法
+**何時使用**：多個子類裡有相同方法
 
-**动机**：去掉类层次中的重复。
+**動機**：去掉類層次中的重複。
 
-**步骤**：
-1. 检查方法是否完全相同
-2. 确认签名一致
-3. 在超类中新建方法
-4. 从一个子类复制实现
-5. 删除一个子类中的方法并测试
-6. 删除其他子类中的方法并测试
+**步驟**：
+1. 檢查方法是否完全相同
+2. 確認簽名一致
+3. 在超類中新建方法
+4. 從一個子類複製實現
+5. 刪除一個子類中的方法並測試
+6. 刪除其他子類中的方法並測試
 
 ---
 
 ### Push Down Method
 
-**何时使用**：某个行为只适用于部分子类
+**何時使用**：某個行為只適用於部分子類
 
-**动机**：把方法放到真正使用它的地方。
+**動機**：把方法放到真正使用它的地方。
 
-**步骤**：
-1. 把方法复制到需要它的子类
-2. 从超类删除方法
-3. 测试
-4. 删除不需要该方法的子类副本
-5. 测试
+**步驟**：
+1. 把方法複製到需要它的子類
+2. 從超類刪除方法
+3. 測試
+4. 刪除不需要該方法的子類副本
+5. 測試
 
 ---
 
 ### Replace Subclass with Delegate
 
-**何时使用**：继承用得不对，需要更灵活
+**何時使用**：繼承用得不對，需要更靈活
 
-**动机**：在合适的地方更偏向组合而不是继承。
+**動機**：在合適的地方更偏向組合而不是繼承。
 
-**步骤**：
-1. 创建一个空的委托类
-2. 在宿主类中加一个持有委托的字段
-3. 在宿主类构造委托
-4. 把功能迁移到委托类
-5. 每次迁移后测试
-6. 用委托替代继承
+**步驟**：
+1. 建立一個空的委託類
+2. 在宿主類中加一個持有委託的欄位
+3. 在宿主類構造委託
+4. 把功能遷移到委託類
+5. 每次遷移後測試
+6. 用委託替代繼承
 
 ---
 
 ## Extract Class
 
-**何时使用**：大类里有多个职责
+**何時使用**：大類裡有多個職責
 
-**动机**：拆分类以维持单一职责。
+**動機**：拆分類以維持單一職責。
 
-**步骤**：
-1. 决定如何拆分职责
-2. 创建新类
-3. 把字段从原类移到新类
-4. 测试
-5. 把方法从原类移到新类
-6. 每次移动后测试
-7. 重新检查并命名两个类
-8. 决定如何暴露新类
+**步驟**：
+1. 決定如何拆分職責
+2. 建立新類
+3. 把欄位從原類移到新類
+4. 測試
+5. 把方法從原類移到新類
+6. 每次移動後測試
+7. 重新檢查並命名兩個類
+8. 決定如何暴露新類
 
 **前：**
 ```javascript
@@ -971,7 +971,7 @@ class Person {
 }
 ```
 
-**后：**
+**後：**
 ```javascript
 class Person {
   constructor() {
@@ -995,29 +995,29 @@ class TelephoneNumber {
 
 ---
 
-## 快速参考：异味到重构
+## 快速參考：異味到重構
 
-| 代码异味 | 主要重构 | 备选方案 |
+| 程式碼異味 | 主要重構 | 備選方案 |
 |----------|---------|---------|
-| 长函数 | Extract Method | Replace Temp with Query |
-| 重复代码 | Extract Method | Pull Up Method |
-| 大类 | Extract Class | Extract Subclass |
-| 长参数列表 | Introduce Parameter Object | Preserve Whole Object |
+| 長函式 | Extract Method | Replace Temp with Query |
+| 重複程式碼 | Extract Method | Pull Up Method |
+| 大類 | Extract Class | Extract Subclass |
+| 長引數列表 | Introduce Parameter Object | Preserve Whole Object |
 | Feature Envy | Move Method | Extract Method + Move |
-| 数据泥团 | Extract Class | Introduce Parameter Object |
-| 基础类型沉迷 | Replace Primitive with Object | Replace Type Code |
-| switch 语句 | Replace Conditional with Polymorphism | Replace Type Code |
-| 临时字段 | Extract Class | Introduce Null Object |
-| 消息链 | Hide Delegate | Extract Method |
-| 中间人 | Remove Middle Man | Inline Method |
-| 发散式变化 | Extract Class | Split Phase |
-| 散弹式修改 | Move Method | Inline Class |
-| 死代码 | Remove Dead Code | - |
+| 資料泥團 | Extract Class | Introduce Parameter Object |
+| 基礎型別沉迷 | Replace Primitive with Object | Replace Type Code |
+| switch 語句 | Replace Conditional with Polymorphism | Replace Type Code |
+| 臨時欄位 | Extract Class | Introduce Null Object |
+| 訊息鏈 | Hide Delegate | Extract Method |
+| 中間人 | Remove Middle Man | Inline Method |
+| 發散式變化 | Extract Class | Split Phase |
+| 散彈式修改 | Move Method | Inline Class |
+| 死程式碼 | Remove Dead Code | - |
 | 臆想泛化 | Collapse Hierarchy | Inline Class |
 
 ---
 
-## 延伸阅读
+## 延伸閱讀
 
 - Fowler, M. (2018). *Refactoring: Improving the Design of Existing Code* (第 2 版)
-- 在线目录：https://refactoring.com/catalog/
+- 線上目錄：https://refactoring.com/catalog/

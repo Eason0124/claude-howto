@@ -3,106 +3,106 @@
   <img alt="Claude How To" src="../resources/logos/claude-howto-logo.svg">
 </picture>
 
-# 高级功能
+# 高階功能
 
-这是一份关于 Claude Code 高级能力的完整指南，涵盖 planning mode、extended thinking、auto mode、后台任务、权限模式、打印模式（非交互）、会话管理、交互功能、消息通道（Channels）、语音输入、远程控制、网页会话、桌面应用、任务列表、提示词建议、Git 工作树、沙盒、受管设置和配置。
+這是一份關於 Claude Code 高階能力的完整指南，涵蓋 planning mode、extended thinking、auto mode、後臺任務、許可權模式、列印模式（非互動）、會話管理、互動功能、訊息通道（Channels）、語音輸入、遠端控制、網頁會話、桌面應用、任務列表、提示詞建議、Git 工作樹、沙盒、受管設定和配置。
 
-## 目录
+## 目錄
 
-1. [概览](#概览)
-2. [规划模式](#规划模式)
-3. [扩展思考](#扩展思考)
-4. [自动模式](#自动模式)
-5. [后台任务](#后台任务)
-6. [定时任务](#定时任务)
-7. [权限模式](#权限模式)
-8. [无头模式](#无头模式)
-9. [会话管理](#会话管理)
-10. [交互功能](#交互功能)
-11. [语音输入](#语音输入)
-12. [消息通道（Channels）](#消息通道channels)
-13. [Chrome 集成](#chrome-集成)
-14. [远程控制](#远程控制)
-15. [网页会话](#网页会话)
-16. [桌面应用](#桌面应用)
-17. [任务列表](#任务列表)
-18. [提示词建议](#提示词建议)
-19. [Git 工作树（Git Worktrees）](#git-工作树git-worktrees)
+1. [概覽](#概覽)
+2. [規劃模式](#規劃模式)
+3. [擴充套件思考](#擴充套件思考)
+4. [自動模式](#自動模式)
+5. [後臺任務](#後臺任務)
+6. [定時任務](#定時任務)
+7. [許可權模式](#許可權模式)
+8. [無頭模式](#無頭模式)
+9. [會話管理](#會話管理)
+10. [互動功能](#互動功能)
+11. [語音輸入](#語音輸入)
+12. [訊息通道（Channels）](#訊息通道channels)
+13. [Chrome 整合](#chrome-整合)
+14. [遠端控制](#遠端控制)
+15. [網頁會話](#網頁會話)
+16. [桌面應用](#桌面應用)
+17. [任務列表](#任務列表)
+18. [提示詞建議](#提示詞建議)
+19. [Git 工作樹（Git Worktrees）](#git-工作樹git-worktrees)
 20. [沙盒](#沙盒)
-21. [企业受管设置](#企业受管设置)
-22. [配置与设置](#配置与设置)
-23. [最佳实践](#最佳实践)
-24. [更多资源](#更多资源)
+21. [企業受管設定](#企業受管設定)
+22. [配置與設定](#配置與設定)
+23. [最佳實踐](#最佳實踐)
+24. [更多資源](#更多資源)
 
 ---
 
 <a id="overview"></a>
-## 概览
+## 概覽
 
-Claude Code 的高级功能把基础能力扩展到了规划、推理、自动化和控制层面。它们能支持更复杂的开发任务、代码审查、自动化流程以及多会话管理。
+Claude Code 的高階功能把基礎能力擴充套件到了規劃、推理、自動化和控制層面。它們能支援更復雜的開發任務、程式碼審查、自動化流程以及多會話管理。
 
-**核心高级功能包括：**
-- **Planning Mode**：先写详细实现计划，再开始编码
-- **Extended Thinking**：对复杂问题进行更深入的推理
-- **Auto Mode**：由后台安全分类器在每一步执行前进行审查（Research Preview）
-- **Background Tasks**：长时间任务不阻塞对话
-- **Permission Modes**：控制 Claude 可以做什么（`default`、`acceptEdits`、`plan`、`auto`、`dontAsk`、`bypassPermissions`）
-- **Print Mode**：非交互式运行，适合自动化和 CI/CD（`claude -p`）
-- **Session Management**：管理多个会话
-- **Interactive Features**：快捷键、多行输入、历史记录
-- **Voice Dictation**：按住说话，支持 20 种语言的语音识别
-- **Channels**：消息通道，允许 MCP server 向运行中的会话推送消息（Research Preview）
-- **Remote Control**：从 Claude.ai 或 Claude app 控制本地会话
-- **Web Sessions**：在浏览器中运行 Claude Code
-- **Desktop App**：支持可视化 diff 审查和多会话的独立应用
-- **Task List**：跨 context compaction 持久跟踪任务
-- **Prompt Suggestions**：根据上下文智能推荐命令
-- **Git 工作树（Git Worktrees）**：隔离的 worktree 分支，适合并行工作
-- **Sandboxing**：操作系统级文件系统和网络隔离
-- **Managed Settings**：通过 plist、Registry 或受管文件进行企业部署
-- **Configuration**：用 JSON 配置文件定制行为
+**核心高階功能包括：**
+- **Planning Mode**：先寫詳細實現計劃，再開始編碼
+- **Extended Thinking**：對複雜問題進行更深入的推理
+- **Auto Mode**：由後臺安全分類器在每一步執行前進行審查（Research Preview）
+- **Background Tasks**：長時間任務不阻塞對話
+- **Permission Modes**：控制 Claude 可以做什麼（`default`、`acceptEdits`、`plan`、`auto`、`dontAsk`、`bypassPermissions`）
+- **Print Mode**：非互動式執行，適合自動化和 CI/CD（`claude -p`）
+- **Session Management**：管理多個會話
+- **Interactive Features**：快捷鍵、多行輸入、歷史記錄
+- **Voice Dictation**：按住說話，支援 20 種語言的語音識別
+- **Channels**：訊息通道，允許 MCP server 向執行中的會話推送訊息（Research Preview）
+- **Remote Control**：從 Claude.ai 或 Claude app 控制本地會話
+- **Web Sessions**：在瀏覽器中執行 Claude Code
+- **Desktop App**：支援視覺化 diff 審查和多會話的獨立應用
+- **Task List**：跨 context compaction 持久跟蹤任務
+- **Prompt Suggestions**：根據上下文智慧推薦命令
+- **Git 工作樹（Git Worktrees）**：隔離的 worktree 分支，適合並行工作
+- **Sandboxing**：作業系統級檔案系統和網路隔離
+- **Managed Settings**：透過 plist、Registry 或受管檔案進行企業部署
+- **Configuration**：用 JSON 配置檔案定製行為
 
 <a id="planning-mode"></a>
-## 规划模式
+## 規劃模式
 
-更多规划示例见 [planning-mode-examples.md](planning-mode-examples.md)。
+更多規劃示例見 [planning-mode-examples.md](planning-mode-examples.md)。
 
-Planning mode 允许 Claude 在真正实现前先梳理复杂任务，生成一份你可以审阅并批准的详细计划。
+Planning mode 允許 Claude 在真正實現前先梳理複雜任務，生成一份你可以審閱並批准的詳細計劃。
 
-### 什么是 Planning Mode？
+### 什麼是 Planning Mode？
 
-Planning mode 是一个两阶段流程：
-1. **规划阶段**：Claude 分析任务并生成详细实现计划
-2. **实现阶段**：在你批准后，Claude 执行计划
+Planning mode 是一個兩階段流程：
+1. **規劃階段**：Claude 分析任務並生成詳細實現計劃
+2. **實現階段**：在你批准後，Claude 執行計劃
 
-### 什么时候使用 Planning Mode
+### 什麼時候使用 Planning Mode
 
-✅ 适合：
-- 复杂的多文件重构
-- 新功能开发
-- 架构调整
-- 数据库迁移
-- 大型 API 重设计
+✅ 適合：
+- 複雜的多檔案重構
+- 新功能開發
+- 架構調整
+- 資料庫遷移
+- 大型 API 重設計
 
-❌ 不建议：
-- 简单 bug 修复
+❌ 不建議：
+- 簡單 bug 修復
 - 格式化修改
-- 单文件编辑
-- 快速查询
+- 單檔案編輯
+- 快速查詢
 
-### 如何启动 Planning Mode
+### 如何啟動 Planning Mode
 
 **Slash command：**
 ```bash
 /plan Implement user authentication system
 ```
 
-**CLI 参数：**
+**CLI 引數：**
 ```bash
 claude --permission-mode plan
 ```
 
-**设为默认：**
+**設為預設：**
 ```json
 {
   "permissions": {
@@ -111,119 +111,119 @@ claude --permission-mode plan
 }
 ```
 
-**快捷键：**
-- `Shift + Tab` - 切换权限模式（包括 plan）
-- `Alt + M` - 切换权限模式（Windows/Linux）
+**快捷鍵：**
+- `Shift + Tab` - 切換許可權模式（包括 plan）
+- `Alt + M` - 切換許可權模式（Windows/Linux）
 
-### Planning Mode 的好处
+### Planning Mode 的好處
 
-- **结构化实施方式**：把实现步骤拆得更清楚
-- **审阅和批准**：先看计划，再执行
-- **风险识别**：先发现潜在问题
-- **阶段清晰**：有明确的里程碑和阶段划分
+- **結構化實施方式**：把實現步驟拆得更清楚
+- **審閱和批准**：先看計劃，再執行
+- **風險識別**：先發現潛在問題
+- **階段清晰**：有明確的里程碑和階段劃分
 
-### 示例：功能实现
+### 示例：功能實現
 
 ```text
 User: /plan Add a real-time notification system
 
-Claude: 我会为实时通知系统制定计划。
+Claude: 我會為實時通知系統制定計劃。
 
-## 实现计划
+## 實現計劃
 
-### 阶段 1：基础设施
-1. 安装 WebSocket 库（socket.io）
+### 階段 1：基礎設施
+1. 安裝 WebSocket 庫（socket.io）
 2. 搭建 WebSocket server
-3. 配置连接管理
+3. 配置連線管理
 
-### 阶段 2：后端
-4. 创建通知服务
-5. 实现通知队列
-6. 为通知添加数据库 schema
-7. 创建 API 端点
+### 階段 2：後端
+4. 建立通知服務
+5. 實現通知佇列
+6. 為通知新增資料庫 schema
+7. 建立 API 端點
 
-### 阶段 3：前端
+### 階段 3：前端
 8. 搭建 WebSocket client
-9. 创建通知 UI 组件
-10. 实现通知状态管理
-11. 添加通知权限
+9. 建立通知 UI 元件
+10. 實現通知狀態管理
+11. 新增通知許可權
 
-### 阶段 4：测试与发布
-12. 编写单元测试
-13. 编写集成测试
-14. 更新文档
+### 階段 4：測試與釋出
+12. 編寫單元測試
+13. 編寫整合測試
+14. 更新檔案
 15. 部署到 staging
 
-预计时间：3-4 小时
-需要修改的文件：12 个
-需要创建的新文件：8 个
+預計時間：3-4 小時
+需要修改的檔案：12 個
+需要建立的新檔案：8 個
 
-准备继续吗？（yes/no/modify plan）
+準備繼續嗎？（yes/no/modify plan）
 ```
 
-### 计划修改
+### 計劃修改
 
 ```text
-User: 修改计划 - 先跳过队列，后面再加
+User: 修改計劃 - 先跳過佇列，後面再加
 
-Claude: 已更新计划：
-[展示删除队列后的计划]
+Claude: 已更新計劃：
+[展示刪除佇列後的計劃]
 
-User: 看起来不错，继续
+User: 看起來不錯，繼續
 
-Claude: [按修改后的计划开始实现]
+Claude: [按修改後的計劃開始實現]
 ```
 
 ### Planning Mode 配置
 
-你可以通过 CLI 参数或 slash command 启用 planning mode：
+你可以透過 CLI 引數或 slash command 啟用 planning mode：
 
 ```bash
-# 通过 CLI 启用 plan mode
+# 透過 CLI 啟用 plan mode
 claude --permission-mode plan
 
-# 或在 REPL 里使用 /plan
+# 或在 REPL 裡使用 /plan
 /plan Implement user authentication system
 ```
 
-**规划专用模型别名**：使用 `opusplan`，规划用 Opus，执行用 Sonnet：
+**規劃專用模型別名**：使用 `opusplan`，規劃用 Opus，執行用 Sonnet：
 
 ```bash
 claude --model opusplan "design and implement the new API"
 ```
 
-**外部编辑计划**：按 `Ctrl+G` 可以把当前计划打开到外部编辑器里进行更详细的修改。
+**外部編輯計劃**：按 `Ctrl+G` 可以把當前計劃開啟到外部編輯器裡進行更詳細的修改。
 
 <a id="extended-thinking"></a>
-## 扩展思考
+## 擴充套件思考
 
-Extended thinking 让 Claude 在给出解决方案前，花更多时间进行复杂推理。
+Extended thinking 讓 Claude 在給出解決方案前，花更多時間進行復雜推理。
 
-### 什么是 Extended Thinking？
+### 什麼是 Extended Thinking？
 
-这是一个有意识的、分步骤的推理过程，Claude 会：
-- 拆解复杂问题
-- 比较多种方案
-- 评估权衡
-- 推导边界情况
+這是一個有意識的、分步驟的推理過程，Claude 會：
+- 拆解複雜問題
+- 比較多種方案
+- 評估權衡
+- 推導邊界情況
 
-### 如何启用
+### 如何啟用
 
-**快捷键：**
-- `Option + T`（macOS）/ `Alt + T`（Windows/Linux）- 切换 extended thinking
+**快捷鍵：**
+- `Option + T`（macOS）/ `Alt + T`（Windows/Linux）- 切換 extended thinking
 
-**自动启用：**
-- 对所有模型默认开启（Opus 4.6、Sonnet 4.6、Haiku 4.5）
-- Opus 4.6 支持自适应推理，effort 等级为 `low`（○）、`medium`（◐）、`high`（●）、`max`（仅 Opus 4.6）
+**自動啟用：**
+- 對所有模型預設開啟（Opus 4.6、Sonnet 4.6、Haiku 4.5）
+- Opus 4.6 支援自適應推理，effort 等級為 `low`（○）、`medium`（◐）、`high`（●）、`max`（僅 Opus 4.6）
 
-### 好处
+### 好處
 
-- 更适合复杂问题
-- 更容易发现边界条件
-- 便于比较多个方案
-- 输出通常更稳健
+- 更適合複雜問題
+- 更容易發現邊界條件
+- 便於比較多個方案
+- 輸出通常更穩健
 
-### 示例：架构决策
+### 示例：架構決策
 
 ```text
 Context Analysis
@@ -245,102 +245,102 @@ Recommendation
 ```
 
 <a id="auto-mode"></a>
-## 自动模式
+## 自動模式
 
-Auto mode 是一个研究预览功能。它会在每个动作执行前，用后台安全分类器评估风险，帮助你在自动化和安全之间取得平衡。
+Auto mode 是一個研究預覽功能。它會在每個動作執行前，用後臺安全分類器評估風險，幫助你在自動化和安全之間取得平衡。
 
 ### 需求
 
-- 支持 auto mode 的 Claude Code 版本
-- 合适的权限和配置
+- 支援 auto mode 的 Claude Code 版本
+- 合適的許可權和配置
 
-### 启用方式
+### 啟用方式
 
 ```bash
-# 用 CLI 解锁 auto mode
+# 用 CLI 解鎖 auto mode
 claude --enable-auto-mode
 
-# 然后在 REPL 中用 Shift+Tab 切换到它
+# 然後在 REPL 中用 Shift+Tab 切換到它
 ```
 
-### 分类器如何工作
+### 分類器如何工作
 
-在执行工具前，后台分类器会判断这个动作是否安全、是否需要提示、是否应该被阻止。
+在執行工具前，後臺分類器會判斷這個動作是否安全、是否需要提示、是否應該被阻止。
 
-### 默认阻止的动作
+### 預設阻止的動作
 
-- 明显危险的文件操作
-- 高风险 shell 命令
-- 可能泄露凭据的操作
+- 明顯危險的檔案操作
+- 高風險 shell 命令
+- 可能洩露憑據的操作
 
-### 默认允许的动作
+### 預設允許的動作
 
-- 只读检查
-- 常规分析
-- 低风险修改
+- 只讀檢查
+- 常規分析
+- 低風險修改
 
 ### 配置 Auto Mode
 
-Auto mode 可以在设置中进一步约束、放宽或与权限模式结合使用。
+Auto mode 可以在設定中進一步約束、放寬或與許可權模式結合使用。
 
-### 回退行为
+### 回退行為
 
-如果分类器无法判定，Claude 会回退到更保守的权限处理方式。
+如果分類器無法判定，Claude 會回退到更保守的許可權處理方式。
 
-### 预置一份类似 Auto-Mode 的保守权限基线
+### 預置一份類似 Auto-Mode 的保守許可權基線
 
 ```bash
-# 先预览将要添加的权限（不会写入）
+# 先預覽將要新增的許可權（不會寫入）
 
-# 应用保守基线
+# 應用保守基線
 
-# 只有在需要时再逐步增加能力
+# 只有在需要時再逐步增加能力
 ```
 
 <a id="background-tasks"></a>
-## 后台任务
+## 後臺任務
 
-后台任务允许 Claude 在不阻塞对话的情况下运行长时间操作。
+後臺任務允許 Claude 在不阻塞對話的情況下執行長時間操作。
 
-### 什么是后台任务？
+### 什麼是後臺任務？
 
-后台任务适合长时间运行的工作，例如构建、测试、下载、扫描或并行分析。你可以把它们交给 Claude，让对话继续保持响应。
+後臺任務適合長時間執行的工作，例如構建、測試、下載、掃描或並行分析。你可以把它們交給 Claude，讓對話繼續保持響應。
 
-### 启动后台任务
+### 啟動後臺任務
 
-你可以从命令、计划或工具链中启动后台任务，让 Claude 在后台继续工作。
+你可以從命令、計劃或工具鏈中啟動後臺任務，讓 Claude 在後臺繼續工作。
 
-### 管理后台任务
+### 管理後臺任務
 
-- 查看任务状态
-- 中止任务
-- 等待任务完成
-- 从结果中恢复上下文
+- 檢視任務狀態
+- 中止任務
+- 等待任務完成
+- 從結果中恢復上下文
 
-### 示例：并行开发
+### 示例：並行開發
 
 ```text
-任务 A：运行测试
-任务 B：生成文档
-任务 C：执行安全扫描
+任務 A：執行測試
+任務 B：生成檔案
+任務 C：執行安全掃描
 ```
 
 ### 配置
 
-后台任务的超时、并发和通知行为都可以在设置中调整。
+後臺任務的超時、併發和通知行為都可以在設定中調整。
 
 <a id="scheduled-tasks"></a>
-## 定时任务
+## 定時任務
 
-Scheduled tasks 让 Claude 按计划重复执行某些提示词或任务。
+Scheduled tasks 讓 Claude 按計劃重複執行某些提示詞或任務。
 
 ### `/loop` 命令
 
 ```bash
-# 显式间隔
+# 顯式間隔
 /loop 10m Run tests and report failures
 
-# 自然语言
+# 自然語言
 /loop every day at 9am check release notes
 ```
 
@@ -350,34 +350,34 @@ Scheduled tasks 让 Claude 按计划重复执行某些提示词或任务。
 /schedule "remind me to review the PR in 30 minutes"
 ```
 
-### 管理定时任务
+### 管理定時任務
 
-- 查看任务列表
-- 修改执行频率
-- 暂停或取消任务
+- 檢視任務列表
+- 修改執行頻率
+- 暫停或取消任務
 
-### 行为细节
+### 行為細節
 
-定时任务会遵循当前会话与权限配置，并按计划触发执行。
+定時任務會遵循當前會話與許可權配置，並按計劃觸發執行。
 
-### 云端定时任务
+### 雲端定時任務
 
-部分场景可以在云端环境中运行调度任务。
+部分場景可以在雲端環境中執行排程任務。
 
-### 禁用定时任务
+### 禁用定時任務
 
-如果你不希望自动触发，关闭相关设置即可。
+如果你不希望自動觸發，關閉相關設定即可。
 
-### 示例：监控部署
+### 示例：監控部署
 
 ```text
-每 5 分钟检查一次部署状态，直到 health check 通过。
+每 5 分鐘檢查一次部署狀態，直到 health check 透過。
 ```
 
 <a id="permission-modes"></a>
-## 权限模式
+## 許可權模式
 
-Permission modes 决定 Claude 可以直接执行哪些操作。
+Permission modes 決定 Claude 可以直接執行哪些操作。
 
 ### 可用模式
 
@@ -388,63 +388,63 @@ Permission modes 决定 Claude 可以直接执行哪些操作。
 - `dontAsk`
 - `bypassPermissions`
 
-### 启用方式
+### 啟用方式
 
-可以通过命令行、设置或会话中的快捷操作切换权限模式。
+可以透過命令列、設定或會話中的快捷操作切換許可權模式。
 
 ### 示例
 
 #### Default Mode
 
-默认的平衡模式，必要时会询问权限。
+預設的平衡模式，必要時會詢問許可權。
 
 #### Plan Mode
 
-只做规划，不直接执行高风险改动。
+只做規劃，不直接執行高風險改動。
 
 #### Accept Edits Mode
 
-更偏向自动接受编辑，适合受控环境。
+更偏向自動接受編輯，適合受控環境。
 
-### 使用场景
+### 使用場景
 
-- 代码审查
-- 自动化重构
+- 程式碼審查
+- 自動化重構
 - CI/CD
-- 高风险操作前的审批流程
+- 高風險操作前的審批流程
 
 <a id="headless-mode"></a>
-## 无头模式
+## 無頭模式
 
-Headless mode 指非交互式运行 Claude Code，常用于自动化和 CI/CD。
+Headless mode 指非互動式執行 Claude Code，常用於自動化和 CI/CD。
 
-### 什么是 Print Mode？
+### 什麼是 Print Mode？
 
-Print mode 就是 `claude -p`：给一个任务，输出结果，然后退出。
+Print mode 就是 `claude -p`：給一個任務，輸出結果，然後退出。
 
-### 在 Print Mode 中运行
+### 在 Print Mode 中執行
 
 ```bash
-# 运行指定任务
+# 執行指定任務
 claude -p "run tests and summarize failures"
 
-# 处理管道内容
+# 處理管道內容
 cat logs.txt | claude -p "find the root cause"
 
-# CI/CD 集成
+# CI/CD 整合
 claude -p "review this diff and return JSON"
 ```
 
 ### 其他示例
 
 ```bash
-# 捕获输出
+# 捕獲輸出
 claude -p "analyze this code" > report.txt
 
-# 结构化输出
+# 結構化輸出
 claude -p --output-format json "list files"
 
-# 标准输入
+# 標準輸入
 echo "hello" | claude -p "translate to Chinese"
 ```
 
@@ -456,15 +456,15 @@ echo "hello" | claude -p "translate to Chinese"
 
 ### Print Mode 配置
 
-- 限制自主回合数
-- 使用结构化 JSON 输出
-- 启用 schema 验证
-- 禁用会话持久化
+- 限制自主回合數
+- 使用結構化 JSON 輸出
+- 啟用 schema 驗證
+- 禁用會話持久化
 
 <a id="session-management"></a>
-## 会话管理
+## 會話管理
 
-会话管理用于在多个会话之间恢复、重命名、分叉和持续工作。
+會話管理用於在多個會話之間恢復、重新命名、分叉和持續工作。
 
 ### 常用命令
 
@@ -474,61 +474,61 @@ echo "hello" | claude -p "translate to Chinese"
 - `claude -c`
 - `claude -r`
 
-### 恢复会话
+### 恢復會話
 
 ```bash
-# 继续最后一次对话
+# 繼續最後一次對話
 claude -c
 
-# 恢复指定名称或 ID 的会话
+# 恢復指定名稱或 ID 的會話
 claude -r "feature-auth"
 ```
 
-### 分叉会话
+### 分叉會話
 
 ```bash
-# 恢复并分叉，适合实验
+# 恢復並分叉，適合實驗
 claude -r "feature-auth" --fork
 ```
 
-### 会话持久化
+### 會話持久化
 
-你可以选择保留、继续或重建会话上下文。
+你可以選擇保留、繼續或重建會話上下文。
 
 <a id="interactive-features"></a>
-## 交互功能
+## 互動功能
 
-交互功能包括快捷键、多行输入、历史记录、Vim 模式和 Bash 模式等。
+互動功能包括快捷鍵、多行輸入、歷史記錄、Vim 模式和 Bash 模式等。
 
-### 快捷键
+### 快捷鍵
 
-常用快捷键用于切换模式、编辑输入、查看历史和控制输出。
+常用快捷鍵用於切換模式、編輯輸入、檢視歷史和控制輸出。
 
-### 自定义快捷键
+### 自定義快捷鍵
 
-你可以在设置中绑定自己的按键组合。
+你可以在設定中繫結自己的按鍵組合。
 
 ### 可用上下文
 
-不同上下文会影响快捷键的可用性和行为。
+不同上下文會影響快捷鍵的可用性和行為。
 
-### Chord 支持
+### Chord 支援
 
-支持组合按键触发复杂操作。
+支援組合按鍵觸發複雜操作。
 
-### 保留键与冲突键
+### 保留鍵與衝突鍵
 
-某些按键会被系统或终端占用，需要避免冲突。
+某些按鍵會被系統或終端佔用，需要避免衝突。
 
-### Tab 补全
+### Tab 補全
 
-输入命令、参数或路径时会提供补全建议。
+輸入命令、引數或路徑時會提供補全建議。
 
-### 命令历史
+### 命令歷史
 
-Claude 会保留历史记录，方便你快速重用之前的输入。
+Claude 會保留歷史記錄，方便你快速重用之前的輸入。
 
-### 多行输入
+### 多行輸入
 
 ```text
 第一行
@@ -536,267 +536,267 @@ Claude 会保留历史记录，方便你快速重用之前的输入。
 第三行
 ```
 
-### 行内编辑
+### 行內編輯
 
-支持在输入过程中编辑中间内容。
+支援在輸入過程中編輯中間內容。
 
 ### Vim 模式
 
-如果你熟悉 Vim，可以启用类似的编辑体验。
+如果你熟悉 Vim，可以啟用類似的編輯體驗。
 
 ### Bash 模式
 
-可在会话中直接进入更偏 shell 风格的操作方式。
+可在會話中直接進入更偏 shell 風格的操作方式。
 
 <a id="voice-dictation"></a>
-## 语音输入
+## 語音輸入
 
-语音输入支持按住说话和多语言识别，适合快速记录想法或在不方便键盘输入时使用。
+語音輸入支援按住說話和多語言識別，適合快速記錄想法或在不方便鍵盤輸入時使用。
 
-### 如何启用
+### 如何啟用
 
-在设置中打开语音输入即可。
+在設定中開啟語音輸入即可。
 
 ### 特性
 
-- 支持按住说话
-- 支持 20 种语言的语音识别
-- 适合快速口述任务
+- 支援按住說話
+- 支援 20 種語言的語音識別
+- 適合快速口述任務
 
 ### 配置
 
-可在 settings 中控制灵敏度、语言和输入行为。
+可在 settings 中控制靈敏度、語言和輸入行為。
 
 <a id="channels"></a>
-## 消息通道（Channels）
+## 訊息通道（Channels）
 
-消息通道允许 MCP servers 向正在运行的会话推送消息。
+訊息通道允許 MCP servers 向正在執行的會話推送訊息。
 
-### 订阅 channels
+### 訂閱 channels
 
 ```bash
-# 启动时订阅 channel 插件
+# 啟動時訂閱 channel 外掛
 ```
 
-### 支持的集成
+### 支援的整合
 
 - Discord
 - Telegram
-- 其他 channel 型集成
+- 其他 channel 型整合
 
 ### 配置
 
-通过 MCP 配置或 settings 订阅相应 channel。
+透過 MCP 配置或 settings 訂閱相應 channel。
 
 ### 工作方式
 
-外部系统可以把消息推送进 Claude 的当前会话里，让你在一个会话中接收通知或事件。
+外部系統可以把訊息推送進 Claude 的當前會話裡，讓你在一個會話中接收通知或事件。
 
 <a id="chrome-integration"></a>
-## Chrome 集成
+## Chrome 整合
 
-Chrome 集成让 Claude 可以协助浏览器自动化和站点级操作。
+Chrome 整合讓 Claude 可以協助瀏覽器自動化和站點級操作。
 
-### 启用 Chrome 集成
+### 啟用 Chrome 整合
 
-开启相关开关后，Claude 就可以与浏览器协作。
+開啟相關開關後，Claude 就可以與瀏覽器協作。
 
 ### 能力
 
-- 浏览器自动化
-- 页面操作
-- 网站级交互
+- 瀏覽器自動化
+- 頁面操作
+- 網站級互動
 
-### 站点级权限
+### 站點級許可權
 
-你可以对站点设置更细粒度的访问权限。
+你可以對站點設定更細粒度的訪問許可權。
 
 ### 工作方式
 
-Claude 通过浏览器连接与页面交互。
+Claude 透過瀏覽器連線與頁面互動。
 
 ### 已知限制
 
-- 某些站点会限制自动化
-- 复杂页面可能需要更多权限
+- 某些站點會限制自動化
+- 複雜頁面可能需要更多許可權
 
 <a id="remote-control"></a>
-## 远程控制
+## 遠端控制
 
-Remote Control 可以让你从 Claude.ai 或 Claude app 远程控制本地 Claude Code 会话。
+Remote Control 可以讓你從 Claude.ai 或 Claude app 遠端控制本地 Claude Code 會話。
 
-### 启动 Remote Control
+### 啟動 Remote Control
 
 ```bash
-# 使用默认会话名启动
+# 使用預設會話名啟動
 claude --remote-control
 
-# 使用自定义名称
+# 使用自定義名稱
 claude --remote-control --name my-session
 ```
 
-### 连接到会话
+### 連線到會話
 
-你可以在远程端连接到已经启动的本地会话，继续同一个上下文。
+你可以在遠端端連線到已經啟動的本地會話，繼續同一個上下文。
 
 ### 安全性
 
-远程控制会牵涉到会话和权限，因此建议只在可信环境中使用。
+遠端控制會牽涉到會話和許可權，因此建議只在可信環境中使用。
 
 ### Remote Control vs Claude Code on the web
 
-Remote Control 是控制本地会话；web 版则是在浏览器中直接运行。
+Remote Control 是控制本地會話；web 版則是在瀏覽器中直接執行。
 
-### 局限
+### 侷限
 
-- 网络可用性依赖更高
-- 某些本地资源可能不可远程访问
+- 網路可用性依賴更高
+- 某些本地資源可能不可遠端訪問
 
-### 使用场景
+### 使用場景
 
-- 在手机上查看并接管会话
-- 远程继续长期任务
+- 在手機上檢視並接管會話
+- 遠端繼續長期任務
 
 <a id="web-sessions"></a>
-## 网页会话
+## 網頁會話
 
-Web Sessions 允许你直接在浏览器里创建和恢复 Claude Code 会话。
+Web Sessions 允許你直接在瀏覽器裡建立和恢復 Claude Code 會話。
 
-### 创建 Web Session
+### 建立 Web Session
 
 ```bash
-# 从 CLI 创建新的 web session
+# 從 CLI 建立新的 web session
 claude --remote "implement API"
 ```
 
-### 在本地恢复 Web Session
+### 在本地恢復 Web Session
 
 ```bash
-# 在本地终端恢复 web session
+# 在本地終端恢復 web session
 claude --teleport
 ```
 
-### 使用场景
+### 使用場景
 
-- 浏览器里快速开始任务
-- 在本地和网页之间切换
-- 远程继续工作
+- 瀏覽器裡快速開始任務
+- 在本地和網頁之間切換
+- 遠端繼續工作
 
 <a id="desktop-app"></a>
-## 桌面应用
+## 桌面應用
 
-桌面应用提供独立界面，适合视觉化 diff 审查和多会话管理。
+桌面應用提供獨立介面，適合視覺化 diff 審查和多會話管理。
 
-### 安装
+### 安裝
 
-按照桌面应用的安装说明安装即可。
+按照桌面應用的安裝說明安裝即可。
 
-### 从 CLI 接力
+### 從 CLI 接力
 
-你可以把 CLI 会话交给桌面应用继续处理。
+你可以把 CLI 會話交給桌面應用繼續處理。
 
 ### 核心功能
 
-- 可视化 diff
-- 多会话
-- 更直观的审查体验
+- 視覺化 diff
+- 多會話
+- 更直觀的審查體驗
 
-### App 预览配置
+### App 預覽配置
 
-可以调整预览、布局和视觉呈现方式。
+可以調整預覽、佈局和視覺呈現方式。
 
 ### Connectors
 
-桌面应用可以连接到不同的工作环境。
+桌面應用可以連線到不同的工作環境。
 
-### 远程和 SSH 会话
+### 遠端和 SSH 會話
 
-桌面应用也支持远程或 SSH 场景下的接力。
+桌面應用也支援遠端或 SSH 場景下的接力。
 
-### Desktop 中的权限模式
+### Desktop 中的許可權模式
 
-Desktop 里同样可以使用不同的权限模式。
+Desktop 裡同樣可以使用不同的許可權模式。
 
-### 企业功能
+### 企業功能
 
-企业部署下可使用更多受管和合规相关能力。
+企業部署下可使用更多受管和合規相關能力。
 
 <a id="task-list"></a>
-## 任务列表
+## 任務列表
 
-Task List 用于跨 context compaction 持久保存任务进度。
+Task List 用於跨 context compaction 持久儲存任務進度。
 
-### 切换任务列表
+### 切換任務列表
 
-在设置里打开或关闭任务列表显示。
+在設定裡開啟或關閉任務列表顯示。
 
-### 持久任务
+### 持久任務
 
-任务会保留，即使上下文被压缩，也能继续跟踪。
+任務會保留，即使上下文被壓縮，也能繼續跟蹤。
 
-### 命名任务目录
+### 命名任務目錄
 
-你可以给任务分组或目录命名，方便管理。
+你可以給任務分組或目錄命名，方便管理。
 
 <a id="prompt-suggestions"></a>
-## 提示词建议
+## 提示詞建議
 
-Prompt suggestions 会根据当前上下文智能推荐下一步命令或提示词。
+Prompt suggestions 會根據當前上下文智慧推薦下一步命令或提示詞。
 
 ### 工作方式
 
-系统会结合你的历史、当前任务和上下文给出建议。
+系統會結合你的歷史、當前任務和上下文給出建議。
 
-### 禁用建议
+### 禁用建議
 
-如果你不想看到建议，可以在设置里关闭。
+如果你不想看到建議，可以在設定裡關閉。
 
 <a id="git-worktrees"></a>
-## Git 工作树（Git Worktrees）
+## Git 工作樹（Git Worktrees）
 
-Git worktrees 让你在隔离的目录里并行工作，非常适合实验和分支开发。
+Git worktrees 讓你在隔離的目錄裡並行工作，非常適合實驗和分支開發。
 
-### 从 worktree 启动
+### 從 worktree 啟動
 
 ```bash
-# 在隔离 worktree 中启动 Claude Code
+# 在隔離 worktree 中啟動 Claude Code
 claude -w
 ```
 
 ### Worktree 位置
 
-你可以控制 worktree 的放置位置，保持主工作区整洁。
+你可以控制 worktree 的放置位置，保持主工作區整潔。
 
 ### Monorepo 的 sparse checkout
 
-在大型 monorepo 中，可配合 sparse checkout 只加载需要的部分。
+在大型 monorepo 中，可配合 sparse checkout 只載入需要的部分。
 
 ### Worktree 工具和 Hooks
 
-worktree 场景下依然可以配合工具和 hooks 自动化流程。
+worktree 場景下依然可以配合工具和 hooks 自動化流程。
 
-### 自动清理
+### 自動清理
 
-不需要的 worktree 可以自动清理。
+不需要的 worktree 可以自動清理。
 
-### 使用场景
+### 使用場景
 
-- 并行尝试多个方案
-- 隔离高风险重构
-- 保持主分支整洁
+- 並行嘗試多個方案
+- 隔離高風險重構
+- 保持主分支整潔
 
 <a id="sandboxing"></a>
 ## 沙盒
 
-沙盒提供文件系统和网络层面的隔离，能显著降低自动化操作的风险。
+沙盒提供檔案系統和網路層面的隔離，能顯著降低自動化操作的風險。
 
-### 启用沙盒
+### 啟用沙盒
 
-开启后，Claude 的很多操作都会在受控环境里执行。
+開啟後，Claude 的很多操作都會在受控環境裡執行。
 
-### 配置项
+### 配置項
 
-你可以配置允许访问的目录、网络行为和例外列表。
+你可以配置允許訪問的目錄、網路行為和例外列表。
 
 ### 示例配置
 
@@ -810,34 +810,34 @@ worktree 场景下依然可以配合工具和 hooks 自动化流程。
 
 ### 工作方式
 
-沙盒会限制 Claude 可触达的文件和网络边界。
+沙盒會限制 Claude 可觸達的檔案和網路邊界。
 
-### 使用场景
+### 使用場景
 
-- 低风险自动化
-- 在不完全信任的输入上执行任务
-- 受控环境中的批处理
+- 低風險自動化
+- 在不完全信任的輸入上執行任務
+- 受控環境中的批處理
 
 <a id="managed-settings-enterprise"></a>
-## 企业受管设置
+## 企業受管設定
 
-企业可以通过受管设置统一分发 Claude Code 配置。
+企業可以透過受管設定統一分發 Claude Code 配置。
 
 ### 部署方式
 
 - plist
 - Registry
-- 受管文件
+- 受管檔案
 
 ### 受管配置片段
 
-通过受管配置片段，可以给团队统一推送策略。
+透過受管配置片段，可以給團隊統一推送策略。
 
-### 可用的受管设置
+### 可用的受管設定
 
-- 权限模式
-- 功能开关
-- MCP / hooks / 插件约束
+- 許可權模式
+- 功能開關
+- MCP / hooks / 外掛約束
 
 ### macOS plist 示例
 
@@ -846,9 +846,9 @@ worktree 场景下依然可以配合工具和 hooks 自动化流程。
 ```
 
 <a id="configuration-and-settings"></a>
-## 配置与设置
+## 配置與設定
 
-### 配置文件位置
+### 配置檔案位置
 
 - `~/.claude/settings.json`
 - `.claude/settings.json`
@@ -869,9 +869,9 @@ worktree 场景下依然可以配合工具和 hooks 自动化流程。
 }
 ```
 
-### 环境变量
+### 環境變數
 
-#### 模型选择
+#### 模型選擇
 
 - `ANTHROPIC_API_KEY`
 - `CLAUDE_MODEL`
@@ -884,7 +884,7 @@ worktree 场景下依然可以配合工具和 hooks 自动化流程。
 
 - `CLAUDE_EFFORT`
 
-#### 功能开关
+#### 功能開關
 
 - `CLAUDE_ENABLE_AUTO_MODE`
 
@@ -892,11 +892,11 @@ worktree 场景下依然可以配合工具和 hooks 自动化流程。
 
 - `CLAUDE_MCP_CONFIG`
 
-#### 任务管理
+#### 任務管理
 
 - `CLAUDE_TASK_LIST`
 
-#### Agent team（实验性）
+#### Agent team（實驗性）
 
 - `CLAUDE_TEAM_MODE`
 
@@ -904,51 +904,51 @@ worktree 场景下依然可以配合工具和 hooks 自动化流程。
 
 - `CLAUDE_PLUGIN_DATA`
 
-#### 子进程和流式处理
+#### 子程式和流式處理
 
 - `CLAUDE_OUTPUT_FORMAT`
 
 ### 配置管理命令
 
-你可以用命令查看或更新当前配置，并把它们落到 settings 中。
+你可以用命令檢視或更新當前配置，並把它們落到 settings 中。
 
-### 每个项目的配置
+### 每個專案的配置
 
-推荐把项目专用设置放进项目内的 `.claude/settings.json`，这样能跟代码一起版本化。
+推薦把專案專用設定放進專案內的 `.claude/settings.json`，這樣能跟程式碼一起版本化。
 
 <a id="best-practices"></a>
-## 最佳实践
+## 最佳實踐
 
 ### Planning Mode
 
-- 复杂任务先规划，再实现
-- 计划要可审阅
+- 複雜任務先規劃，再實現
+- 計劃要可審閱
 
 ### Extended Thinking
 
-- 留给复杂问题
-- 不要在简单任务上过度使用
+- 留給複雜問題
+- 不要在簡單任務上過度使用
 
 ### Background Tasks
 
-- 用于长时间、可并行的任务
-- 记得设置超时和可见性
+- 用於長時間、可並行的任務
+- 記得設定超時和可見性
 
 ### Permissions
 
-- 默认最小权限
-- 只在必要时放宽
+- 預設最小許可權
+- 只在必要時放寬
 
 ### Sessions
 
-- 为重要会话命名
-- 必要时分叉，而不是硬改
+- 為重要會話命名
+- 必要時分叉，而不是硬改
 
 <a id="additional-resources"></a>
-## 更多资源
+## 更多資源
 
-- [根目录中文指南](../README.md)
-- [Slash Commands 中文参考](../01-slash-commands/README.md)
+- [根目錄中文指南](../README.md)
+- [Slash Commands 中文參考](../01-slash-commands/README.md)
 - [Checkpoints 中文指南](../08-checkpoints/README.md)
 - [Plugins 中文指南](../07-plugins/README.md)
-- [CLI 中文参考](../10-cli/README.md)
+- [CLI 中文參考](../10-cli/README.md)

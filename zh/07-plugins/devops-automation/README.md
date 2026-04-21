@@ -1,79 +1,79 @@
 ---
-name: DevOps 自动化插件
-description: 为部署、监控和故障处理提供自动化工作流
+name: DevOps 自動化外掛
+description: 為部署、監控和故障處理提供自動化工作流
 tags: plugins, devops, automation
 ---
 
-# DevOps 自动化插件
+# DevOps 自動化外掛
 
-完整的 DevOps 自动化工作流，覆盖部署、监控和事故响应。
+完整的 DevOps 自動化工作流，覆蓋部署、監控和事故響應。
 
 ## 功能
 
-✅ 自动化部署
-✅ 回滚流程
-✅ 系统健康监控
-✅ 事故响应工作流
-✅ Kubernetes 集成
+✅ 自動化部署
+✅ 回滾流程
+✅ 系統健康監控
+✅ 事故響應工作流
+✅ Kubernetes 整合
 
-## 安装
+## 安裝
 
 ```bash
 /plugin install devops-automation
 ```
 
-## 包含内容
+## 包含內容
 
 ### Slash 命令
-- `/deploy` - 部署到生产或预发环境
-- `/rollback` - 回滚到上一个版本
-- `/status` - 检查系统健康
-- `/incident` - 处理生产事故
+- `/deploy` - 部署到生產或預發環境
+- `/rollback` - 回滾到上一個版本
+- `/status` - 檢查系統健康
+- `/incident` - 處理生產事故
 
 ### 子 agents
 - `deployment-specialist` - 部署操作
-- `incident-commander` - 事故协调
-- `alert-analyzer` - 系统健康分析
+- `incident-commander` - 事故協調
+- `alert-analyzer` - 系統健康分析
 
-### MCP 服务器
-- Kubernetes 集成
+### MCP 伺服器
+- Kubernetes 整合
 
-### 脚本
-- `deploy.sh` - 部署自动化
-- `rollback.sh` - 回滚自动化
-- `health-check.sh` - 健康检查工具
+### 指令碼
+- `deploy.sh` - 部署自動化
+- `rollback.sh` - 回滾自動化
+- `health-check.sh` - 健康檢查工具
 
 ### Hooks
-- `pre-deploy.js` - 部署前验证
-- `post-deploy.js` - 部署后任务
+- `pre-deploy.js` - 部署前驗證
+- `post-deploy.js` - 部署後任務
 
 ## 使用
 
-### 部署到预发环境
+### 部署到預發環境
 
 ```
 /deploy staging
 ```
 
-### 部署到生产环境
+### 部署到生產環境
 
 ```
 /deploy production
 ```
 
-### 回滚
+### 回滾
 
 ```
 /rollback production
 ```
 
-### 检查状态
+### 檢查狀態
 
 ```
 /status
 ```
 
-### 处理事故
+### 處理事故
 
 ```
 /incident
@@ -83,11 +83,11 @@ tags: plugins, devops, automation
 
 - Claude Code 1.0+
 - Kubernetes CLI（kubectl）
-- 已配置集群访问
+- 已配置叢集訪問
 
 ## 配置
 
-设置 Kubernetes 配置：
+設定 Kubernetes 配置：
 
 ```bash
 export KUBECONFIG=~/.kube/config
@@ -96,19 +96,19 @@ export KUBECONFIG=~/.kube/config
 ## 示例工作流
 
 ```
-用户：/deploy production
+使用者：/deploy production
 
 Claude:
-1. 运行 pre-deploy hook（验证 kubectl 和集群连接）
-2. 将部署委派给 deployment-specialist subagent
-3. 运行 deploy.sh 脚本
-4. 通过 Kubernetes MCP 监控部署进度
-5. 运行 post-deploy hook（等待 pods 就绪，执行 smoke tests）
-6. 提供部署总结
+1. 執行 pre-deploy hook（驗證 kubectl 和叢集連線）
+2. 將部署委派給 deployment-specialist subagent
+3. 執行 deploy.sh 指令碼
+4. 透過 Kubernetes MCP 監控部署進度
+5. 執行 post-deploy hook（等待 pods 就緒，執行 smoke tests）
+6. 提供部署總結
 
-结果：
+結果：
 ✅ 部署完成
 📦 版本：v2.1.0
-🚀 Pods：3/3 已就绪
-⏱️  用时：2m 34s
+🚀 Pods：3/3 已就緒
+⏱️  用時：2m 34s
 ```

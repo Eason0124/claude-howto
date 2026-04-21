@@ -3,321 +3,321 @@
   <img alt="Claude How To" src="../resources/logos/claude-howto-logo.svg">
 </picture>
 
-# CLI 参考
+# CLI 參考
 
-## 概览
+## 概覽
 
-Claude Code 的 CLI（命令行接口）是与 Claude Code 交互的主要方式。它提供了强大的参数和命令，用于执行查询、管理会话、配置模型，并把 Claude 集成进你的开发工作流。
+Claude Code 的 CLI（命令列介面）是與 Claude Code 互動的主要方式。它提供了強大的引數和命令，用於執行查詢、管理會話、配置模型，並把 Claude 整合進你的開發工作流。
 
-## 架构
+## 架構
 
 ```mermaid
 graph TD
-    A["用户终端"] -->|"claude [options] [query]"| B["Claude Code CLI"]
+    A["使用者終端"] -->|"claude [options] [query]"| B["Claude Code CLI"]
     B -->|Interactive| C["REPL 模式"]
-    B -->|"--print"| D["打印模式（SDK）"]
-    B -->|"--resume"| E["恢复会话"]
+    B -->|"--print"| D["列印模式（SDK）"]
+    B -->|"--resume"| E["恢復會話"]
     C -->|Conversation| F["Claude API"]
     D -->|Single Query| F
     E -->|Load Context| F
-    F -->|Response| G["输出"]
-    G -->|text/json/stream-json| H["终端 / 管道"]
+    F -->|Response| G["輸出"]
+    G -->|text/json/stream-json| H["終端 / 管道"]
 ```
 
 ## CLI 命令
 
-| 命令 | 说明 | 示例 |
+| 命令 | 說明 | 示例 |
 |---------|-------------|---------|
-| `claude` | 启动交互式 REPL | `claude` |
-| `claude "query"` | 带初始提示启动 REPL | `claude "解释这个项目"` |
-| `claude -p "query"` | 打印模式，查询后退出 | `claude -p "解释这个函数"` |
-| `cat file \| claude -p "query"` | 处理通过管道传入的内容 | `cat logs.txt \| claude -p "解释这些日志"` |
-| `claude -c` | 继续最近一次会话 | `claude -c` |
-| `claude -c -p "query"` | 在打印模式下继续会话 | `claude -c -p "检查类型错误"` |
-| `claude -r "<session>" "query"` | 通过 ID 或名称恢复会话 | `claude -r "auth-refactor" "完成这个 PR"` |
+| `claude` | 啟動互動式 REPL | `claude` |
+| `claude "query"` | 帶初始提示啟動 REPL | `claude "解釋這個專案"` |
+| `claude -p "query"` | 列印模式，查詢後退出 | `claude -p "解釋這個函式"` |
+| `cat file \| claude -p "query"` | 處理透過管道傳入的內容 | `cat logs.txt \| claude -p "解釋這些日誌"` |
+| `claude -c` | 繼續最近一次會話 | `claude -c` |
+| `claude -c -p "query"` | 在列印模式下繼續會話 | `claude -c -p "檢查型別錯誤"` |
+| `claude -r "<session>" "query"` | 透過 ID 或名稱恢復會話 | `claude -r "auth-refactor" "完成這個 PR"` |
 | `claude update` | 更新到最新版本 | `claude update` |
-| `claude mcp` | 配置 MCP servers | 见 [MCP 文档](../05-mcp/README.md) |
-| `claude mcp serve` | 将 Claude Code 作为 MCP server 运行 | `claude mcp serve` |
+| `claude mcp` | 配置 MCP servers | 見 [MCP 檔案](../05-mcp/README.md) |
+| `claude mcp serve` | 將 Claude Code 作為 MCP server 執行 | `claude mcp serve` |
 | `claude agents` | 列出所有已配置的 subagents | `claude agents` |
-| `claude auto-mode defaults` | 以 JSON 打印 auto mode 默认规则 | `claude auto-mode defaults` |
-| `claude remote-control` | 启动远程控制服务 | `claude remote-control` |
-| `claude plugin` | 管理插件（安装、启用、禁用） | `claude plugin install my-plugin` |
-| `claude auth login` | 登录（支持 `--email`、`--sso`） | `claude auth login --email user@example.com` |
-| `claude auth logout` | 注销当前账号 | `claude auth logout` |
-| `claude auth status` | 检查登录状态（已登录返回 0，否则返回 1） | `claude auth status` |
+| `claude auto-mode defaults` | 以 JSON 列印 auto mode 預設規則 | `claude auto-mode defaults` |
+| `claude remote-control` | 啟動遠端控制服務 | `claude remote-control` |
+| `claude plugin` | 管理外掛（安裝、啟用、禁用） | `claude plugin install my-plugin` |
+| `claude auth login` | 登入（支援 `--email`、`--sso`） | `claude auth login --email user@example.com` |
+| `claude auth logout` | 登出當前賬號 | `claude auth logout` |
+| `claude auth status` | 檢查登入狀態（已登入返回 0，否則返回 1） | `claude auth status` |
 
-## 核心标志
+## 核心標誌
 
-| 参数 | 说明 | 示例 |
+| 引數 | 說明 | 示例 |
 |------|-------------|---------|
-| `-p, --print` | 不进入交互式模式，直接输出结果 | `claude -p "query"` |
-| `-c, --continue` | 加载最近一次会话 | `claude --continue` |
-| `-r, --resume` | 按 ID 或名称恢复指定会话 | `claude --resume auth-refactor` |
-| `-v, --version` | 输出版本号 | `claude -v` |
-| `-w, --worktree` | 在隔离的 git worktree 中启动 | `claude -w` |
-| `-n, --name` | 设置会话显示名称 | `claude -n "auth-refactor"` |
-| `--from-pr <number>` | 恢复与 GitHub PR 关联的会话 | `claude --from-pr 42` |
-| `--remote "task"` | 在 claude.ai 上创建 web session | `claude --remote "implement API"` |
-| `--remote-control, --rc` | 使用 Remote Control 进入交互式会话 | `claude --rc` |
-| `--teleport` | 将 web session 恢复到本地 | `claude --teleport` |
-| `--teammate-mode` | agent team 显示模式 | `claude --teammate-mode tmux` |
-| `--bare` | 极简模式，跳过 hooks、skills、plugins、MCP、自动记忆和 `CLAUDE.md` | `claude --bare` |
-| `--enable-auto-mode` | 解锁 auto permission mode | `claude --enable-auto-mode` |
-| `--channels` | 订阅 MCP channel 插件 | `claude --channels discord,telegram` |
-| `--chrome` / `--no-chrome` | 启用 / 禁用 Chrome 浏览器集成 | `claude --chrome` |
-| `--effort` | 设置推理强度 | `claude --effort high` |
-| `--init` / `--init-only` | 运行初始化 hooks | `claude --init` |
-| `--maintenance` | 运行维护 hooks 后退出 | `claude --maintenance` |
+| `-p, --print` | 不進入互動式模式，直接輸出結果 | `claude -p "query"` |
+| `-c, --continue` | 載入最近一次會話 | `claude --continue` |
+| `-r, --resume` | 按 ID 或名稱恢復指定會話 | `claude --resume auth-refactor` |
+| `-v, --version` | 輸出版本號 | `claude -v` |
+| `-w, --worktree` | 在隔離的 git worktree 中啟動 | `claude -w` |
+| `-n, --name` | 設定會話顯示名稱 | `claude -n "auth-refactor"` |
+| `--from-pr <number>` | 恢復與 GitHub PR 關聯的會話 | `claude --from-pr 42` |
+| `--remote "task"` | 在 claude.ai 上建立 web session | `claude --remote "implement API"` |
+| `--remote-control, --rc` | 使用 Remote Control 進入互動式會話 | `claude --rc` |
+| `--teleport` | 將 web session 恢復到本地 | `claude --teleport` |
+| `--teammate-mode` | agent team 顯示模式 | `claude --teammate-mode tmux` |
+| `--bare` | 極簡模式，跳過 hooks、skills、plugins、MCP、自動記憶和 `CLAUDE.md` | `claude --bare` |
+| `--enable-auto-mode` | 解鎖 auto permission mode | `claude --enable-auto-mode` |
+| `--channels` | 訂閱 MCP channel 外掛 | `claude --channels discord,telegram` |
+| `--chrome` / `--no-chrome` | 啟用 / 禁用 Chrome 瀏覽器整合 | `claude --chrome` |
+| `--effort` | 設定推理強度 | `claude --effort high` |
+| `--init` / `--init-only` | 執行初始化 hooks | `claude --init` |
+| `--maintenance` | 執行維護 hooks 後退出 | `claude --maintenance` |
 | `--disable-slash-commands` | 禁用所有 skills 和 slash commands | `claude --disable-slash-commands` |
-| `--no-session-persistence` | 禁用会话保存（打印模式） | `claude -p --no-session-persistence "query"` |
+| `--no-session-persistence` | 禁用會話儲存（列印模式） | `claude -p --no-session-persistence "query"` |
 
-### 交互模式 vs 打印模式
+### 互動模式 vs 列印模式
 
 ```mermaid
 graph LR
-    A["claude"] -->|默认| B["交互式 REPL"]
-    A -->|"-p 参数"| C["打印模式"]
-    B -->|特性| D["多轮对话<br>Tab 补全<br>历史记录<br>Slash commands"]
-    C -->|特性| E["单次查询<br>可脚本化<br>可管道化<br>JSON 输出"]
+    A["claude"] -->|預設| B["互動式 REPL"]
+    A -->|"-p 引數"| C["列印模式"]
+    B -->|特性| D["多輪對話<br>Tab 補全<br>歷史記錄<br>Slash commands"]
+    C -->|特性| E["單次查詢<br>可指令碼化<br>可管道化<br>JSON 輸出"]
 ```
 
-**交互模式**（默认）：
+**互動模式**（預設）：
 ```bash
-# 启动交互式会话
+# 啟動互動式會話
 claude
 
-# 带初始提示启动
-claude "解释这个认证流程"
+# 帶初始提示啟動
+claude "解釋這個認證流程"
 ```
 
-**打印模式**（非交互式）：
+**列印模式**（非互動式）：
 ```bash
-# 单次查询后退出
-claude -p "这个函数做什么？"
+# 單次查詢後退出
+claude -p "這個函式做什麼？"
 
-# 处理文件内容
-cat error.log | claude -p "解释这个错误"
+# 處理檔案內容
+cat error.log | claude -p "解釋這個錯誤"
 
-# 与其他工具串联
-claude -p "列出待办事项" | grep "URGENT"
+# 與其他工具串聯
+claude -p "列出待辦事項" | grep "URGENT"
 ```
 
-## 模型与配置
+## 模型與配置
 
-| 参数 | 说明 | 示例 |
+| 引數 | 說明 | 示例 |
 |------|-------------|---------|
-| `--model` | 设置模型（sonnet、opus、haiku，或完整模型名） | `claude --model opus` |
-| `--fallback-model` | 当前模型负载过高时自动切换的后备模型 | `claude -p --fallback-model sonnet "query"` |
-| `--agent` | 为当前会话指定 agent | `claude --agent my-custom-agent` |
-| `--agents` | 通过 JSON 定义自定义 subagents | 见 [Agents Configuration](#subagents-配置) |
-| `--effort` | 设置推理级别（low、medium、high、max） | `claude --effort high` |
+| `--model` | 設定模型（sonnet、opus、haiku，或完整模型名） | `claude --model opus` |
+| `--fallback-model` | 當前模型負載過高時自動切換的後備模型 | `claude -p --fallback-model sonnet "query"` |
+| `--agent` | 為當前會話指定 agent | `claude --agent my-custom-agent` |
+| `--agents` | 透過 JSON 定義自定義 subagents | 見 [Agents Configuration](#subagents-配置) |
+| `--effort` | 設定推理級別（low、medium、high、max） | `claude --effort high` |
 
-### 模型选择示例
+### 模型選擇示例
 
 ```bash
-# 复杂任务使用 Opus 4.6
-claude --model opus "设计一个缓存策略"
+# 複雜任務使用 Opus 4.6
+claude --model opus "設計一個快取策略"
 
-# 快速任务使用 Haiku 4.5
-claude --model haiku -p "格式化这个 JSON"
+# 快速任務使用 Haiku 4.5
+claude --model haiku -p "格式化這個 JSON"
 
 # 使用完整模型名
-claude --model claude-sonnet-4-6-20250929 "审查这段代码"
+claude --model claude-sonnet-4-6-20250929 "審查這段程式碼"
 
-# 带后备模型以提升稳定性
-claude -p --model opus --fallback-model sonnet "分析架构"
+# 帶後備模型以提升穩定性
+claude -p --model opus --fallback-model sonnet "分析架構"
 
-# 使用 opusplan（Opus 负责规划，Sonnet 负责执行）
-claude --model opusplan "设计并实现缓存层"
+# 使用 opusplan（Opus 負責規劃，Sonnet 負責執行）
+claude --model opusplan "設計並實現快取層"
 ```
 
-## 系统提示词自定义
+## 系統提示詞自定義
 
-| 参数 | 说明 | 示例 |
+| 引數 | 說明 | 示例 |
 |------|-------------|---------|
-| `--system-prompt` | 替换整段默认系统提示词 | `claude --system-prompt "You are a Python expert"` |
-| `--system-prompt-file` | 从文件加载提示词（仅打印模式） | `claude -p --system-prompt-file ./prompt.txt "query"` |
-| `--append-system-prompt` | 在默认提示词后追加内容 | `claude --append-system-prompt "Always use TypeScript"` |
+| `--system-prompt` | 替換整段預設系統提示詞 | `claude --system-prompt "You are a Python expert"` |
+| `--system-prompt-file` | 從檔案載入提示詞（僅列印模式） | `claude -p --system-prompt-file ./prompt.txt "query"` |
+| `--append-system-prompt` | 在預設提示詞後追加內容 | `claude --append-system-prompt "Always use TypeScript"` |
 
-### 系统提示词示例
+### 系統提示詞示例
 
 ```bash
-# 完整自定义人格
-claude --system-prompt "你是一名资深安全工程师，重点关注漏洞。"
+# 完整自定義人格
+claude --system-prompt "你是一名資深安全工程師，重點關注漏洞。"
 
 # 追加特定指令
-claude --append-system-prompt "始终在代码示例中包含单元测试"
+claude --append-system-prompt "始終在程式碼示例中包含單元測試"
 
-# 从文件加载复杂提示词
+# 從檔案載入複雜提示詞
 claude -p --system-prompt-file ./prompts/code-reviewer.txt "review main.py"
 ```
 
-### 系统提示词参数对比
+### 系統提示詞引數對比
 
-| 参数 | 行为 | 交互模式 | 打印模式 |
+| 引數 | 行為 | 互動模式 | 列印模式 |
 |------|----------|-------------|-------|
-| `--system-prompt` | 替换整个默认系统提示词 | ✅ | ✅ |
-| `--system-prompt-file` | 用文件中的提示词替换 | ❌ | ✅ |
-| `--append-system-prompt` | 追加到默认系统提示词后 | ✅ | ✅ |
+| `--system-prompt` | 替換整個預設系統提示詞 | ✅ | ✅ |
+| `--system-prompt-file` | 用檔案中的提示詞替換 | ❌ | ✅ |
+| `--append-system-prompt` | 追加到預設系統提示詞後 | ✅ | ✅ |
 
-**仅在打印模式中使用 `--system-prompt-file`。交互模式请使用 `--system-prompt` 或 `--append-system-prompt`。**
+**僅在列印模式中使用 `--system-prompt-file`。互動模式請使用 `--system-prompt` 或 `--append-system-prompt`。**
 
-## 工具与权限管理
+## 工具與許可權管理
 
-| 参数 | 说明 | 示例 |
+| 引數 | 說明 | 示例 |
 |------|-------------|---------|
-| `--tools` | 限制可用的内置工具 | `claude -p --tools "Bash,Edit,Read" "query"` |
-| `--allowedTools` | 无需提示即可执行的工具 | `"Bash(git log:*)" "Read"` |
-| `--disallowedTools` | 从上下文中移除的工具 | `"Bash(rm:*)" "Edit"` |
-| `--dangerously-skip-permissions` | 跳过所有权限提示 | `claude --dangerously-skip-permissions` |
-| `--permission-mode` | 以指定权限模式启动 | `claude --permission-mode auto` |
-| `--permission-prompt-tool` | 用于权限处理的 MCP tool | `claude -p --permission-prompt-tool mcp_auth "query"` |
-| `--enable-auto-mode` | 解锁 auto permission mode | `claude --enable-auto-mode` |
+| `--tools` | 限制可用的內建工具 | `claude -p --tools "Bash,Edit,Read" "query"` |
+| `--allowedTools` | 無需提示即可執行的工具 | `"Bash(git log:*)" "Read"` |
+| `--disallowedTools` | 從上下文中移除的工具 | `"Bash(rm:*)" "Edit"` |
+| `--dangerously-skip-permissions` | 跳過所有許可權提示 | `claude --dangerously-skip-permissions` |
+| `--permission-mode` | 以指定許可權模式啟動 | `claude --permission-mode auto` |
+| `--permission-prompt-tool` | 用於許可權處理的 MCP tool | `claude -p --permission-prompt-tool mcp_auth "query"` |
+| `--enable-auto-mode` | 解鎖 auto permission mode | `claude --enable-auto-mode` |
 
-### 权限示例
+### 許可權示例
 
 ```bash
-# 代码审查只读模式
-claude --permission-mode plan "审查这个代码库"
+# 程式碼審查只讀模式
+claude --permission-mode plan "審查這個程式碼庫"
 
-# 只允许安全工具
-claude --tools "Read,Grep,Glob" -p "找出所有 TODO 注释"
+# 只允許安全工具
+claude --tools "Read,Grep,Glob" -p "找出所有 TODO 註釋"
 
-# 允许特定 git 命令无需提示
+# 允許特定 git 命令無需提示
 claude --allowedTools "Bash(git status:*)" "Bash(git log:*)"
 
-# 阻止危险操作
+# 阻止危險操作
 claude --disallowedTools "Bash(rm -rf:*)" "Bash(git push --force:*)"
 ```
 
-## 输出与格式
+## 輸出與格式
 
-| 参数 | 说明 | 选项 | 示例 |
+| 引數 | 說明 | 選項 | 示例 |
 |------|-------------|---------|---------|
-| `--output-format` | 指定输出格式（打印模式） | `text`、`json`、`stream-json` | `claude -p --output-format json "query"` |
-| `--input-format` | 指定输入格式（打印模式） | `text`、`stream-json` | `claude -p --input-format stream-json` |
-| `--verbose` | 启用详细日志 |  | `claude --verbose` |
+| `--output-format` | 指定輸出格式（列印模式） | `text`、`json`、`stream-json` | `claude -p --output-format json "query"` |
+| `--input-format` | 指定輸入格式（列印模式） | `text`、`stream-json` | `claude -p --input-format stream-json` |
+| `--verbose` | 啟用詳細日誌 |  | `claude --verbose` |
 | `--include-partial-messages` | 包含流式事件 | 需要 `stream-json` | `claude -p --output-format stream-json --include-partial-messages "query"` |
-| `--json-schema` | 获取符合 schema 的 JSON 输出 |  | `claude -p --json-schema '{"type":"object"}' "query"` |
-| `--max-budget-usd` | 打印模式最大花费 |  | `claude -p --max-budget-usd 5.00 "query"` |
+| `--json-schema` | 獲取符合 schema 的 JSON 輸出 |  | `claude -p --json-schema '{"type":"object"}' "query"` |
+| `--max-budget-usd` | 列印模式最大花費 |  | `claude -p --max-budget-usd 5.00 "query"` |
 
-### 输出格式示例
+### 輸出格式示例
 
 ```bash
-# 纯文本（默认）
-claude -p "解释这段代码"
+# 純文字（預設）
+claude -p "解釋這段程式碼"
 
-# 供程序使用的 JSON
-claude -p --output-format json "列出 main.py 中的所有函数"
+# 供程式使用的 JSON
+claude -p --output-format json "列出 main.py 中的所有函式"
 
-# 用于实时处理的流式 JSON
-claude -p --output-format stream-json "生成一份长报告"
+# 用於實時處理的流式 JSON
+claude -p --output-format stream-json "生成一份長報告"
 
-# 使用 schema 验证的结构化输出
+# 使用 schema 驗證的結構化輸出
 claude -p --json-schema '{"type":"object","properties":{"bugs":{"type":"array"}}}' \
-  "找出这段代码中的 bug，并以 JSON 返回"
+  "找出這段程式碼中的 bug，並以 JSON 返回"
 ```
 
-## 工作区与目录
+## 工作區與目錄
 
-| 参数 | 说明 | 示例 |
+| 引數 | 說明 | 示例 |
 |------|-------------|---------|
-| `--working-directory` | 设置工作目录 | `claude --working-directory /path/to/project` |
-| `--add-dir` | 追加额外工作目录 | `claude --add-dir /path/to/other/project` |
+| `--working-directory` | 設定工作目錄 | `claude --working-directory /path/to/project` |
+| `--add-dir` | 追加額外工作目錄 | `claude --add-dir /path/to/other/project` |
 
-### 多目录示例
+### 多目錄示例
 
 ```bash
-# 在多个项目目录中协作
+# 在多個專案目錄中協作
 claude --working-directory ~/projects/app --add-dir ~/projects/shared
 
-# 加载自定义设置
+# 載入自定義設定
 claude --working-directory ./backend --add-dir ./frontend
 ```
 
 ## MCP 配置
 
-| 参数 | 说明 | 示例 |
+| 引數 | 說明 | 示例 |
 |------|-------------|---------|
-| `--mcp-config` | 从文件加载 MCP 配置 | `claude --mcp-config ./mcp.json` |
-| `--mcp` | 启用 / 配置 MCP 服务 | `claude --mcp github` |
+| `--mcp-config` | 從檔案載入 MCP 配置 | `claude --mcp-config ./mcp.json` |
+| `--mcp` | 啟用 / 配置 MCP 服務 | `claude --mcp github` |
 | `--mcp-list` | 列出可用 MCP 配置 | `claude --mcp-list` |
 
 ### MCP 示例
 
 ```bash
-# 加载 GitHub MCP server
+# 載入 GitHub MCP server
 claude --mcp-config ./configs/github-mcp.json
 
-# 严格模式，只允许指定的 server
+# 嚴格模式，只允許指定的 server
 claude --mcp-config ./configs/strict-mcp.json --mcp github
 ```
 
-## 会话管理
+## 會話管理
 
-| 参数 | 说明 | 示例 |
+| 引數 | 說明 | 示例 |
 |------|-------------|---------|
-| `--session` | 指定会话名称 | `claude --session feature-auth` |
-| `--new-session` | 强制开启新会话 | `claude --new-session` |
-| `--resume-last` | 恢复最近一次会话 | `claude --resume-last` |
-| `--fork-session` | 从当前会话分叉 | `claude --fork-session` |
+| `--session` | 指定會話名稱 | `claude --session feature-auth` |
+| `--new-session` | 強制開啟新會話 | `claude --new-session` |
+| `--resume-last` | 恢復最近一次會話 | `claude --resume-last` |
+| `--fork-session` | 從當前會話分叉 | `claude --fork-session` |
 
-### 会话示例
+### 會話示例
 
 ```bash
-# 继续上一次对话
+# 繼續上一次對話
 claude --continue
 
-# 恢复命名会话
+# 恢復命名會話
 claude --resume feature-auth
 
-# 为实验分叉会话
+# 為實驗分叉會話
 claude --fork-session
 
-# 指定会话 ID
+# 指定會話 ID
 claude --resume 123456789
 ```
 
-### 会话分叉
+### 會話分叉
 
 ```bash
-# 分叉会话尝试不同方案
-claude --fork-session "尝试另一种实现"
+# 分叉會話嘗試不同方案
+claude --fork-session "嘗試另一種實現"
 
-# 带自定义消息分叉
+# 帶自定義訊息分叉
 claude --fork-session --session "experiment-a"
 ```
 
-## 高级特性
+## 高階特性
 
-| 参数 | 说明 | 示例 |
+| 引數 | 說明 | 示例 |
 |------|-------------|---------|
-| `--disable-auto-checkpoints` | 禁用自动 checkpoint | `claude --disable-auto-checkpoints` |
-| `--enable-auto-checkpoints` | 启用自动 checkpoint | `claude --enable-auto-checkpoints` |
-| `--interactive` | 强制交互模式 | `claude --interactive` |
-| `--dry-run` | 仅模拟执行 | `claude --dry-run "review code"` |
-| `--unsafe` | 允许更多自动化操作 | `claude --unsafe` |
+| `--disable-auto-checkpoints` | 禁用自動 checkpoint | `claude --disable-auto-checkpoints` |
+| `--enable-auto-checkpoints` | 啟用自動 checkpoint | `claude --enable-auto-checkpoints` |
+| `--interactive` | 強制互動模式 | `claude --interactive` |
+| `--dry-run` | 僅模擬執行 | `claude --dry-run "review code"` |
+| `--unsafe` | 允許更多自動化操作 | `claude --unsafe` |
 
-### 高级示例
+### 高階示例
 
 ```bash
 # 限制自主操作
-claude --permission-mode plan --model opus "设计并实现认证系统"
+claude --permission-mode plan --model opus "設計並實現認證系統"
 
-# 调试 API 调用
+# 除錯 API 呼叫
 claude --verbose -p "diagnose this issue"
 
-# 启用 IDE 集成
+# 啟用 IDE 整合
 claude --ide "review this diff"
 ```
 
 <a id="agents-configuration"></a>
 ## Subagents 配置
 
-| 参数 | 说明 | 示例 |
+| 引數 | 說明 | 示例 |
 |------|-------------|---------|
-| `--agents` | 通过 JSON 定义自定义 subagents | `claude --agents ./agents.json` |
-| `--agent` | 指定当前会话使用的 agent | `claude --agent reviewer` |
+| `--agents` | 透過 JSON 定義自定義 subagents | `claude --agents ./agents.json` |
+| `--agent` | 指定當前會話使用的 agent | `claude --agent reviewer` |
 
 ### Subagents JSON 格式
 
@@ -332,12 +332,12 @@ claude --ide "review this diff"
 }
 ```
 
-**必填字段：**
-- `description` - 何时使用这个 agent 的自然语言说明
-- `prompt` - 定义 agent 角色和行为的系统提示词
+**必填欄位：**
+- `description` - 何時使用這個 agent 的自然語言說明
+- `prompt` - 定義 agent 角色和行為的系統提示詞
 
-**可选字段：**
-- `tools` - 可用工具数组（如果省略则继承全部工具）
+**可選欄位：**
+- `tools` - 可用工具陣列（如果省略則繼承全部工具）
   - 格式：`["Read", "Grep", "Glob", "Bash"]`
 - `model` - 使用的模型：`sonnet`、`opus` 或 `haiku`
 
@@ -369,7 +369,7 @@ claude --ide "review this diff"
 ### Agents 命令示例
 
 ```bash
-# 直接定义自定义 agent
+# 直接定義自定義 agent
 claude --agents '{
   "security-auditor": {
     "description": "Security specialist for vulnerability analysis",
@@ -379,73 +379,73 @@ claude --agents '{
   }
 }' "audit this codebase for security issues"
 
-# 从文件加载 agents
+# 從檔案載入 agents
 claude --agents ./configs/agents.json
 
-# 与其他参数组合
+# 與其他引陣列合
 claude --agents ./configs/agents.json --model opus
 ```
 
-### Subagent 优先级
+### Subagent 優先順序
 
-当同时存在多种 agent 定义时，加载优先级如下：
-1. **CLI 定义**（`--agents` 参数）- 当前会话专用
-2. **用户级**（`~/.claude/agents/`）- 所有项目可用
-3. **项目级**（`.claude/agents/`）- 当前项目可用
+當同時存在多種 agent 定義時，載入優先順序如下：
+1. **CLI 定義**（`--agents` 引數）- 當前會話專用
+2. **使用者級**（`~/.claude/agents/`）- 所有專案可用
+3. **專案級**（`.claude/agents/`）- 當前專案可用
 
-命令行定义的 agents 会覆盖本次会话里的用户级和项目级 agents。
+命令列定義的 agents 會覆蓋本次會話裡的使用者級和專案級 agents。
 
-## 高价值使用场景
+## 高價值使用場景
 
-### 1. CI/CD 集成
+### 1. CI/CD 整合
 
 ```bash
 claude -p --output-format json "run tests and summarize failures"
 ```
 
-### 2. 管道式脚本处理
+### 2. 管道式指令碼處理
 
 ```bash
-# 分析错误日志
-cat error.log | claude -p "解释这些错误并给出修复建议"
+# 分析錯誤日誌
+cat error.log | claude -p "解釋這些錯誤並給出修復建議"
 
-# 查找访问日志中的模式
-cat access.log | claude -p "找出异常流量"
+# 查詢訪問日誌中的模式
+cat access.log | claude -p "找出異常流量"
 
-# 分析 git 历史
-git log --oneline -20 | claude -p "总结最近的开发方向"
+# 分析 git 歷史
+git log --oneline -20 | claude -p "總結最近的開發方向"
 
-# 审查某个文件
+# 審查某個檔案
 claude -p "review src/app.ts and suggest improvements"
 
-# 生成文档
-claude -p "根据 README 生成 API 文档"
+# 生成檔案
+claude -p "根據 README 生成 API 檔案"
 
-# 查找 TODO 并排优先级
-rg -n "TODO|FIXME" . | claude -p "按优先级分类这些待办"
+# 查詢 TODO 並排優先順序
+rg -n "TODO|FIXME" . | claude -p "按優先順序分類這些待辦"
 ```
 
-### 3. 多会话工作流
+### 3. 多會話工作流
 
 ```bash
-# 启动特性分支会话
+# 啟動特性分支會話
 claude --session feature-auth
 
-# 之后继续该会话
+# 之後繼續該會話
 claude --resume feature-auth
 
-# 分叉尝试另一种方案
+# 分叉嘗試另一種方案
 claude --fork-session
 
-# 在不同特性会话之间切换
+# 在不同特性會話之間切換
 claude --resume feature-auth
 claude --resume feature-payment
 ```
 
-### 4. 自定义 agent 配置
+### 4. 自定義 agent 配置
 
 ```bash
-# 将 agents 配置保存到文件
+# 將 agents 配置儲存到檔案
 cat > agents.json <<'JSON'
 {
   "agents": [
@@ -455,149 +455,149 @@ cat > agents.json <<'JSON'
 }
 JSON
 
-# 在会话中使用这些 agent
+# 在會話中使用這些 agent
 claude --agents ./agents.json --agent reviewer
 ```
 
-### 5. 批处理
+### 5. 批處理
 
 ```bash
-# 处理多个文件
+# 處理多個檔案
 find src -name "*.ts" | xargs -I{} claude -p "review {}"
 
-# 批量代码审查
+# 批次程式碼審查
 claude -p "review all changes in this branch"
 
-# 为所有模块生成测试
+# 為所有模組生成測試
 claude -p "generate tests for the modified modules"
 ```
 
-### 6. 安全敏感开发
+### 6. 安全敏感開發
 
 ```bash
-# 只读安全审计
+# 只讀安全審計
 claude --permission-mode plan -p "audit this repository"
 
-# 阻止危险命令
+# 阻止危險命令
 claude --disallowedTools "Bash(rm -rf:*)" "Bash(git push --force:*)"
 
-# 限制自动化
+# 限制自動化
 claude --tools "Read,Grep,Glob" -p "inspect the codebase"
 ```
 
-### 7. JSON API 集成
+### 7. JSON API 整合
 
 ```bash
-# 获取结构化分析结果
+# 獲取結構化分析結果
 claude -p --output-format json "analyze this code and return findings"
 
-# 配合 jq 处理
+# 配合 jq 處理
 claude -p --output-format json "list functions" | jq '.functions[]'
 
-# 在脚本中使用
+# 在指令碼中使用
 result=$(claude -p --output-format json "summarize changes")
 ```
 
 ### jq 解析示例
 
 ```bash
-# 提取特定字段
+# 提取特定欄位
 claude -p --output-format json "analyze repo" | jq '.summary'
 
-# 过滤数组元素
+# 過濾陣列元素
 claude -p --output-format json "find bugs" | jq '.bugs[] | select(.severity=="high")'
 
-# 提取多个字段
+# 提取多個欄位
 claude -p --output-format json "analyze" | jq '{summary, risk, recommendations}'
 
-# 转成 CSV
+# 轉成 CSV
 claude -p --output-format json "list files" | jq -r '.files[] | [.name, .size] | @csv'
 
-# 条件处理
+# 條件處理
 claude -p --output-format json "check status" | jq 'if .ok then "pass" else "fail" end'
 
-# 提取嵌套值
+# 提取巢狀值
 claude -p --output-format json "inspect" | jq '.details.metrics.coverage'
 
-# 处理整个数组
+# 處理整個陣列
 claude -p --output-format json "find todos" | jq '.todos | length'
 
-# 转换输出
+# 轉換輸出
 claude -p --output-format json "review" | jq '{issues: [.issues[] | {file, line, message}]}'
 ```
 
 ## 模型
 
-### 模型选择
+### 模型選擇
 
 ```bash
-# 使用短名称
+# 使用短名稱
 claude --model sonnet
 claude --model opus
 claude --model haiku
 
-# 使用 opusplan 别名（Opus 负责规划，Sonnet 负责执行）
+# 使用 opusplan 別名（Opus 負責規劃，Sonnet 負責執行）
 claude --model opusplan "design and implement the caching layer"
 
-# 会话中切换快速模式
+# 會話中切換快速模式
 claude --model haiku --effort low
 ```
 
-### Effort 级别（Opus 4.6）
+### Effort 級別（Opus 4.6）
 
 ```bash
-# 通过 CLI 参数设置 effort
+# 透過 CLI 引數設定 effort
 claude --model opus --effort high "design the architecture"
 
-# 通过 slash command 设置 effort
+# 透過 slash command 設定 effort
 /effort max
 
-# 通过环境变量设置 effort
+# 透過環境變數設定 effort
 CLAUDE_EFFORT=medium claude --model opus
 ```
 
-## 常用环境变量
+## 常用環境變數
 
-| 环境变量 | 说明 |
+| 環境變數 | 說明 |
 |----------|------|
 | `ANTHROPIC_API_KEY` | API key |
-| `CLAUDE_MODEL` | 默认模型 |
-| `CLAUDE_EFFORT` | 默认推理强度 |
-| `CLAUDE_WORKING_DIRECTORY` | 默认工作目录 |
-| `CLAUDE_OUTPUT_FORMAT` | 默认输出格式 |
-| `CLAUDE_MCP_CONFIG` | 默认 MCP 配置 |
+| `CLAUDE_MODEL` | 預設模型 |
+| `CLAUDE_EFFORT` | 預設推理強度 |
+| `CLAUDE_WORKING_DIRECTORY` | 預設工作目錄 |
+| `CLAUDE_OUTPUT_FORMAT` | 預設輸出格式 |
+| `CLAUDE_MCP_CONFIG` | 預設 MCP 配置 |
 
-## 快速参考
+## 快速參考
 
 ### 最常用命令
 
 ```bash
-# 交互式会话
+# 互動式會話
 claude
 
-# 快速提问
+# 快速提問
 claude -p "explain this repo"
 
-# 继续上次对话
+# 繼續上次對話
 claude -c
 
-# 处理某个文件
+# 處理某個檔案
 claude -p "review README.md"
 
-# 为脚本输出 JSON
+# 為指令碼輸出 JSON
 claude -p --output-format json "list all classes"
 ```
 
-### 参数组合
+### 引陣列合
 
 ```bash
-# 只读审查
+# 只讀審查
 claude --permission-mode plan -p "review this codebase"
 
-# 高级模型 + JSON 输出
+# 高階模型 + JSON 輸出
 claude --model opus -p --output-format json "analyze architecture"
 
-# 自定义工作目录 + MCP
+# 自定義工作目錄 + MCP
 claude --working-directory ./backend --mcp-config ./mcp.json
 ```
 
@@ -605,36 +605,36 @@ claude --working-directory ./backend --mcp-config ./mcp.json
 
 ### 找不到命令
 
-- 确认 `claude` 已安装并在 `PATH` 中
-- 重新打开终端
-- 检查是否需要重新登录或更新版本
+- 確認 `claude` 已安裝並在 `PATH` 中
+- 重新開啟終端
+- 檢查是否需要重新登入或更新版本
 
-### API Key 问题
+### API Key 問題
 
-- 检查 `ANTHROPIC_API_KEY`
-- 确认 key 未过期
-- 检查网络是否可访问 API
+- 檢查 `ANTHROPIC_API_KEY`
+- 確認 key 未過期
+- 檢查網路是否可訪問 API
 
-### 找不到会话
+### 找不到會話
 
-- 确认会话名称或 ID 正确
-- 先运行 `claude --list-sessions`（如果你的版本支持）
-- 检查当前账号是否一致
+- 確認會話名稱或 ID 正確
+- 先執行 `claude --list-sessions`（如果你的版本支援）
+- 檢查當前賬號是否一致
 
-### 输出格式问题
+### 輸出格式問題
 
-- 使用 `--output-format json` 时确保输出可被解析
-- 如果是流式输出，加入 `--include-partial-messages`
+- 使用 `--output-format json` 時確保輸出可被解析
+- 如果是流式輸出，加入 `--include-partial-messages`
 
-### 权限被拒绝
+### 許可權被拒絕
 
-- 检查 `--permission-mode`
-- 检查 `--allowedTools` 和 `--disallowedTools`
-- 如有必要，明确允许所需工具
+- 檢查 `--permission-mode`
+- 檢查 `--allowedTools` 和 `--disallowedTools`
+- 如有必要，明確允許所需工具
 
-## 更多资源
+## 更多資源
 
-- [根目录中文指南](../README.md)
-- [Slash Commands 中文参考](../01-slash-commands/README.md)
-- [MCP 文档](../05-mcp/README.md)
-- [Claude Code 官方 CLI 文档](https://code.claude.com/docs/en/cli-reference)
+- [根目錄中文指南](../README.md)
+- [Slash Commands 中文參考](../01-slash-commands/README.md)
+- [MCP 檔案](../05-mcp/README.md)
+- [Claude Code 官方 CLI 檔案](https://code.claude.com/docs/en/cli-reference)

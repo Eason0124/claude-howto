@@ -1,28 +1,28 @@
-# 函数：`functionName`
+# 函式：`functionName`
 
 ## 描述
-简要说明这个函数的作用。
+簡要說明這個函式的作用。
 
-## 签名
+## 簽名
 ```typescript
 function functionName(param1: Type1, param2: Type2): ReturnType
 ```
 
-## 参数
+## 引數
 
-| 参数 | 类型 | 必填 | 描述 |
+| 引數 | 型別 | 必填 | 描述 |
 |------|------|------|------|
-| param1 | Type1 | 是 | param1 的说明 |
-| param2 | Type2 | 否 | param2 的说明 |
+| param1 | Type1 | 是 | param1 的說明 |
+| param2 | Type2 | 否 | param2 的說明 |
 
 ## 返回值
-**类型**：`ReturnType`
+**型別**：`ReturnType`
 
-返回内容的说明。
+返回內容的說明。
 
-## 抛出异常
-- `Error`：在输入无效时抛出
-- `TypeError`：在传入错误类型时抛出
+## 丟擲異常
+- `Error`：在輸入無效時丟擲
+- `TypeError`：在傳入錯誤型別時丟擲
 
 ## 示例
 
@@ -32,7 +32,7 @@ const result = functionName('value1', 'value2');
 console.log(result);
 ```
 
-### 高级用法
+### 高階用法
 ```typescript
 const result = functionName(
   complexParam1,
@@ -40,11 +40,11 @@ const result = functionName(
 );
 ```
 
-## 备注
-- 其他说明或警告
-- 性能注意事项
-- 最佳实践
+## 備註
+- 其他說明或警告
+- 效能注意事項
+- 最佳實踐
 
-## 另请参阅
-- [相关函数](#)
-- [API 文档](#)
+## 另請參閱
+- [相關函式](#)
+- [API 檔案](#)

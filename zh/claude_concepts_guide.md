@@ -5,11 +5,11 @@
 
 # Claude Concepts 完整指南
 
-这是一份全面的参考指南，覆盖 Slash Commands、Subagents、Memory、MCP Protocol、Agent Skills、Plugins、Hooks、Checkpoints、Advanced Features 等 Claude Code 核心概念，并配有表格、图示和实践示例。
+這是一份全面的參考指南，覆蓋 Slash Commands、Subagents、Memory、MCP Protocol、Agent Skills、Plugins、Hooks、Checkpoints、Advanced Features 等 Claude Code 核心概念，並配有表格、圖示和實踐示例。
 
 ---
 
-## 目录
+## 目錄
 
 1. [Slash Commands](#slash-commands)
 2. [Subagents](#subagents)
@@ -26,26 +26,26 @@
 
 ## Slash Commands
 
-### 概览
+### 概覽
 
-Slash commands 是由用户手动触发的快捷命令，以 Markdown 文件形式保存，Claude Code 可以读取并执行。它们非常适合把高频提示词与工作流标准化，方便团队复用。
+Slash commands 是由使用者手動觸發的快捷命令，以 Markdown 檔案形式儲存，Claude Code 可以讀取並執行。它們非常適合把高頻提示詞與工作流標準化，方便團隊複用。
 
-### 架构
+### 架構
 
 ```mermaid
 graph TD
-    A["用户输入: /command-name"] -->|触发| B["搜索 .claude/commands/"]
+    A["使用者輸入: /command-name"] -->|觸發| B["搜尋 .claude/commands/"]
     B -->|找到| C["command-name.md"]
-    C -->|加载| D["Markdown 内容"]
-    D -->|执行| E["Claude 处理提示"]
-    E -->|返回| F["上下文中的结果"]
+    C -->|載入| D["Markdown 內容"]
+    D -->|執行| E["Claude 處理提示"]
+    E -->|返回| F["上下文中的結果"]
 ```
 
-### 文件结构
+### 檔案結構
 
 ```mermaid
 graph LR
-    A["项目根目录"] -->|包含| B[".claude/commands/"]
+    A["專案根目錄"] -->|包含| B[".claude/commands/"]
     B -->|包含| C["optimize.md"]
     B -->|包含| D["test.md"]
     B -->|包含| E["docs/"]
@@ -53,132 +53,132 @@ graph LR
     E -->|包含| G["generate-readme.md"]
 ```
 
-### 命令组织表
+### 命令組織表
 
-| 位置 | 作用域 | 可用范围 | 适用场景 | Git 跟踪 |
+| 位置 | 作用域 | 可用範圍 | 適用場景 | Git 跟蹤 |
 |------|--------|----------|----------|-----------|
-| `.claude/commands/` | 项目级 | 团队成员 | 团队工作流、共享标准 | ✅ 是 |
-| `~/.claude/commands/` | 个人级 | 当前用户 | 跨项目的个人快捷命令 | ❌ 否 |
-| 子目录 | 命名空间 | 取决于父目录 | 按类别组织命令 | ✅ 是 |
+| `.claude/commands/` | 專案級 | 團隊成員 | 團隊工作流、共享標準 | ✅ 是 |
+| `~/.claude/commands/` | 個人級 | 當前使用者 | 跨專案的個人快捷命令 | ❌ 否 |
+| 子目錄 | 名稱空間 | 取決於父目錄 | 按類別組織命令 | ✅ 是 |
 
-### 功能与能力
+### 功能與能力
 
-| 功能 | 示例 | 是否支持 |
+| 功能 | 示例 | 是否支援 |
 |------|------|----------|
-| Shell 脚本执行 | `bash scripts/deploy.sh` | ✅ 是 |
-| 文件引用 | `@path/to/file.js` | ✅ 是 |
-| Bash 集成 | `$(git log --oneline)` | ✅ 是 |
-| 参数 | `/pr --verbose` | ✅ 是 |
+| Shell 指令碼執行 | `bash scripts/deploy.sh` | ✅ 是 |
+| 檔案引用 | `@path/to/file.js` | ✅ 是 |
+| Bash 整合 | `$(git log --oneline)` | ✅ 是 |
+| 引數 | `/pr --verbose` | ✅ 是 |
 | MCP 命令 | `/mcp__github__list_prs` | ✅ 是 |
 
-### 实践示例
+### 實踐示例
 
-#### 示例 1：代码优化命令
+#### 示例 1：程式碼最佳化命令
 
-**文件：** `.claude/commands/optimize.md`
+**檔案：** `.claude/commands/optimize.md`
 
 ```markdown
 ---
-name: 代码优化
-description: 分析代码中的性能问题并给出优化建议
+name: 程式碼最佳化
+description: 分析程式碼中的效能問題並給出最佳化建議
 tags: performance, analysis
 ---
 
-# 代码优化
+# 程式碼最佳化
 
-请按以下优先级顺序审查给定代码中的问题：
+請按以下優先順序順序審查給定程式碼中的問題：
 
-1. **性能瓶颈** - 识别 O(n²) 操作、低效循环
-2. **内存泄漏** - 查找未释放资源、循环引用
-3. **算法改进** - 建议更优算法或数据结构
-4. **缓存机会** - 识别重复计算
-5. **并发问题** - 查找竞态条件或线程问题
+1. **效能瓶頸** - 識別 O(n²) 操作、低效迴圈
+2. **記憶體洩漏** - 查詢未釋放資源、迴圈引用
+3. **演算法改進** - 建議更優演算法或資料結構
+4. **快取機會** - 識別重複計算
+5. **併發問題** - 查詢競態條件或執行緒問題
 
-请按以下格式输出：
-- 问题严重级别（Critical/High/Medium/Low）
-- 代码位置
-- 解释说明
-- 带代码示例的修复建议
+請按以下格式輸出：
+- 問題嚴重級別（Critical/High/Medium/Low）
+- 程式碼位置
+- 解釋說明
+- 帶程式碼示例的修復建議
 ```
 
 **使用方式：**
 ```bash
-# 用户在 Claude Code 中输入
+# 使用者在 Claude Code 中輸入
 /optimize
 
-# Claude 加载提示并等待代码输入
+# Claude 載入提示並等待程式碼輸入
 ```
 
-#### 示例 2：Pull Request 辅助命令
+#### 示例 2：Pull Request 輔助命令
 
-**文件：** `.claude/commands/pr.md`
+**檔案：** `.claude/commands/pr.md`
 
 ```markdown
 ---
-name: 准备 Pull Request
-description: 清理代码、暂存改动并准备一个 Pull Request
+name: 準備 Pull Request
+description: 清理程式碼、暫存改動並準備一個 Pull Request
 tags: git, workflow
 ---
 
-# Pull Request 准备清单
+# Pull Request 準備清單
 
-在创建 PR 前，执行以下步骤：
+在建立 PR 前，執行以下步驟：
 
-1. 运行 lint：`prettier --write .`
-2. 运行测试：`npm test`
-3. 查看 git diff：`git diff HEAD`
-4. 暂存改动：`git add .`
-5. 按 conventional commits 规则编写提交信息：
-   - `fix:` 用于 bug 修复
-   - `feat:` 用于新功能
-   - `docs:` 用于文档更新
-   - `refactor:` 用于代码重构
-   - `test:` 用于补充测试
-   - `chore:` 用于维护性工作
+1. 執行 lint：`prettier --write .`
+2. 執行測試：`npm test`
+3. 檢視 git diff：`git diff HEAD`
+4. 暫存改動：`git add .`
+5. 按 conventional commits 規則編寫提交資訊：
+   - `fix:` 用於 bug 修復
+   - `feat:` 用於新功能
+   - `docs:` 用於檔案更新
+   - `refactor:` 用於程式碼重構
+   - `test:` 用於補充測試
+   - `chore:` 用於維護性工作
 
 6. 生成 PR 摘要，包括：
-   - 改了什么
-   - 为什么改
-   - 做了哪些测试
-   - 可能的影响
+   - 改了什麼
+   - 為什麼改
+   - 做了哪些測試
+   - 可能的影響
 ```
 
 **使用方式：**
 ```bash
 /pr
 
-# Claude 按清单逐项检查并准备 PR
+# Claude 按清單逐項檢查並準備 PR
 ```
 
-#### 示例 3：分层式文档生成器
+#### 示例 3：分層式檔案生成器
 
-**文件：** `.claude/commands/docs/generate-api-docs.md`
+**檔案：** `.claude/commands/docs/generate-api-docs.md`
 
 ```markdown
 ---
-name: 生成 API 文档
-description: 基于源代码生成完整 API 文档
+name: 生成 API 檔案
+description: 基於原始碼生成完整 API 檔案
 tags: documentation, api
 ---
 
-# API 文档生成器
+# API 檔案生成器
 
-通过以下步骤生成 API 文档：
+透過以下步驟生成 API 檔案：
 
-1. 扫描 `/src/api/` 下的所有文件
-2. 提取函数签名和 JSDoc 注释
-3. 按 endpoint / module 组织结构
-4. 生成带示例的 Markdown
-5. 包含请求 / 响应 schema
-6. 补充错误文档
+1. 掃描 `/src/api/` 下的所有檔案
+2. 提取函式簽名和 JSDoc 註釋
+3. 按 endpoint / module 組織結構
+4. 生成帶示例的 Markdown
+5. 包含請求 / 響應 schema
+6. 補充錯誤檔案
 
-输出格式：
-- 输出 Markdown 文件到 `/docs/api.md`
-- 为所有端点包含 curl 示例
-- 补充 TypeScript 类型
+輸出格式：
+- 輸出 Markdown 檔案到 `/docs/api.md`
+- 為所有端點包含 curl 示例
+- 補充 TypeScript 型別
 ```
 
-### 命令生命周期图
+### 命令生命週期圖
 
 ```mermaid
 sequenceDiagram
@@ -187,103 +187,103 @@ sequenceDiagram
     participant FS as File System
     participant CLI as Shell/Bash
 
-    User->>Claude: 输入 /optimize
-    Claude->>FS: 搜索 .claude/commands/
+    User->>Claude: 輸入 /optimize
+    Claude->>FS: 搜尋 .claude/commands/
     FS-->>Claude: 返回 optimize.md
-    Claude->>Claude: 加载 Markdown 内容
-    Claude->>User: 显示提示上下文
-    User->>Claude: 提供待分析代码
-    Claude->>CLI: （可能执行脚本）
-    CLI-->>Claude: 返回结果
-    Claude->>User: 输出分析
+    Claude->>Claude: 載入 Markdown 內容
+    Claude->>User: 顯示提示上下文
+    User->>Claude: 提供待分析程式碼
+    Claude->>CLI: （可能執行指令碼）
+    CLI-->>Claude: 返回結果
+    Claude->>User: 輸出分析
 ```
 
-### 最佳实践
+### 最佳實踐
 
-| ✅ 建议 | ❌ 不建议 |
+| ✅ 建議 | ❌ 不建議 |
 |------|---------|
-| 使用清晰、面向动作的命名 | 为一次性任务创建命令 |
-| 在描述中写清触发场景 | 在命令里堆复杂逻辑 |
-| 保持命令聚焦单一任务 | 创建重复命令 |
-| 将项目命令纳入版本控制 | 硬编码敏感信息 |
-| 使用子目录组织分类 | 做过长的命令列表 |
-| 使用简单、可读的提示词 | 使用晦涩或过度缩写的措辞 |
+| 使用清晰、面向動作的命名 | 為一次性任務建立命令 |
+| 在描述中寫清觸發場景 | 在命令裡堆複雜邏輯 |
+| 保持命令聚焦單一任務 | 建立重複命令 |
+| 將專案命令納入版本控制 | 硬編碼敏感資訊 |
+| 使用子目錄組織分類 | 做過長的命令列表 |
+| 使用簡單、可讀的提示詞 | 使用晦澀或過度縮寫的措辭 |
 
 ---
 
 ## Subagents
 
-### 概览
+### 概覽
 
-Subagents 是带有隔离上下文窗口和自定义系统提示词的专门化 AI 助手。它们让 Claude 能够把复杂任务拆分并委派出去，同时保持关注点清晰分离。
+Subagents 是帶有隔離上下文視窗和自定義系統提示詞的專門化 AI 助手。它們讓 Claude 能夠把複雜任務拆分並委派出去，同時保持關注點清晰分離。
 
-### 架构图
+### 架構圖
 
 ```mermaid
 graph TB
-    User["👤 用户"]
-    Main["🎯 主 Agent<br/>(协调者)"]
-    Reviewer["🔍 代码审查<br/>Subagent"]
-    Tester["✅ 测试工程师<br/>Subagent"]
-    Docs["📝 文档编写<br/>Subagent"]
+    User["👤 使用者"]
+    Main["🎯 主 Agent<br/>(協調者)"]
+    Reviewer["🔍 程式碼審查<br/>Subagent"]
+    Tester["✅ 測試工程師<br/>Subagent"]
+    Docs["📝 檔案編寫<br/>Subagent"]
 
-    User -->|提出请求| Main
+    User -->|提出請求| Main
     Main -->|委派| Reviewer
     Main -->|委派| Tester
     Main -->|委派| Docs
-    Reviewer -->|返回结果| Main
-    Tester -->|返回结果| Main
-    Docs -->|返回结果| Main
-    Main -->|汇总| User
+    Reviewer -->|返回結果| Main
+    Tester -->|返回結果| Main
+    Docs -->|返回結果| Main
+    Main -->|彙總| User
 ```
 
-### Subagent 生命周期
+### Subagent 生命週期
 
 ```mermaid
 sequenceDiagram
     participant User
     participant MainAgent as 主 Agent
-    participant CodeReviewer as 代码审查<br/>Subagent
-    participant Context as 独立的<br/>上下文窗口
+    participant CodeReviewer as 程式碼審查<br/>Subagent
+    participant Context as 獨立的<br/>上下文視窗
 
-    User->>MainAgent: “构建新的认证功能”
-    MainAgent->>MainAgent: 分析任务
-    MainAgent->>CodeReviewer: “审查这段代码”
-    CodeReviewer->>Context: 初始化干净上下文
-    Context->>CodeReviewer: 加载审查规则
-    CodeReviewer->>CodeReviewer: 执行审查
-    CodeReviewer-->>MainAgent: 返回发现
-    MainAgent->>MainAgent: 融合结果
-    MainAgent-->>User: 输出综合结论
+    User->>MainAgent: “構建新的認證功能”
+    MainAgent->>MainAgent: 分析任務
+    MainAgent->>CodeReviewer: “審查這段程式碼”
+    CodeReviewer->>Context: 初始化乾淨上下文
+    Context->>CodeReviewer: 載入審查規則
+    CodeReviewer->>CodeReviewer: 執行審查
+    CodeReviewer-->>MainAgent: 返回發現
+    MainAgent->>MainAgent: 融合結果
+    MainAgent-->>User: 輸出綜合結論
 ```
 
 ### Subagent 配置表
 
-| 配置项 | 类型 | 作用 | 示例 |
+| 配置項 | 型別 | 作用 | 示例 |
 |--------|------|------|------|
-| `name` | String | Agent 标识符 | `code-reviewer` |
-| `description` | String | 用途与触发词 | `Comprehensive code quality analysis` |
-| `tools` | List/String | 允许的能力 | `read, grep, diff, lint_runner` |
-| `system_prompt` | Markdown | 行为指令 | 自定义规范 |
+| `name` | String | Agent 識別符號 | `code-reviewer` |
+| `description` | String | 用途與觸發詞 | `Comprehensive code quality analysis` |
+| `tools` | List/String | 允許的能力 | `read, grep, diff, lint_runner` |
+| `system_prompt` | Markdown | 行為指令 | 自定義規範 |
 
-### 工具访问层级
+### 工具訪問層級
 
 ```mermaid
 graph TD
-    A["Subagent 配置"] -->|选项 1| B["继承主线程的全部工具"]
-    A -->|选项 2| C["显式指定工具"]
-    B -->|包含| B1["文件操作"]
+    A["Subagent 配置"] -->|選項 1| B["繼承主執行緒的全部工具"]
+    A -->|選項 2| C["顯式指定工具"]
+    B -->|包含| B1["檔案操作"]
     B -->|包含| B2["Shell 命令"]
     B -->|包含| B3["MCP 工具"]
-    C -->|显式列表| C1["read, grep, diff"]
-    C -->|显式列表| C2["Bash(npm:*), Bash(test:*)"]
+    C -->|顯式列表| C1["read, grep, diff"]
+    C -->|顯式列表| C2["Bash(npm:*), Bash(test:*)"]
 ```
 
-### 实践示例
+### 實踐示例
 
 #### 示例 1：完整 Subagent 配置
 
-**文件：** `.claude/agents/code-reviewer.md`
+**檔案：** `.claude/agents/code-reviewer.md`
 
 ```yaml
 ---
@@ -311,7 +311,7 @@ You are an expert code reviewer specializing in:
 
 ## Review Output Format
 
-针对每个问题：
+針對每個問題：
 - **Severity**: Critical / High / Medium / Low
 - **Category**: Security / Performance / Quality / Testing / Design
 - **Location**: File path and line number
@@ -320,7 +320,7 @@ You are an expert code reviewer specializing in:
 - **Impact**: How this affects the system
 ```
 
-**文件：** `.claude/agents/test-engineer.md`
+**檔案：** `.claude/agents/test-engineer.md`
 
 ```yaml
 ---
@@ -339,7 +339,7 @@ You are expert at:
 - Integration testing
 ```
 
-**文件：** `.claude/agents/documentation-writer.md`
+**檔案：** `.claude/agents/documentation-writer.md`
 
 ```yaml
 ---
@@ -361,42 +361,42 @@ You create:
 #### 示例 2：Subagent 委派流程
 
 ```markdown
-# 场景：构建支付功能
+# 場景：構建支付功能
 
-## 用户请求
-"构建一个与 Stripe 集成的安全支付处理功能"
+## 使用者請求
+"構建一個與 Stripe 整合的安全支付處理功能"
 
 ## 主 Agent 工作流
 
-1. **规划阶段**
+1. **規劃階段**
    - 理解需求
-   - 确定所需任务
-   - 规划架构
+   - 確定所需任務
+   - 規劃架構
 
-2. **委派给 Code Reviewer Subagent**
-   - 任务："审查支付处理实现中的安全问题"
-   - 上下文：认证、API 密钥、token 处理
-   - 重点：SQL 注入、密钥泄露、HTTPS 强制
+2. **委派給 Code Reviewer Subagent**
+   - 任務："審查支付處理實現中的安全問題"
+   - 上下文：認證、API 金鑰、token 處理
+   - 重點：SQL 注入、金鑰洩露、HTTPS 強制
 
-3. **委派给 Test Engineer Subagent**
-   - 任务："为支付流程创建完整测试"
-   - 上下文：成功场景、失败场景、边界情况
-   - 输出：有效支付、拒付、网络故障、webhook 测试
+3. **委派給 Test Engineer Subagent**
+   - 任務："為支付流程建立完整測試"
+   - 上下文：成功場景、失敗場景、邊界情況
+   - 輸出：有效支付、拒付、網路故障、webhook 測試
 
-4. **委派给 Documentation Writer Subagent**
-   - 任务："为支付 API 端点编写文档"
-   - 上下文：请求 / 响应 schema
-   - 产出：带 curl 示例和错误码的 API 文档
+4. **委派給 Documentation Writer Subagent**
+   - 任務："為支付 API 端點編寫檔案"
+   - 上下文：請求 / 響應 schema
+   - 產出：帶 curl 示例和錯誤碼的 API 檔案
 
-5. **综合**
-   - 主 Agent 汇总所有输出
-   - 整合发现
-   - 返回完整方案给用户
+5. **綜合**
+   - 主 Agent 彙總所有輸出
+   - 整合發現
+   - 返回完整方案給使用者
 ```
 
-#### 示例 3：工具权限范围
+#### 示例 3：工具許可權範圍
 
-**受限配置：只允许特定能力**
+**受限配置：只允許特定能力**
 
 ```yaml
 ---
@@ -410,7 +410,7 @@ tools: read, grep
 Reviews code for security vulnerabilities only.
 ```
 
-**扩展配置：为实现任务开放全部工具**
+**擴充套件配置：為實現任務開放全部工具**
 
 ```yaml
 ---
@@ -433,13 +433,13 @@ graph TB
     C["Subagent 2 上下文<br/>20,000 tokens"]
     D["Subagent 3 上下文<br/>20,000 tokens"]
 
-    A -->|干净上下文| B
-    A -->|干净上下文| C
-    A -->|干净上下文| D
+    A -->|乾淨上下文| B
+    A -->|乾淨上下文| C
+    A -->|乾淨上下文| D
 
-    B -->|仅返回结果| A
-    C -->|仅返回结果| A
-    D -->|仅返回结果| A
+    B -->|僅返回結果| A
+    C -->|僅返回結果| A
+    D -->|僅返回結果| A
 
     style A fill:#e1f5ff
     style B fill:#fff9c4
@@ -447,82 +447,82 @@ graph TB
     style D fill:#fff9c4
 ```
 
-### 何时使用 Subagents
+### 何時使用 Subagents
 
-| 场景 | 是否使用 Subagent | 原因 |
+| 場景 | 是否使用 Subagent | 原因 |
 |------|------------------|------|
-| 多步骤复杂功能 | ✅ 是 | 分离关注点，防止上下文污染 |
-| 快速代码审查 | ❌ 否 | 开销不值得 |
-| 并行任务执行 | ✅ 是 | 每个 subagent 都有自己的上下文 |
-| 需要专业化角色 | ✅ 是 | 可以用自定义系统提示词 |
-| 长时间分析任务 | ✅ 是 | 防止主上下文耗尽 |
-| 单一步骤任务 | ❌ 否 | 只会增加延迟 |
+| 多步驟複雜功能 | ✅ 是 | 分離關注點，防止上下文汙染 |
+| 快速程式碼審查 | ❌ 否 | 開銷不值得 |
+| 並行任務執行 | ✅ 是 | 每個 subagent 都有自己的上下文 |
+| 需要專業化角色 | ✅ 是 | 可以用自定義系統提示詞 |
+| 長時間分析任務 | ✅ 是 | 防止主上下文耗盡 |
+| 單一步驟任務 | ❌ 否 | 只會增加延遲 |
 
 ### Agent Teams
 
-Agent Teams 用于协调多个 agent 围绕一个共同目标协作。与一次只委派一个 subagent 不同，Agent Teams 允许主 agent 编排一组协作代理，在共享中间结果的同时并行推进大任务，例如由前端 agent、后端 agent、测试 agent 一起完成一个全栈功能。
+Agent Teams 用於協調多個 agent 圍繞一個共同目標協作。與一次只委派一個 subagent 不同，Agent Teams 允許主 agent 編排一組協作代理，在共享中間結果的同時並行推進大任務，例如由前端 agent、後端 agent、測試 agent 一起完成一個全棧功能。
 
 ---
 
 ## Memory
 
-### 概览
+### 概覽
 
-Memory 让 Claude 能够在不同会话和对话之间保留上下文。它主要有两种形态：Claude Web/Desktop 中的自动记忆综合，以及 Claude Code 中基于文件系统的 `CLAUDE.md`。
+Memory 讓 Claude 能夠在不同會話和對話之間保留上下文。它主要有兩種形態：Claude Web/Desktop 中的自動記憶綜合，以及 Claude Code 中基於檔案系統的 `CLAUDE.md`。
 
-### Memory 架构
+### Memory 架構
 
 ```mermaid
 graph TB
-    A["Claude 会话"]
-    B["用户输入"]
-    C["记忆系统"]
-    D["记忆存储"]
+    A["Claude 會話"]
+    B["使用者輸入"]
+    C["記憶系統"]
+    D["記憶儲存"]
 
-    B -->|用户提供信息| C
-    C -->|每 24 小时综合| D
-    D -->|自动加载| A
+    B -->|使用者提供資訊| C
+    C -->|每 24 小時綜合| D
+    D -->|自動載入| A
     A -->|使用上下文| C
 ```
 
-### Claude Code 中的 7 层记忆层级
+### Claude Code 中的 7 層記憶層級
 
-Claude Code 会按优先级从高到低加载 7 层记忆：
+Claude Code 會按優先順序從高到低載入 7 層記憶：
 
 ```mermaid
 graph TD
-    A["1. Managed Policy<br/>企业管理员策略"] --> B["2. Project Memory<br/>./CLAUDE.md"]
+    A["1. Managed Policy<br/>企業管理員策略"] --> B["2. Project Memory<br/>./CLAUDE.md"]
     B --> C["3. Project Rules<br/>.claude/rules/*.md"]
     C --> D["4. User Memory<br/>~/.claude/CLAUDE.md"]
     D --> E["5. User Rules<br/>~/.claude/rules/*.md"]
     E --> F["6. Local Memory<br/>.claude/local/CLAUDE.md"]
-    F --> G["7. Auto Memory<br/>自动捕获的偏好"]
+    F --> G["7. Auto Memory<br/>自動捕獲的偏好"]
 ```
 
 ### Memory 位置表
 
-| 层级 | 位置 | 作用域 | 优先级 | 是否共享 | 最适合 |
+| 層級 | 位置 | 作用域 | 優先順序 | 是否共享 | 最適合 |
 |------|------|--------|--------|----------|--------|
-| 1. Managed Policy | 企业管理员 | 组织级 | 最高 | 全组织用户 | 合规、安全策略 |
-| 2. Project | `./CLAUDE.md` | 项目级 | 高 | 团队（Git） | 团队标准、架构 |
-| 3. Project Rules | `.claude/rules/*.md` | 项目级 | 高 | 团队（Git） | 模块化项目约定 |
-| 4. User | `~/.claude/CLAUDE.md` | 个人级 | 中 | 个人 | 个人偏好 |
-| 5. User Rules | `~/.claude/rules/*.md` | 个人级 | 中 | 个人 | 个人规则模块 |
-| 6. Local | `.claude/local/CLAUDE.md` | 本地 | 低 | 不共享 | 机器相关设置 |
-| 7. Auto Memory | 自动生成 | 会话级 | 最低 | 个人 | 学到的偏好与模式 |
+| 1. Managed Policy | 企業管理員 | 組織級 | 最高 | 全組織使用者 | 合規、安全策略 |
+| 2. Project | `./CLAUDE.md` | 專案級 | 高 | 團隊（Git） | 團隊標準、架構 |
+| 3. Project Rules | `.claude/rules/*.md` | 專案級 | 高 | 團隊（Git） | 模組化專案約定 |
+| 4. User | `~/.claude/CLAUDE.md` | 個人級 | 中 | 個人 | 個人偏好 |
+| 5. User Rules | `~/.claude/rules/*.md` | 個人級 | 中 | 個人 | 個人規則模組 |
+| 6. Local | `.claude/local/CLAUDE.md` | 本地 | 低 | 不共享 | 機器相關設定 |
+| 7. Auto Memory | 自動生成 | 會話級 | 最低 | 個人 | 學到的偏好與模式 |
 
 ### Auto Memory
 
-Auto Memory 会在会话中自动捕获用户偏好与行为模式。Claude 会记住：
+Auto Memory 會在會話中自動捕獲使用者偏好與行為模式。Claude 會記住：
 
-- 代码风格偏好
-- 你常做的纠正
-- 框架和工具选择
-- 沟通方式偏好
+- 程式碼風格偏好
+- 你常做的糾正
+- 框架和工具選擇
+- 溝通方式偏好
 
-它在后台工作，不需要手动配置。
+它在後臺工作，不需要手動配置。
 
-### Memory 更新生命周期
+### Memory 更新生命週期
 
 ```mermaid
 sequenceDiagram
@@ -531,156 +531,156 @@ sequenceDiagram
     participant Editor as File System
     participant Memory as CLAUDE.md
 
-    User->>Claude: “记住：统一使用 async/await”
-    Claude->>User: “写入哪个记忆文件？”
-    User->>Claude: “项目记忆”
-    Claude->>Editor: 打开 ~/.claude/settings.json
-    Claude->>Memory: 写入 ./CLAUDE.md
-    Memory-->>Claude: 文件已保存
-    Claude->>Claude: 重新加载记忆
-    Claude-->>User: “记忆已保存！”
+    User->>Claude: “記住：統一使用 async/await”
+    Claude->>User: “寫入哪個記憶檔案？”
+    User->>Claude: “專案記憶”
+    Claude->>Editor: 開啟 ~/.claude/settings.json
+    Claude->>Memory: 寫入 ./CLAUDE.md
+    Memory-->>Claude: 檔案已儲存
+    Claude->>Claude: 重新載入記憶
+    Claude-->>User: “記憶已儲存！”
 ```
 
-### 实践示例
+### 實踐示例
 
-#### 示例 1：项目级记忆结构
+#### 示例 1：專案級記憶結構
 
-**文件：** `./CLAUDE.md`
+**檔案：** `./CLAUDE.md`
 
 ```markdown
-# 项目配置
+# 專案配置
 
-## 项目概览
-- **名称**：电商平台
-- **技术栈**：Node.js、PostgreSQL、React 18、Docker
-- **团队规模**：5 名开发者
-- **截止时间**：2025 年第 4 季度
+## 專案概覽
+- **名稱**：電商平臺
+- **技術棧**：Node.js、PostgreSQL、React 18、Docker
+- **團隊規模**：5 名開發者
+- **截止時間**：2025 年第 4 季度
 
-## 架构
+## 架構
 @docs/architecture.md
 @docs/api-standards.md
 @docs/database-schema.md
 
-## 开发标准
+## 開發標準
 
 ### Code Style
 - 使用 Prettier 格式化
 - 使用 ESLint + airbnb config
-- 最大行宽 100 字符
-- 使用 2 空格缩进
+- 最大行寬 100 字元
+- 使用 2 空格縮排
 
 ### Naming Conventions
-- **文件**：kebab-case
-- **类**：PascalCase
-- **函数/变量**：camelCase
+- **檔案**：kebab-case
+- **類**：PascalCase
+- **函式/變數**：camelCase
 - **常量**：UPPER_SNAKE_CASE
-- **数据库表**：snake_case
+- **資料庫表**：snake_case
 ```
 
-#### 示例 2：目录级记忆
+#### 示例 2：目錄級記憶
 
-**文件：** `./src/api/CLAUDE.md`
+**檔案：** `./src/api/CLAUDE.md`
 
 ~~~~markdown
-# API 模块标准
+# API 模組標準
 
-该文件会覆盖根目录 `CLAUDE.md` 中对 `/src/api/` 的规则。
+該檔案會覆蓋根目錄 `CLAUDE.md` 中對 `/src/api/` 的規則。
 
-## API 专属标准
+## API 專屬標準
 
 ### Request Validation
-- 使用 Zod 做 schema 校验
-- 所有输入都必须校验
-- 校验失败时返回 400
-- 包含字段级错误详情
+- 使用 Zod 做 schema 校驗
+- 所有輸入都必須校驗
+- 校驗失敗時返回 400
+- 包含欄位級錯誤詳情
 
 ### Authentication
-- 所有端点都要求 JWT token
-- Token 通过 Authorization header 传递
-- Token 24 小时过期
-- 实现 refresh token 机制
+- 所有端點都要求 JWT token
+- Token 透過 Authorization header 傳遞
+- Token 24 小時過期
+- 實現 refresh token 機制
 ~~~~
 
-#### 示例 3：个人记忆
+#### 示例 3：個人記憶
 
-**文件：** `~/.claude/CLAUDE.md`
+**檔案：** `~/.claude/CLAUDE.md`
 
 ~~~~markdown
-# 我的开发偏好
+# 我的開發偏好
 
 ## About Me
-- **经验水平**：8 年全栈开发
-- **偏好语言**：TypeScript、Python
-- **沟通风格**：直接、配示例
-- **学习风格**：喜欢图示和代码配合
+- **經驗水平**：8 年全棧開發
+- **偏好語言**：TypeScript、Python
+- **溝通風格**：直接、配示例
+- **學習風格**：喜歡圖示和程式碼配合
 
 ## Code Preferences
 
 ### Error Handling
-我偏好显式的 try-catch 和清晰的错误信息。
-避免泛化错误，调试时始终记录日志。
+我偏好顯式的 try-catch 和清晰的錯誤資訊。
+避免泛化錯誤，除錯時始終記錄日誌。
 ~~~~
 
-#### 示例 4：会话中更新记忆
+#### 示例 4：會話中更新記憶
 
 ```markdown
-User: 记住：所有新组件都优先使用 React hooks，不用 class components。
+User: 記住：所有新元件都優先使用 React hooks，不用 class components。
 
-Claude: 我会把它加入记忆。你希望写入哪个记忆文件？
-        1. 项目记忆（./CLAUDE.md）
-        2. 个人记忆（~/.claude/CLAUDE.md）
+Claude: 我會把它加入記憶。你希望寫入哪個記憶檔案？
+        1. 專案記憶（./CLAUDE.md）
+        2. 個人記憶（~/.claude/CLAUDE.md）
 
-User: 项目记忆
+User: 專案記憶
 
-Claude: ✅ 记忆已保存！
+Claude: ✅ 記憶已儲存！
 ```
 
-### Claude Web/Desktop 中的记忆综合
+### Claude Web/Desktop 中的記憶綜合
 
-#### 记忆综合时间线
+#### 記憶綜合時間線
 
 ```mermaid
 graph LR
-    A["第 1 天：用户对话"] -->|24 小时| B["第 2 天：记忆综合"]
-    B -->|自动| C["记忆更新并摘要化"]
-    C -->|加载到| D["第 2-N 天：新对话"]
+    A["第 1 天：使用者對話"] -->|24 小時| B["第 2 天：記憶綜合"]
+    B -->|自動| C["記憶更新並摘要化"]
+    C -->|載入到| D["第 2-N 天：新對話"]
 ```
 
-### Memory 功能对比
+### Memory 功能對比
 
 | 功能 | Claude Web/Desktop | Claude Code (`CLAUDE.md`) |
 |------|--------------------|---------------------------|
-| 自动综合 | ✅ 每 24 小时 | ❌ 手动 |
-| 跨项目 | ✅ 共享 | ❌ 项目级 |
-| 团队访问 | ✅ 共享项目 | ✅ Git 跟踪 |
-| 可搜索 | ✅ 内建 | ✅ 通过 `/memory` |
-| 可编辑 | ✅ 聊天中 | ✅ 直接改文件 |
-| 导入/导出 | ✅ 支持 | ✅ 复制粘贴 |
-| 持久性 | ✅ 24h+ | ✅ 长期 |
+| 自動綜合 | ✅ 每 24 小時 | ❌ 手動 |
+| 跨專案 | ✅ 共享 | ❌ 專案級 |
+| 團隊訪問 | ✅ 共享專案 | ✅ Git 跟蹤 |
+| 可搜尋 | ✅ 內建 | ✅ 透過 `/memory` |
+| 可編輯 | ✅ 聊天中 | ✅ 直接改檔案 |
+| 匯入/匯出 | ✅ 支援 | ✅ 複製貼上 |
+| 永續性 | ✅ 24h+ | ✅ 長期 |
 
 ---
 
 ## MCP Protocol
 
-### 概览
+### 概覽
 
-MCP（Model Context Protocol）是 Claude 访问外部工具、API 与实时数据源的标准方式。与 Memory 不同，MCP 提供的是对持续变化数据的实时访问。
+MCP（Model Context Protocol）是 Claude 訪問外部工具、API 與實時資料來源的標準方式。與 Memory 不同，MCP 提供的是對持續變化資料的實時訪問。
 
-### MCP 架构
+### MCP 架構
 
 ```mermaid
 graph TB
     A["Claude"]
     B["MCP Server"]
-    C["外部服务"]
+    C["外部服務"]
 
-    A -->|请求| B
-    B -->|查询| C
-    C -->|数据| B
-    B -->|响应| A
+    A -->|請求| B
+    B -->|查詢| C
+    C -->|資料| B
+    B -->|響應| A
 ```
 
-### MCP 生态
+### MCP 生態
 
 ```mermaid
 graph TB
@@ -691,40 +691,40 @@ graph TB
     A -->|MCP| F["Google Docs<br/>MCP Server"]
 ```
 
-### MCP 设置流程
+### MCP 設定流程
 
 ```mermaid
 sequenceDiagram
     participant User
     participant Claude as Claude Code
-    participant Config as 配置文件
-    participant Service as 外部服务
+    participant Config as 配置檔案
+    participant Service as 外部服務
 
-    User->>Claude: 输入 /mcp
+    User->>Claude: 輸入 /mcp
     Claude->>Claude: 列出可用 MCP server
-    Claude->>User: 展示选项
-    User->>Claude: 选择 GitHub MCP
+    Claude->>User: 展示選項
+    User->>Claude: 選擇 GitHub MCP
     Claude->>Config: 更新配置
-    Config->>Claude: 激活连接
-    Claude->>Service: 测试连接
-    Service-->>Claude: 认证成功
-    Claude->>User: ✅ MCP 已连接
+    Config->>Claude: 啟用連線
+    Claude->>Service: 測試連線
+    Service-->>Claude: 認證成功
+    Claude->>User: ✅ MCP 已連線
 ```
 
 ### 可用 MCP Server 表
 
-| MCP Server | 用途 | 常见工具 | 认证 | 实时 |
+| MCP Server | 用途 | 常見工具 | 認證 | 實時 |
 |------------|------|----------|------|------|
-| Filesystem | 文件操作 | read, write, delete | 操作系统权限 | ✅ 是 |
-| GitHub | 仓库管理 | list_prs, create_issue, push | OAuth | ✅ 是 |
-| Slack | 团队沟通 | send_message, list_channels | Token | ✅ 是 |
-| Database | SQL 查询 | query, insert, update | 凭据 | ✅ 是 |
-| Google Docs | 文档访问 | read, write, share | OAuth | ✅ 是 |
-| Asana | 项目管理 | create_task, update_status | API Key | ✅ 是 |
-| Stripe | 支付数据 | list_charges, create_invoice | API Key | ✅ 是 |
-| Memory | 持久记忆 | store, retrieve, delete | Local | ❌ 否 |
+| Filesystem | 檔案操作 | read, write, delete | 作業系統許可權 | ✅ 是 |
+| GitHub | 倉庫管理 | list_prs, create_issue, push | OAuth | ✅ 是 |
+| Slack | 團隊溝通 | send_message, list_channels | Token | ✅ 是 |
+| Database | SQL 查詢 | query, insert, update | 憑據 | ✅ 是 |
+| Google Docs | 檔案訪問 | read, write, share | OAuth | ✅ 是 |
+| Asana | 專案管理 | create_task, update_status | API Key | ✅ 是 |
+| Stripe | 支付資料 | list_charges, create_invoice | API Key | ✅ 是 |
+| Memory | 持久記憶 | store, retrieve, delete | Local | ❌ 否 |
 
-### 实践示例
+### 實踐示例
 
 #### 示例 1：GitHub MCP 配置
 
@@ -761,38 +761,38 @@ sequenceDiagram
 #### 示例 3：多 MCP 工作流
 
 ```markdown
-# 使用多个 MCP 的日报工作流
+# 使用多個 MCP 的日報工作流
 
-## 设置
-1. GitHub MCP - 获取 PR 指标
-2. Database MCP - 查询销售数据
-3. Slack MCP - 发送报告
-4. Filesystem MCP - 保存报告
+## 設定
+1. GitHub MCP - 獲取 PR 指標
+2. Database MCP - 查詢銷售資料
+3. Slack MCP - 傳送報告
+4. Filesystem MCP - 儲存報告
 ```
 
 #### 示例 4：Filesystem MCP 操作
 
 | 操作 | 命令 | 作用 |
 |------|------|------|
-| 列出文件 | `ls ~/projects` | 查看目录内容 |
-| 读取文件 | `cat src/main.ts` | 读取文件内容 |
-| 写入文件 | `create docs/api.md` | 创建新文件 |
-| 编辑文件 | `edit src/app.ts` | 修改文件 |
-| 搜索 | `grep "async function"` | 在文件中搜索 |
-| 删除 | `rm old-file.js` | 删除文件 |
+| 列出檔案 | `ls ~/projects` | 檢視目錄內容 |
+| 讀取檔案 | `cat src/main.ts` | 讀取檔案內容 |
+| 寫入檔案 | `create docs/api.md` | 建立新檔案 |
+| 編輯檔案 | `edit src/app.ts` | 修改檔案 |
+| 搜尋 | `grep "async function"` | 在檔案中搜尋 |
+| 刪除 | `rm old-file.js` | 刪除檔案 |
 
-### MCP vs Memory：决策矩阵
+### MCP vs Memory：決策矩陣
 
 ```mermaid
 graph TD
-    A["需要外部数据吗？"]
+    A["需要外部資料嗎？"]
     A -->|否| B["使用 Memory"]
-    A -->|是| C["数据是否频繁变化？"]
+    A -->|是| C["資料是否頻繁變化？"]
     C -->|否/很少| B
-    C -->|是/经常| D["使用 MCP"]
+    C -->|是/經常| D["使用 MCP"]
 ```
 
-### 请求 / 响应模式
+### 請求 / 響應模式
 
 ```mermaid
 sequenceDiagram
@@ -810,19 +810,19 @@ sequenceDiagram
 
 ## Agent Skills
 
-### 概览
+### 概覽
 
-Agent Skills 是可复用、由模型自动调用的能力包。它们以目录形式存在，通常包含说明、脚本和资源文件。Claude 会在合适时自动发现并使用它们。
+Agent Skills 是可複用、由模型自動呼叫的能力包。它們以目錄形式存在，通常包含說明、指令碼和資原始檔。Claude 會在合適時自動發現並使用它們。
 
-### Skill 架构
+### Skill 架構
 
 ```mermaid
 graph TB
-    A["Skill 目录"]
+    A["Skill 目錄"]
     B["SKILL.md"]
-    C["YAML 元数据"]
-    D["说明"]
-    E["脚本"]
+    C["YAML 後設資料"]
+    D["說明"]
+    E["指令碼"]
     F["模板"]
 
     A --> B
@@ -832,7 +832,7 @@ graph TB
     F --> A
 ```
 
-### Skill 加载流程
+### Skill 載入流程
 
 ```mermaid
 sequenceDiagram
@@ -851,32 +851,32 @@ sequenceDiagram
     Claude->>User: Generate Excel file
 ```
 
-### Skill 类型与位置
+### Skill 型別與位置
 
-| 类型 | 位置 | 作用域 | 是否共享 | 同步方式 | 最适合 |
+| 型別 | 位置 | 作用域 | 是否共享 | 同步方式 | 最適合 |
 |------|------|--------|----------|----------|--------|
-| 内置 | Built-in | 全局 | 全部用户 | 自动 | 文档生成 |
-| 个人 | `~/.claude/skills/` | 个人 | 否 | 手动 | 个人自动化 |
-| 项目 | `.claude/skills/` | 团队 | 是 | Git | 团队标准 |
-| 插件 | 通过 plugin 安装 | 视情况而定 | 视情况而定 | 自动 | 集成能力 |
+| 內建 | Built-in | 全域性 | 全部使用者 | 自動 | 檔案生成 |
+| 個人 | `~/.claude/skills/` | 個人 | 否 | 手動 | 個人自動化 |
+| 專案 | `.claude/skills/` | 團隊 | 是 | Git | 團隊標準 |
+| 外掛 | 透過 plugin 安裝 | 視情況而定 | 視情況而定 | 自動 | 整合能力 |
 
-### 预构建 Skills
+### 預構建 Skills
 
-Claude Code 现在内置了 5 个 bundled skills，可直接使用：
+Claude Code 現在內建了 5 個 bundled skills，可直接使用：
 
 | Skill | 命令 | 用途 |
 |-------|------|------|
-| Simplify | `/simplify` | 简化复杂代码或解释 |
-| Batch | `/batch` | 批量对多个文件或对象执行操作 |
-| Debug | `/debug` | 系统化调试并做根因分析 |
-| Loop | `/loop` | 按定时计划重复执行任务 |
-| Claude API | `/claude-api` | 直接与 Anthropic API 交互 |
+| Simplify | `/simplify` | 簡化複雜程式碼或解釋 |
+| Batch | `/batch` | 批次對多個檔案或物件執行操作 |
+| Debug | `/debug` | 系統化除錯並做根因分析 |
+| Loop | `/loop` | 按定時計劃重複執行任務 |
+| Claude API | `/claude-api` | 直接與 Anthropic API 互動 |
 
-### 实践示例
+### 實踐示例
 
-#### 示例 1：自定义代码审查 Skill
+#### 示例 1：自定義程式碼審查 Skill
 
-**目录结构：**
+**目錄結構：**
 
 ```text
 ~/.claude/skills/code-review/
@@ -889,7 +889,7 @@ Claude Code 现在内置了 5 个 bundled skills，可直接使用：
     └── compare-complexity.py
 ```
 
-**文件：** `~/.claude/skills/code-review/SKILL.md`
+**檔案：** `~/.claude/skills/code-review/SKILL.md`
 
 ```yaml
 ---
@@ -900,57 +900,57 @@ tags:
   - code-review
   - quality
   - security
-when_to_use: 当用户希望审查代码、分析代码质量或评估 pull request 时
+when_to_use: 當使用者希望審查程式碼、分析程式碼質量或評估 pull request 時
 effort: high
 shell: bash
 ---
 
-# 代码审查 Skill
+# 程式碼審查 Skill
 
-这个 skill 提供全面的代码审查能力，重点关注：
+這個 skill 提供全面的程式碼審查能力，重點關注：
 
 1. **安全分析**
-2. **性能审查**
-3. **代码质量**
-4. **可维护性**
+2. **效能審查**
+3. **程式碼質量**
+4. **可維護性**
 ```
 
-相关 Python 脚本和模板可直接沿用原始实现；脚本逻辑本身无需翻译即可使用。
+相關 Python 指令碼和模板可直接沿用原始實現；指令碼邏輯本身無需翻譯即可使用。
 
 #### 示例 2：Brand Voice Skill
 
-这个 skill 用于统一品牌语气、用词风格和外部沟通表达。它通常包含品牌使命、价值观、推荐用词、避免用词，以及邮件 / 社交媒体等模板。
+這個 skill 用於統一品牌語氣、用詞風格和外部溝通表達。它通常包含品牌使命、價值觀、推薦用詞、避免用詞，以及郵件 / 社交媒體等模板。
 
 #### 示例 3：Documentation Generator Skill
 
-这个 skill 用于从源码生成 API 文档，常见产物包括：
+這個 skill 用於從原始碼生成 API 檔案，常見產物包括：
 
-- OpenAPI/Swagger 规范
-- API 端点文档
+- OpenAPI/Swagger 規範
+- API 端點檔案
 - SDK 使用示例
-- 集成指南
-- 错误码说明
-- 认证说明
+- 整合指南
+- 錯誤碼說明
+- 認證說明
 
-### Skill 发现与调用
+### Skill 發現與呼叫
 
 ```mermaid
 graph TD
-    A["用户请求"] --> B["Claude 分析"]
-    B -->|扫描| C["可用 Skills"]
-    C -->|元数据匹配| D["Skill 描述是否匹配？"]
-    D -->|是| E["加载 SKILL.md"]
-    D -->|否| F["尝试下一个 Skill"]
+    A["使用者請求"] --> B["Claude 分析"]
+    B -->|掃描| C["可用 Skills"]
+    C -->|後設資料匹配| D["Skill 描述是否匹配？"]
+    D -->|是| E["載入 SKILL.md"]
+    D -->|否| F["嘗試下一個 Skill"]
     E --> H["提取指令"]
-    H --> I["执行 Skill"]
-    I --> J["返回结果"]
+    H --> I["執行 Skill"]
+    I --> J["返回結果"]
 ```
 
-### Skill 与其他功能的区别
+### Skill 與其他功能的區別
 
 ```mermaid
 graph TB
-    A["扩展 Claude"]
+    A["擴充套件 Claude"]
     B["Slash Commands"]
     C["Subagents"]
     D["Memory"]
@@ -968,11 +968,11 @@ graph TB
 
 ## Claude Code Plugins
 
-### 概览
+### 概覽
 
-Claude Code Plugins 是把多种能力打包在一起的一体化扩展机制，通常包含 slash commands、subagents、MCP servers、hooks 以及相关配置。它们可以通过一条命令完成安装。
+Claude Code Plugins 是把多種能力打包在一起的一體化擴充套件機制，通常包含 slash commands、subagents、MCP servers、hooks 以及相關配置。它們可以透過一條命令完成安裝。
 
-### 架构
+### 架構
 
 ```mermaid
 graph TB
@@ -990,7 +990,7 @@ graph TB
     A -->|打包| F
 ```
 
-### Plugin 加载流程
+### Plugin 載入流程
 
 ```mermaid
 sequenceDiagram
@@ -1004,25 +1004,25 @@ sequenceDiagram
     participant Hooks
 
     User->>Claude: /plugin install pr-review
-    Claude->>Plugin: 下载插件清单
-    Plugin-->>Claude: 返回插件定义
-    Claude->>Install: 解包组件
+    Claude->>Plugin: 下載外掛清單
+    Plugin-->>Claude: 返回外掛定義
+    Claude->>Install: 解包元件
     Install->>SlashCmds: 配置
     Install->>Subagents: 配置
     Install->>MCPServers: 配置
     Install->>Hooks: 配置
 ```
 
-### Plugin 类型与分发
+### Plugin 型別與分發
 
-| 类型 | 作用域 | 是否共享 | 权威来源 | 示例 |
+| 型別 | 作用域 | 是否共享 | 權威來源 | 示例 |
 |------|--------|----------|----------|------|
-| Official | 全局 | 全部用户 | Anthropic | PR Review、Security Guidance |
-| Community | 公开 | 全部用户 | 社区 | DevOps、Data Science |
-| Organization | 内部 | 团队成员 | 公司 | 内部标准、工具 |
-| Personal | 个人 | 单用户 | 开发者 | 自定义工作流 |
+| Official | 全域性 | 全部使用者 | Anthropic | PR Review、Security Guidance |
+| Community | 公開 | 全部使用者 | 社群 | DevOps、Data Science |
+| Organization | 內部 | 團隊成員 | 公司 | 內部標準、工具 |
+| Personal | 個人 | 單使用者 | 開發者 | 自定義工作流 |
 
-### Plugin 定义结构
+### Plugin 定義結構
 
 ```yaml
 ---
@@ -1034,7 +1034,7 @@ license: MIT
 ---
 ```
 
-### Plugin 结构
+### Plugin 結構
 
 ```text
 my-plugin/
@@ -1051,7 +1051,7 @@ my-plugin/
 └── tests/
 ```
 
-### 实践示例
+### 實踐示例
 
 #### 示例 1：PR Review Plugin
 
@@ -1094,76 +1094,76 @@ graph TB
     D["Enterprise"]
 ```
 
-### Plugin 安装与生命周期
+### Plugin 安裝與生命週期
 
 ```mermaid
 graph LR
-    A["发现"] --> B["浏览 Marketplace"]
-    B --> C["查看插件页"]
-    C --> D["查看组件"]
+    A["發現"] --> B["瀏覽 Marketplace"]
+    B --> C["檢視外掛頁"]
+    C --> D["檢視元件"]
     D --> E["/plugin install"]
     E --> F["配置"]
-    F --> G["启用"]
+    F --> G["啟用"]
 ```
 
-### Plugin 功能对比
+### Plugin 功能對比
 
 | 功能 | Slash Command | Skill | Subagent | Plugin |
 |------|---------------|-------|----------|--------|
-| 安装 | 手动复制 | 手动复制 | 手动配置 | 一条命令 |
-| 搭建时间 | 5 分钟 | 10 分钟 | 15 分钟 | 2 分钟 |
-| 打包能力 | 单文件 | 单文件 | 单文件 | 多组件 |
-| 团队共享 | 复制文件 | 复制文件 | 复制文件 | 通过安装 ID |
-| 更新方式 | 手动 | 手动 | 手动 | 市场可用 / 更易分发 |
+| 安裝 | 手動複製 | 手動複製 | 手動配置 | 一條命令 |
+| 搭建時間 | 5 分鐘 | 10 分鐘 | 15 分鐘 | 2 分鐘 |
+| 打包能力 | 單檔案 | 單檔案 | 單檔案 | 多元件 |
+| 團隊共享 | 複製檔案 | 複製檔案 | 複製檔案 | 透過安裝 ID |
+| 更新方式 | 手動 | 手動 | 手動 | 市場可用 / 更易分發 |
 
-### 何时创建 Plugin
+### 何時建立 Plugin
 
-- 当你需要一次分发多个命令、subagents、MCP servers 或 hooks 时
-- 当这是团队级工作流，需要统一安装和复制时
-- 当你希望自动化配置过程并减少手工步骤时
+- 當你需要一次分發多個命令、subagents、MCP servers 或 hooks 時
+- 當這是團隊級工作流，需要統一安裝和複製時
+- 當你希望自動化配置過程並減少手工步驟時
 
-### 发布 Plugin
+### 釋出 Plugin
 
-1. 创建完整的插件结构
-2. 编写 `.claude-plugin/plugin.json`
-3. 编写 `README.md`
-4. 本地测试
+1. 建立完整的外掛結構
+2. 編寫 `.claude-plugin/plugin.json`
+3. 編寫 `README.md`
+4. 本地測試
 5. 提交到 marketplace
-6. 审核通过
-7. 发布
+6. 稽核透過
+7. 釋出
 
-### Plugin vs 手动配置
+### Plugin vs 手動配置
 
-**手动配置：**
-- 一个个复制 slash commands
-- 单独创建 subagents
-- 分别配置 MCP
-- 手动设置 hooks
+**手動配置：**
+- 一個個複製 slash commands
+- 單獨建立 subagents
+- 分別配置 MCP
+- 手動設定 hooks
 
 **使用 Plugin：**
 ```bash
 /plugin install pr-review
-# ✅ 一次安装完成
+# ✅ 一次安裝完成
 # ✅ 即刻可用
-# ✅ 团队可复现
+# ✅ 團隊可復現
 ```
 
 ---
 
 ## Comparison & Integration
 
-### 功能对比矩阵
+### 功能對比矩陣
 
-| 功能 | 调用方式 | 持久性 | 作用域 | 适用场景 |
+| 功能 | 呼叫方式 | 永續性 | 作用域 | 適用場景 |
 |------|----------|--------|--------|----------|
-| Slash Commands | 手动 (`/cmd`) | 仅当前会话 | 单个命令 | 快捷操作 |
-| Subagents | 自动委派 | 隔离上下文 | 专门任务 | 任务拆分 |
-| Memory | 自动加载 | 跨会话 | 用户 / 团队上下文 | 长期记忆 |
-| MCP Protocol | 自动查询 | 实时外部数据 | 动态访问 | 外部数据接入 |
-| Skills | 自动触发 | 文件系统级 | 可复用专长 | 自动化工作流 |
-| Plugins | 一键安装 | 全套组合 | 团队 / 市场分发 | 完整方案打包 |
+| Slash Commands | 手動 (`/cmd`) | 僅當前會話 | 單個命令 | 快捷操作 |
+| Subagents | 自動委派 | 隔離上下文 | 專門任務 | 任務拆分 |
+| Memory | 自動載入 | 跨會話 | 使用者 / 團隊上下文 | 長期記憶 |
+| MCP Protocol | 自動查詢 | 實時外部資料 | 動態訪問 | 外部資料接入 |
+| Skills | 自動觸發 | 檔案系統級 | 可複用專長 | 自動化工作流 |
+| Plugins | 一鍵安裝 | 全套組合 | 團隊 / 市場分發 | 完整方案打包 |
 
-### 交互时间线
+### 互動時間線
 
 ```mermaid
 graph LR
@@ -1174,35 +1174,35 @@ graph LR
     E -->|Ready| F["User Interaction"]
 ```
 
-### 集成示例：客户支持自动化
+### 整合示例：客戶支援自動化
 
-#### 架构
+#### 架構
 
 ```mermaid
 graph TB
-    User["客户邮件"] -->|进入| Router["支持路由器"]
-    Router -->|分析| Memory["Memory<br/>客户历史"]
-    Router -->|查询| MCP1["MCP: 客户数据库"]
-    Router -->|检查| MCP2["MCP: Slack"]
-    Router -->|复杂问题| Sub1["Subagent: 技术支持"]
-    Router -->|简单问题| Sub2["Subagent: 计费支持"]
+    User["客戶郵件"] -->|進入| Router["支援路由器"]
+    Router -->|分析| Memory["Memory<br/>客戶歷史"]
+    Router -->|查詢| MCP1["MCP: 客戶資料庫"]
+    Router -->|檢查| MCP2["MCP: Slack"]
+    Router -->|複雜問題| Sub1["Subagent: 技術支援"]
+    Router -->|簡單問題| Sub2["Subagent: 計費支援"]
 ```
 
-#### 请求流
+#### 請求流
 
 ```markdown
-1. 用户发来报错邮件
-2. 读取记忆和历史上下文
-3. 通过多个 MCP 查询系统状态
-4. 自动识别适合的 Skill
-5. 委派给对应 Subagent
-6. Subagent 处理问题
-7. Skill 负责按统一语气生成回复
-8. MCP 将结果同步到外部系统
-9. 返回给客户
+1. 使用者發來報錯郵件
+2. 讀取記憶和歷史上下文
+3. 透過多個 MCP 查詢系統狀態
+4. 自動識別適合的 Skill
+5. 委派給對應 Subagent
+6. Subagent 處理問題
+7. Skill 負責按統一語氣生成回覆
+8. MCP 將結果同步到外部系統
+9. 返回給客戶
 ```
 
-### 完整功能编排
+### 完整功能編排
 
 ```mermaid
 sequenceDiagram
@@ -1214,37 +1214,37 @@ sequenceDiagram
     participant SubAgent as Subagents
 
     User->>Claude: "Build auth system"
-    Claude->>Memory: 加载项目标准
-    Claude->>MCP: 查询相似实现
-    Claude->>Skills: 检测匹配 Skill
-    Claude->>SubAgent: 委派实现
+    Claude->>Memory: 載入專案標準
+    Claude->>MCP: 查詢相似實現
+    Claude->>Skills: 檢測匹配 Skill
+    Claude->>SubAgent: 委派實現
 ```
 
-### 何时使用哪种功能
+### 何時使用哪種功能
 
 ```mermaid
 graph TD
-    A["新任务"] --> B{任务类型？}
+    A["新任務"] --> B{任務型別？}
 
-    B -->|重复工作流| C["Slash Command"]
-    B -->|需要实时数据| D["MCP Protocol"]
-    B -->|希望下次记住| E["Memory"]
-    B -->|需要专业子任务| F["Subagent"]
-    B -->|领域型自动化| G["Skill"]
+    B -->|重複工作流| C["Slash Command"]
+    B -->|需要實時資料| D["MCP Protocol"]
+    B -->|希望下次記住| E["Memory"]
+    B -->|需要專業子任務| F["Subagent"]
+    B -->|領域型自動化| G["Skill"]
 ```
 
-### 选择决策树
+### 選擇決策樹
 
 ```mermaid
 graph TD
-    Start["需要扩展 Claude 吗？"]
-    Start -->|快速重复任务| A{"手动还是自动？"}
-    A -->|手动| B["Slash Command"]
-    A -->|自动| C["Skill"]
-    Start -->|需要外部数据| D{"是否实时？"}
+    Start["需要擴充套件 Claude 嗎？"]
+    Start -->|快速重複任務| A{"手動還是自動？"}
+    A -->|手動| B["Slash Command"]
+    A -->|自動| C["Skill"]
+    Start -->|需要外部資料| D{"是否實時？"}
     D -->|是| E["MCP Protocol"]
     D -->|否| F["Memory"]
-    Start -->|复杂项目| G{"是否多角色协作？"}
+    Start -->|複雜專案| G{"是否多角色協作？"}
     G -->|是| H["Subagents"]
 ```
 
@@ -1252,75 +1252,75 @@ graph TD
 
 ## Summary Table
 
-| 维度 | Slash Commands | Subagents | Memory | MCP | Skills | Plugins |
+| 維度 | Slash Commands | Subagents | Memory | MCP | Skills | Plugins |
 |------|----------------|-----------|--------|-----|--------|---------|
-| 搭建难度 | 简单 | 中等 | 简单 | 中等 | 中等 | 简单 |
-| 学习曲线 | 低 | 中 | 低 | 中 | 中 | 低 |
-| 团队价值 | 高 | 高 | 中 | 高 | 高 | 很高 |
-| 自动化程度 | 低 | 高 | 中 | 高 | 高 | 很高 |
-| 上下文管理 | 单会话 | 隔离 | 持久 | 实时 | 持久 | 全部整合 |
-| 可扩展性 | 好 | 极佳 | 好 | 极佳 | 极佳 | 极佳 |
-| 共享性 | 一般 | 一般 | 好 | 好 | 好 | 极佳 |
-| 安装方式 | 手动复制 | 手动配置 | N/A | 手动配置 | 手动复制 | 一条命令 |
+| 搭建難度 | 簡單 | 中等 | 簡單 | 中等 | 中等 | 簡單 |
+| 學習曲線 | 低 | 中 | 低 | 中 | 中 | 低 |
+| 團隊價值 | 高 | 高 | 中 | 高 | 高 | 很高 |
+| 自動化程度 | 低 | 高 | 中 | 高 | 高 | 很高 |
+| 上下文管理 | 單會話 | 隔離 | 持久 | 實時 | 持久 | 全部整合 |
+| 可擴充套件性 | 好 | 極佳 | 好 | 極佳 | 極佳 | 極佳 |
+| 共享性 | 一般 | 一般 | 好 | 好 | 好 | 極佳 |
+| 安裝方式 | 手動複製 | 手動配置 | N/A | 手動配置 | 手動複製 | 一條命令 |
 
 ---
 
 ## Quick Start Guide
 
-### 第 1 周：先从简单的开始
-- 为常见任务做 2-3 个 slash commands
-- 在设置里开启 Memory
-- 在 `CLAUDE.md` 里写明团队标准
+### 第 1 周：先從簡單的開始
+- 為常見任務做 2-3 個 slash commands
+- 在設定裡開啟 Memory
+- 在 `CLAUDE.md` 裡寫明團隊標準
 
-### 第 2 周：接入实时数据
-- 先配置 1 个 MCP（GitHub 或 Database）
-- 通过 `/mcp` 配置
-- 在工作流中查询实时数据
+### 第 2 周：接入實時資料
+- 先配置 1 個 MCP（GitHub 或 Database）
+- 透過 `/mcp` 配置
+- 在工作流中查詢實時資料
 
-### 第 3 周：分发工作
-- 创建第一个针对角色的 Subagent
+### 第 3 周：分發工作
+- 建立第一個針對角色的 Subagent
 - 使用 `/agents`
-- 用简单任务测试委派
+- 用簡單任務測試委派
 
-### 第 4 周：全面自动化
-- 创建第一个 Skill
-- 使用市场里的 Skill 或自建
-- 组合多个功能做完整工作流
+### 第 4 周：全面自動化
+- 建立第一個 Skill
+- 使用市場裡的 Skill 或自建
+- 組合多個功能做完整工作流
 
-### 持续优化
-- 每月回顾并更新 Memory
-- 当重复模式出现时新增 Skill
-- 优化 MCP 查询
-- 持续打磨 Subagent 提示词
+### 持續最佳化
+- 每月回顧並更新 Memory
+- 當重複模式出現時新增 Skill
+- 最佳化 MCP 查詢
+- 持續打磨 Subagent 提示詞
 
 ---
 
 ## Hooks
 
-### 概览
+### 概覽
 
-Hooks 是事件驱动的 shell 命令，会在 Claude Code 的特定事件发生时自动执行，可用于自动化、校验、通知和自定义工作流。
+Hooks 是事件驅動的 shell 命令，會在 Claude Code 的特定事件發生時自動執行，可用於自動化、校驗、通知和自定義工作流。
 
 ### Hook 事件
 
-Claude Code 支持 **25 个 hook 事件**，分布在四类钩子中：
+Claude Code 支援 **25 個 hook 事件**，分佈在四類鉤子中：
 
-| Hook 事件 | 触发时机 | 常见用途 |
+| Hook 事件 | 觸發時機 | 常見用途 |
 |-----------|----------|----------|
-| SessionStart | 会话开始 / 恢复 / 清空 / compact | 环境初始化 |
-| InstructionsLoaded | 加载 `CLAUDE.md` 或 rules | 校验、增强 |
-| UserPromptSubmit | 用户提交提示词 | 输入校验 |
-| PreToolUse | 工具执行前 | 审批、校验、日志 |
-| PermissionRequest | 弹出权限请求时 | 自动批准 / 拒绝 |
-| PostToolUse | 工具执行成功后 | 自动格式化、通知、清理 |
-| PostToolUseFailure | 工具失败后 | 错误处理 |
-| Notification | 通知发送时 | 外部联动 |
-| SubagentStart | 启动 subagent 时 | 注入上下文 |
-| SubagentStop | subagent 结束时 | 结果校验 |
-| Stop | Claude 响应完成时 | 总结、清理 |
-| SessionEnd | 会话结束时 | 收尾处理 |
+| SessionStart | 會話開始 / 恢復 / 清空 / compact | 環境初始化 |
+| InstructionsLoaded | 載入 `CLAUDE.md` 或 rules | 校驗、增強 |
+| UserPromptSubmit | 使用者提交提示詞 | 輸入校驗 |
+| PreToolUse | 工具執行前 | 審批、校驗、日誌 |
+| PermissionRequest | 彈出許可權請求時 | 自動批准 / 拒絕 |
+| PostToolUse | 工具執行成功後 | 自動格式化、通知、清理 |
+| PostToolUseFailure | 工具失敗後 | 錯誤處理 |
+| Notification | 通知傳送時 | 外部聯動 |
+| SubagentStart | 啟動 subagent 時 | 注入上下文 |
+| SubagentStop | subagent 結束時 | 結果校驗 |
+| Stop | Claude 響應完成時 | 總結、清理 |
+| SessionEnd | 會話結束時 | 收尾處理 |
 
-### 常见 Hook 配置
+### 常見 Hook 配置
 
 ```json
 {
@@ -1340,69 +1340,69 @@ Claude Code 支持 **25 个 hook 事件**，分布在四类钩子中：
 }
 ```
 
-### Hook 环境变量
+### Hook 環境變數
 
-- `$CLAUDE_FILE_PATH`：当前被写入 / 编辑的文件
+- `$CLAUDE_FILE_PATH`：當前被寫入 / 編輯的檔案
 - `$CLAUDE_TOOL_NAME`：正在使用的工具名
-- `$CLAUDE_SESSION_ID`：当前会话 ID
-- `$CLAUDE_PROJECT_DIR`：项目目录路径
+- `$CLAUDE_SESSION_ID`：當前會話 ID
+- `$CLAUDE_PROJECT_DIR`：專案目錄路徑
 
-### 最佳实践
+### 最佳實踐
 
-✅ 建议：
-- 让 hooks 尽量快（最好 < 1 秒）
-- 用 hooks 做校验和自动化
-- 优雅处理错误
-- 使用绝对路径
+✅ 建議：
+- 讓 hooks 儘量快（最好 < 1 秒）
+- 用 hooks 做校驗和自動化
+- 優雅處理錯誤
+- 使用絕對路徑
 
-❌ 不建议：
-- 让 hooks 进入交互式流程
-- 把长时间任务放在 hooks 里
-- 硬编码凭据
+❌ 不建議：
+- 讓 hooks 進入互動式流程
+- 把長時間任務放在 hooks 裡
+- 硬編碼憑據
 
-**详见：** [06-hooks/README.md](06-hooks/README.md)
+**詳見：** [06-hooks/README.md](06-hooks/README.md)
 
 ---
 
 ## Checkpoints and Rewind
 
-### 概览
+### 概覽
 
-Checkpoints 可以保存会话状态，并在需要时回退到之前的节点，从而安全地尝试不同方案。
+Checkpoints 可以儲存會話狀態，並在需要時回退到之前的節點，從而安全地嘗試不同方案。
 
 ### 核心概念
 
-| 概念 | 说明 |
+| 概念 | 說明 |
 |------|------|
-| Checkpoint | 对消息、文件和上下文的快照 |
-| Rewind | 回到某个历史 checkpoint，并丢弃之后的变化 |
-| Branch Point | 从同一个 checkpoint 分叉出多种方案 |
+| Checkpoint | 對訊息、檔案和上下文的快照 |
+| Rewind | 回到某個歷史 checkpoint，並丟棄之後的變化 |
+| Branch Point | 從同一個 checkpoint 分叉出多種方案 |
 
-### 如何访问 Checkpoints
+### 如何訪問 Checkpoints
 
 ```bash
-# 按两次 Esc 打开 checkpoint 浏览器
+# 按兩次 Esc 開啟 checkpoint 瀏覽器
 Esc + Esc
 
 # 或使用 /rewind
 /rewind
 ```
 
-选择 checkpoint 后有五个选项：
-1. 恢复代码和对话
-2. 恢复对话
-3. 恢复代码
-4. 从这里开始总结
+選擇 checkpoint 後有五個選項：
+1. 恢復程式碼和對話
+2. 恢復對話
+3. 恢復程式碼
+4. 從這裡開始總結
 5. 取消
 
-### 常见场景
+### 常見場景
 
-| 场景 | 工作流 |
+| 場景 | 工作流 |
 |------|--------|
-| 探索不同方案 | 保存 → 尝试 A → 保存 → 回退 → 尝试 B |
-| 安全重构 | 保存 → 重构 → 测试 → 失败就回退 |
-| A/B 测试 | 保存 → 设计 A → 保存 → 回退 → 设计 B |
-| 误操作恢复 | 发现问题 → 回退到最近稳定状态 |
+| 探索不同方案 | 儲存 → 嘗試 A → 儲存 → 回退 → 嘗試 B |
+| 安全重構 | 儲存 → 重構 → 測試 → 失敗就回退 |
+| A/B 測試 | 儲存 → 設計 A → 儲存 → 回退 → 設計 B |
+| 誤操作恢復 | 發現問題 → 回退到最近穩定狀態 |
 
 ### 配置
 
@@ -1412,7 +1412,7 @@ Esc + Esc
 }
 ```
 
-**详见：** [08-checkpoints/README.md](08-checkpoints/README.md)
+**詳見：** [08-checkpoints/README.md](08-checkpoints/README.md)
 
 ---
 
@@ -1420,21 +1420,21 @@ Esc + Esc
 
 ### Planning Mode
 
-在编码前先生成详细实现计划。
+在編碼前先生成詳細實現計劃。
 
 ```bash
 /plan Implement user authentication system
 ```
 
-优势：
-- 清晰路线图
-- 时间预估
-- 风险评估
-- 可审查、可修改
+優勢：
+- 清晰路線圖
+- 時間預估
+- 風險評估
+- 可審查、可修改
 
 ### Extended Thinking
 
-适合复杂问题的深度推理。
+適合複雜問題的深度推理。
 
 ```bash
 export MAX_THINKING_TOKENS=50000
@@ -1443,7 +1443,7 @@ claude -p "Should we use microservices or monolith?"
 
 ### Background Tasks
 
-后台执行长任务而不阻塞当前对话。
+後臺執行長任務而不阻塞當前對話。
 
 ```bash
 /task list
@@ -1454,18 +1454,18 @@ claude -p "Should we use microservices or monolith?"
 
 ### Permission Modes
 
-| 模式 | 说明 | 适用场景 |
+| 模式 | 說明 | 適用場景 |
 |------|------|----------|
-| `default` | 标准权限模式 | 通用开发 |
-| `acceptEdits` | 自动接受文件编辑 | 信任编辑工作流 |
-| `plan` | 只分析不改文件 | 审查、规划 |
-| `auto` | 自动批准安全操作 | 平衡自治与安全 |
-| `dontAsk` | 不再提示确认 | 资深用户 / 自动化 |
-| `bypassPermissions` | 完全不受限 | CI/CD、可信脚本 |
+| `default` | 標準許可權模式 | 通用開發 |
+| `acceptEdits` | 自動接受檔案編輯 | 信任編輯工作流 |
+| `plan` | 只分析不改檔案 | 審查、規劃 |
+| `auto` | 自動批准安全操作 | 平衡自治與安全 |
+| `dontAsk` | 不再提示確認 | 資深使用者 / 自動化 |
+| `bypassPermissions` | 完全不受限 | CI/CD、可信指令碼 |
 
 ### Headless Mode（Print Mode）
 
-使用 `-p` 标志在无交互模式下运行 Claude Code，适合自动化和 CI/CD。
+使用 `-p` 標誌在無互動模式下執行 Claude Code，適合自動化和 CI/CD。
 
 ```bash
 claude -p "Run all tests"
@@ -1475,7 +1475,7 @@ claude -p --output-format json "list all functions in src/"
 
 ### Scheduled Tasks
 
-通过 `/loop` 按计划周期性运行任务：
+透過 `/loop` 按計劃週期性執行任務：
 
 ```bash
 /loop every 30m "Run tests and report failures"
@@ -1485,7 +1485,7 @@ claude -p --output-format json "list all functions in src/"
 
 ### Chrome Integration
 
-Claude Code 可以与 Chrome 浏览器集成，用于网页自动化，如导航页面、填写表单、截图和提取页面数据。
+Claude Code 可以與 Chrome 瀏覽器整合，用於網頁自動化，如導航頁面、填寫表單、截圖和提取頁面資料。
 
 ### Session Management
 
@@ -1499,9 +1499,9 @@ claude -r "Feature"
 
 ### Interactive Features
 
-- `Ctrl + R`：搜索命令历史
-- `Tab`：自动补全
-- `↑ / ↓`：浏览历史
+- `Ctrl + R`：搜尋命令歷史
+- `Tab`：自動補全
+- `↑ / ↓`：瀏覽歷史
 - `Ctrl + L`：清屏
 
 ### 配置
@@ -1522,7 +1522,7 @@ claude -r "Feature"
 }
 ```
 
-**详见：** [09-advanced-features/README.md](09-advanced-features/README.md)
+**詳見：** [09-advanced-features/README.md](09-advanced-features/README.md)
 
 ---
 
@@ -1535,6 +1535,6 @@ claude -r "Feature"
 
 ---
 
-*最后更新：2026 年 3 月*
-*适用于 Claude Haiku 4.5、Sonnet 4.6、Opus 4.6*
-*现已覆盖：Hooks、Checkpoints、Planning Mode、Extended Thinking、Background Tasks、Permission Modes、Headless Mode、Session Management、Auto Memory、Agent Teams、Scheduled Tasks、Chrome Integration、Bundled Skills 等概念。*
+*最後更新：2026 年 3 月*
+*適用於 Claude Haiku 4.5、Sonnet 4.6、Opus 4.6*
+*現已覆蓋：Hooks、Checkpoints、Planning Mode、Extended Thinking、Background Tasks、Permission Modes、Headless Mode、Session Management、Auto Memory、Agent Teams、Scheduled Tasks、Chrome Integration、Bundled Skills 等概念。*

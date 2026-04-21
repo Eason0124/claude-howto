@@ -1,36 +1,36 @@
 ---
 name: api-documentation-generator
-description: 从源代码生成全面且准确的 API 文档。适用于创建或更新 API 文档、生成 OpenAPI 规范，或在用户提到 API 文档、端点或说明时使用。
+description: 從原始碼生成全面且準確的 API 檔案。適用於建立或更新 API 檔案、生成 OpenAPI 規範，或在使用者提到 API 檔案、端點或說明時使用。
 ---
 
-# API 文档生成 Skill
+# API 檔案生成 Skill
 
-## 可生成内容
+## 可生成內容
 
-- OpenAPI / Swagger 规范
-- API 端点文档
+- OpenAPI / Swagger 規範
+- API 端點檔案
 - SDK 使用示例
-- 集成指南
-- 错误码参考
-- 认证指南
+- 整合指南
+- 錯誤碼參考
+- 認證指南
 
-## 文档结构
+## 檔案結構
 
-### 每个端点的写法
+### 每個端點的寫法
 
 ```markdown
 ## GET /api/v1/users/:id
 
 ### 描述
-简要说明这个端点做什么
+簡要說明這個端點做什麼
 
-### 参数
+### 引數
 
-| 名称 | 类型 | 必填 | 说明 |
+| 名稱 | 型別 | 必填 | 說明 |
 |------|------|------|------|
-| id | string | 是 | 用户 ID |
+| id | string | 是 | 使用者 ID |
 
-### 响应
+### 響應
 
 **200 成功**
 ```json

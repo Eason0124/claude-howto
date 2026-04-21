@@ -1,25 +1,25 @@
 ---
-name: 设置 CI/CD 流水线
-description: 实现 pre-commit hooks 和 GitHub Actions 质量保障
+name: 設定 CI/CD 流水線
+description: 實現 pre-commit hooks 和 GitHub Actions 質量保障
 tags: ci-cd, devops, automation
 ---
 
-# 设置 CI/CD 流水线
+# 設定 CI/CD 流水線
 
-根据项目类型实现完整的 DevOps 质量门禁：
+根據專案型別實現完整的 DevOps 質量門禁：
 
-1. **分析项目**：检测语言、框架、构建系统和现有工具链
-2. **配置 pre-commit hooks**，使用与语言匹配的工具：
+1. **分析專案**：檢測語言、框架、構建系統和現有工具鏈
+2. **配置 pre-commit hooks**，使用與語言匹配的工具：
    - 格式化：Prettier/Black/gofmt/rustfmt 等
-   - 代码检查：ESLint/Ruff/golangci-lint/Clippy 等
+   - 程式碼檢查：ESLint/Ruff/golangci-lint/Clippy 等
    - 安全：Bandit/gosec/cargo-audit/npm audit 等
-   - 类型检查：TypeScript/mypy/flow（如适用）
-   - 测试：运行相关测试套件
-3. **创建 GitHub Actions 工作流**（`.github/workflows/`）：
-   - 在 push/PR 时镜像 pre-commit 检查
-   - 多版本/多平台矩阵（如适用）
-   - 构建和测试验证
-   - 部署步骤（如需要）
-4. **验证流水线**：本地测试、创建测试 PR，确认所有检查都通过
+   - 型別檢查：TypeScript/mypy/flow（如適用）
+   - 測試：執行相關測試套件
+3. **建立 GitHub Actions 工作流**（`.github/workflows/`）：
+   - 在 push/PR 時映象 pre-commit 檢查
+   - 多版本/多平臺矩陣（如適用）
+   - 構建和測試驗證
+   - 部署步驟（如需要）
+4. **驗證流水線**：本地測試、建立測試 PR，確認所有檢查都透過
 
-使用免费/开源工具。尊重已有配置。保持执行快速。
+使用免費/開源工具。尊重已有配置。保持執行快速。

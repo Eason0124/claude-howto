@@ -1,88 +1,88 @@
-# 项目配置
+# 專案配置
 
-## 项目概览
-- **名称**：电商平台
-- **技术栈**：Node.js、PostgreSQL、React 18、Docker
-- **团队规模**：5 名开发者
-- **截止时间**：2025 年第 4 季度
+## 專案概覽
+- **名稱**：電商平臺
+- **技術棧**：Node.js、PostgreSQL、React 18、Docker
+- **團隊規模**：5 名開發者
+- **截止時間**：2025 年第 4 季度
 
-## 架构
+## 架構
 @docs/architecture.md
 @docs/api-standards.md
 @docs/database-schema.md
 
-## 开发规范
+## 開發規範
 
-### 代码风格
+### 程式碼風格
 - 使用 Prettier 格式化
-- 使用带 airbnb 配置的 ESLint
-- 最大行长度：100 字符
-- 使用 2 空格缩进
+- 使用帶 airbnb 配置的 ESLint
+- 最大行長度：100 字元
+- 使用 2 空格縮排
 
-### 命名规范
-- **文件**：kebab-case（`user-controller.js`）
-- **类**：PascalCase（`UserService`）
-- **函数 / 变量**：camelCase（`getUserById`）
+### 命名規範
+- **檔案**：kebab-case（`user-controller.js`）
+- **類**：PascalCase（`UserService`）
+- **函式 / 變數**：camelCase（`getUserById`）
 - **常量**：UPPER_SNAKE_CASE（`API_BASE_URL`）
-- **数据库表**：snake_case（`user_accounts`）
+- **資料庫表**：snake_case（`user_accounts`）
 
 ### Git 工作流
 - 分支命名：`feature/description` 或 `fix/description`
-- 提交信息：遵循 conventional commits
-- 合并前必须有 PR
-- 所有 CI/CD 检查都必须通过
-- 至少需要 1 个 approval
+- 提交資訊：遵循 conventional commits
+- 合併前必須有 PR
+- 所有 CI/CD 檢查都必須透過
+- 至少需要 1 個 approval
 
-### 测试要求
-- 最低 80% 代码覆盖率
-- 所有关键路径都必须有测试
-- 单元测试使用 Jest
-- E2E 测试使用 Cypress
-- 测试文件名：`*.test.ts` 或 `*.spec.ts`
+### 測試要求
+- 最低 80% 程式碼覆蓋率
+- 所有關鍵路徑都必須有測試
+- 單元測試使用 Jest
+- E2E 測試使用 Cypress
+- 測試檔名：`*.test.ts` 或 `*.spec.ts`
 
-### API 规范
-- 只允许 RESTful 端点
-- 请求 / 响应都使用 JSON
-- 正确使用 HTTP 状态码
-- API 版本路径：`/api/v1/`
-- 所有端点都要带示例文档
+### API 規範
+- 只允許 RESTful 端點
+- 請求 / 響應都使用 JSON
+- 正確使用 HTTP 狀態碼
+- API 版本路徑：`/api/v1/`
+- 所有端點都要帶示例檔案
 
-### 数据库
-- schema 变更使用 migrations
-- 绝不硬编码凭据
-- 使用连接池
-- 开发环境启用查询日志
-- 需要定期备份
+### 資料庫
+- schema 變更使用 migrations
+- 絕不硬編碼憑據
+- 使用連線池
+- 開發環境啟用查詢日誌
+- 需要定期備份
 
 ### 部署
-- 基于 Docker 的部署
-- 使用 Kubernetes 编排
-- 蓝绿部署策略
-- 失败时自动回滚
-- 部署前先执行数据库迁移
+- 基於 Docker 的部署
+- 使用 Kubernetes 編排
+- 藍綠部署策略
+- 失敗時自動回滾
+- 部署前先執行資料庫遷移
 
 ## 常用命令
 
 | 命令 | 作用 |
 |---------|---------|
-| `npm run dev` | 启动开发服务器 |
-| `npm test` | 运行测试套件 |
-| `npm run lint` | 检查代码风格 |
-| `npm run build` | 构建生产版本 |
-| `npm run migrate` | 执行数据库迁移 |
+| `npm run dev` | 啟動開發伺服器 |
+| `npm test` | 執行測試套件 |
+| `npm run lint` | 檢查程式碼風格 |
+| `npm run build` | 構建生產版本 |
+| `npm run migrate` | 執行資料庫遷移 |
 
-## 团队联系人
-- 技术负责人：Sarah Chen（@sarah.chen）
-- 产品经理：Mike Johnson（@mike.j）
-- 运维：Alex Kim（@alex.k）
+## 團隊聯絡人
+- 技術負責人：Sarah Chen（@sarah.chen）
+- 產品經理：Mike Johnson（@mike.j）
+- 運維：Alex Kim（@alex.k）
 
-## 已知问题与解决方案
-- PostgreSQL 连接池在高峰期限制为 20
-- 解决方法：实现查询排队
-- Safari 14 对 async generator 的兼容性有问题
-- 解决方法：使用 Babel 转译器
+## 已知問題與解決方案
+- PostgreSQL 連線池在高峰期限制為 20
+- 解決方法：實現查詢排隊
+- Safari 14 對 async generator 的相容性有問題
+- 解決方法：使用 Babel 轉譯器
 
-## 关联项目
-- 分析仪表盘：`/projects/analytics`
-- 移动端 App：`/projects/mobile`
-- 管理后台：`/projects/admin`
+## 關聯專案
+- 分析儀表盤：`/projects/analytics`
+- 移動端 App：`/projects/mobile`
+- 管理後臺：`/projects/admin`

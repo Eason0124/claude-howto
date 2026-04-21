@@ -3,89 +3,89 @@
   <img alt="Claude How To" src="../resources/logos/claude-howto-logo.svg">
 </picture>
 
-# Subagents 完整参考
+# Subagents 完整參考
 
-## 概览
+## 概覽
 
-Subagents 是专门处理某类任务的独立 AI 助手。它们拥有隔离的上下文、自己的提示词和工具权限，适合把复杂工作拆分给不同角色。
+Subagents 是專門處理某類任務的獨立 AI 助手。它們擁有隔離的上下文、自己的提示詞和工具許可權，適合把複雜工作拆分給不同角色。
 
-## 主要好处
+## 主要好處
 
-- 上下文隔离
+- 上下文隔離
 - 角色分工清晰
-- 适合并行和委派
-- 便于把复杂任务拆开
+- 適合並行和委派
+- 便於把複雜任務拆開
 
-## 文件位置
+## 檔案位置
 
-- 项目级：`.claude/agents/`
-- 用户级：`~/.claude/agents/`
+- 專案級：`.claude/agents/`
+- 使用者級：`~/.claude/agents/`
 
 ## 配置
 
-### 文件格式
+### 檔案格式
 
-Subagent 通常是一个带 frontmatter 的 Markdown 文件。
+Subagent 通常是一個帶 frontmatter 的 Markdown 檔案。
 
 ```yaml
 ---
 name: code-reviewer
-description: 审查代码质量和安全问题
+description: 審查程式碼質量和安全問題
 tools: Read, Grep, Bash
 ---
 
 # Code Reviewer
 ```
 
-### 配置字段
+### 配置欄位
 
-| 字段 | 说明 |
+| 欄位 | 說明 |
 |------|------|
-| `name` | subagent 名称 |
-| `description` | 何时该调用它 |
-| `tools` | 允许使用的工具 |
+| `name` | subagent 名稱 |
+| `description` | 何時該呼叫它 |
+| `tools` | 允許使用的工具 |
 | `model` | 指定模型 |
-| `prompt` | 任务提示词 |
+| `prompt` | 任務提示詞 |
 | `context` | 上下文策略 |
 
-### 工具配置选项
+### 工具配置選項
 
-- 只读审查
+- 只讀審查
 - 限制 Bash
-- 允许更强工具集
+- 允許更強工具集
 
-### 基于 CLI 的配置
+### 基於 CLI 的配置
 
-你也可以通过命令行或设置文件定义 subagent。
+你也可以透過命令列或設定檔案定義 subagent。
 
-## 内置 Subagents
+## 內建 Subagents
 
-Claude Code 自带一些常见角色，例如：
+Claude Code 自帶一些常見角色，例如：
 
 - 通用助手
 - Planning agent
 - Explore agent
 - Bash agent
-- Statusline 相关 agent
+- Statusline 相關 agent
 - Claude Code Guide agent
 
 ## 管理 Subagents
 
-### 使用 `/agents` 命令（推荐）
+### 使用 `/agents` 命令（推薦）
 
 ```bash
 /agents
 ```
 
-### 直接管理文件
+### 直接管理檔案
 
-#### 创建项目 subagent
+#### 建立專案 subagent
 
 ```bash
 mkdir -p .claude/agents
 ```
 
-#### 创建用户 subagent
+#### 建立使用者 subagent
 
 ```bash
 mkdir -p ~/.claude/agents
@@ -93,21 +93,21 @@ mkdir -p ~/.claude/agents
 
 ## 使用 Subagents
 
-### 自动委派
+### 自動委派
 
-主 agent 可以根据任务描述自动把工作分配给合适的 subagent。
+主 agent 可以根據任務描述自動把工作分配給合適的 subagent。
 
-### 显式调用
+### 顯式呼叫
 
-你也可以明确让 Claude 使用某个 subagent。
+你也可以明確讓 Claude 使用某個 subagent。
 
-### `@` 提及调用
+### `@` 提及呼叫
 
-在一些场景里，可以通过 `@agent-name` 方式引用。
+在一些場景裡，可以透過 `@agent-name` 方式引用。
 
-### 会话级 agent
+### 會話級 agent
 
-可以在整个会话中固定使用某个 agent。
+可以在整個會話中固定使用某個 agent。
 
 ### 列出可用 agents
 
@@ -115,221 +115,221 @@ mkdir -p ~/.claude/agents
 claude agents
 ```
 
-## 可恢复的 agents
+## 可恢復的 agents
 
-某些 subagent 可以先启动，之后再恢复，便于长任务接力。
+某些 subagent 可以先啟動，之後再恢復，便於長任務接力。
 
-## 串联 Subagents
+## 串聯 Subagents
 
-复杂任务里可以让多个 subagent 依次协作，例如：
+複雜任務裡可以讓多個 subagent 依次協作，例如：
 
-1. 代码审查
-2. 测试生成
-3. 文档更新
+1. 程式碼審查
+2. 測試生成
+3. 檔案更新
 
-## Subagents 的持久记忆
+## Subagents 的持久記憶
 
-Subagents 可以拥有自己的 memory 范围，让它们在各自职责内保持一致。
+Subagents 可以擁有自己的 memory 範圍，讓它們在各自職責內保持一致。
 
-### Memory 范围
+### Memory 範圍
 
-- 项目级
-- 用户级
-- 子目录级
-
-### 工作方式
-
-Subagent 会在自己的上下文中读取对应记忆，不和主会话完全混在一起。
-
-## 后台 Subagents
-
-### 配置
-
-有些 subagent 可以作为后台任务执行，不阻塞主会话。
-
-### 快捷键
-
-在支持的界面中，可用快捷键查看或切换后台 subagent。
-
-### 关闭后台任务
-
-如果你不想让任务后台运行，可以在设置中关闭。
-
-## Worktree 隔离
-
-### 配置
-
-可以为 subagent 分配独立的 worktree。
+- 專案級
+- 使用者級
+- 子目錄級
 
 ### 工作方式
 
-这样不同任务就不会互相污染文件状态。
+Subagent 會在自己的上下文中讀取對應記憶，不和主會話完全混在一起。
 
-## 限制可启动的 Subagents
+## 後臺 Subagents
 
-你可以限制 Claude 只能 spawn 某些 subagent，以降低风险。
+### 配置
+
+有些 subagent 可以作為後臺任務執行，不阻塞主會話。
+
+### 快捷鍵
+
+在支援的介面中，可用快捷鍵檢視或切換後臺 subagent。
+
+### 關閉後臺任務
+
+如果你不想讓任務後臺執行，可以在設定中關閉。
+
+## Worktree 隔離
+
+### 配置
+
+可以為 subagent 分配獨立的 worktree。
+
+### 工作方式
+
+這樣不同任務就不會互相汙染檔案狀態。
+
+## 限制可啟動的 Subagents
+
+你可以限制 Claude 只能 spawn 某些 subagent，以降低風險。
 
 ### 示例
 
-- 只允许审查类 agent
-- 禁止高风险自动化 agent
+- 只允許審查類 agent
+- 禁止高風險自動化 agent
 
 ## `claude agents` CLI 命令
 
-用于查看和管理当前可用的 agent。
+用於檢視和管理當前可用的 agent。
 
-## Agent Teams（实验性）
+## Agent Teams（實驗性）
 
-Agent teams 是更高级的协作模式，适合多个 subagent 并行处理复杂任务。
+Agent teams 是更高階的協作模式，適合多個 subagent 並行處理複雜任務。
 
 ### Subagents vs Agent Teams
 
-- Subagents 侧重委派单个任务
-- Agent teams 侧重多角色协作
+- Subagents 側重委派單個任務
+- Agent teams 側重多角色協作
 
-### 启用 Agent Teams
+### 啟用 Agent Teams
 
-通过设置打开实验性功能。
+透過設定開啟實驗性功能。
 
-### 启动团队
+### 啟動團隊
 
-团队模式会把不同任务分配给不同角色。
+團隊模式會把不同任務分配給不同角色。
 
-### 显示模式
+### 顯示模式
 
-可以选择更适合终端或图形界面的显示方式。
+可以選擇更適合終端或圖形介面的顯示方式。
 
-### 导航
+### 導航
 
-你可以在 team 中切换角色、查看状态和读取消息。
+你可以在 team 中切換角色、檢視狀態和讀取訊息。
 
-### 团队配置
+### 團隊配置
 
-适合为大型流程定义清晰角色。
+適合為大型流程定義清晰角色。
 
-### 架构
+### 架構
 
-agent team 本质上是多个专门角色围绕同一任务协作。
+agent team 本質上是多個專門角色圍繞同一任務協作。
 
-### 任务分配与消息
+### 任務分配與訊息
 
-主 agent 会负责把任务拆分并转发给对应 subagent。
+主 agent 會負責把任務拆分並轉發給對應 subagent。
 
-### 计划审批流程
+### 計劃審批流程
 
-如果是 plan 驱动流程，团队会先审计划再执行。
+如果是 plan 驅動流程，團隊會先審計劃再執行。
 
-### 团队相关 hook 事件
+### 團隊相關 hook 事件
 
-一些 hook 可以在 team 生命周期里触发。
+一些 hook 可以在 team 生命週期裡觸發。
 
-### 最佳实践
+### 最佳實踐
 
-- 角色定义要清楚
-- 任务边界要明确
-- 不要让多个 agent 做重复工作
+- 角色定義要清楚
+- 任務邊界要明確
+- 不要讓多個 agent 做重複工作
 
-### 局限
+### 侷限
 
-- 实验性功能可能会变化
-- 复杂团队需要更多配置
+- 實驗性功能可能會變化
+- 複雜團隊需要更多配置
 
-## 插件中的 Subagent 安全
+## 外掛中的 Subagent 安全
 
-插件分发的 subagent 要特别注意权限、工具范围和边界条件。
+外掛分發的 subagent 要特別注意許可權、工具範圍和邊界條件。
 
-## 架构
+## 架構
 
-### 高层架构
+### 高層架構
 
-主 agent、subagent、文件系统和工具权限共同构成执行链。
+主 agent、subagent、檔案系統和工具許可權共同構成執行鏈。
 
-### 生命周期
+### 生命週期
 
-1. 创建
-2. 分配任务
-3. 执行
-4. 返回结果
-5. 结束或恢复
+1. 建立
+2. 分配任務
+3. 執行
+4. 返回結果
+5. 結束或恢復
 
 ## 上下文管理
 
-### 关键点
+### 關鍵點
 
-- 子上下文尽量小
-- 让每个 subagent 只负责自己的事
-- 避免把所有信息都塞进去
+- 子上下文儘量小
+- 讓每個 subagent 只負責自己的事
+- 避免把所有資訊都塞進去
 
-### 性能考虑
+### 效能考慮
 
-过多的上下文会拖慢速度并降低准确性。
+過多的上下文會拖慢速度並降低準確性。
 
-### 关键行为
+### 關鍵行為
 
-subagent 在隔离上下文里工作，但仍能把结果汇总回主会话。
+subagent 在隔離上下文裡工作，但仍能把結果彙總回主會話。
 
-## 什么时候使用 Subagents
+## 什麼時候使用 Subagents
 
-- 任务可拆分
-- 需要隔离上下文
-- 需要明确角色分工
-- 需要并行协作
+- 任務可拆分
+- 需要隔離上下文
+- 需要明確角色分工
+- 需要並行協作
 
-## 最佳实践
+## 最佳實踐
 
-### 设计原则
+### 設計原則
 
-- 单一职责
-- 描述明确
-- 工具权限最小化
+- 單一職責
+- 描述明確
+- 工具許可權最小化
 
-### System Prompt 最佳实践
+### System Prompt 最佳實踐
 
-- 任务说明要具体
-- 不要写太长
-- 只保留执行任务所需的信息
+- 任務說明要具體
+- 不要寫太長
+- 只保留執行任務所需的資訊
 
-### 工具访问策略
+### 工具訪問策略
 
-- 审查型 subagent 只读
-- 实现型 subagent 适度开放写权限
-- 高风险动作要保持审批
+- 審查型 subagent 只讀
+- 實現型 subagent 適度開放寫許可權
+- 高風險動作要保持審批
 
-## 本目录中的示例 Subagents
+## 本目錄中的示例 Subagents
 
 ### 1. [Code Reviewer](./code-reviewer.md)
 
-用于全面代码质量审查。
+用於全面程式碼質量審查。
 
 ### 2. [Test Engineer](./test-engineer.md)
 
-用于测试策略、覆盖率和测试生成。
+用於測試策略、覆蓋率和測試生成。
 
 ### 3. [Documentation Writer](./documentation-writer.md)
 
-用于技术文档写作和更新。
+用於技術檔案寫作和更新。
 
 ### 4. [Secure Reviewer](./secure-reviewer.md)
 
-用于安全检查，通常只读。
+用於安全檢查，通常只讀。
 
 ### 5. [Implementation Agent](./implementation-agent.md)
 
-用于功能实现和代码修改。
+用於功能實現和程式碼修改。
 
 ### 6. [Debugger](./debugger.md)
 
-用于定位 bug 和分析异常。
+用於定位 bug 和分析異常。
 
 ### 7. [Data Scientist](./data-scientist.md)
 
-用于分析数据、解释结果和生成报告。
+用於分析資料、解釋結果和生成報告。
 
 ### 8. [Clean Code Reviewer](./clean-code-reviewer.md)
 
-用于按 Clean Code 原则做专门审查。
+用於按 Clean Code 原則做專門審查。
 
-## 安装说明
+## 安裝說明
 
 ### 方法 1：使用 `/agents`
 
@@ -337,27 +337,27 @@ subagent 在隔离上下文里工作，但仍能把结果汇总回主会话。
 /agents
 ```
 
-### 方法 2：复制到项目
+### 方法 2：複製到專案
 
 ```bash
 mkdir -p .claude/agents
 cp 04-subagents/*.md .claude/agents/
 ```
 
-### 方法 3：复制到用户目录
+### 方法 3：複製到使用者目錄
 
 ```bash
 mkdir -p ~/.claude/agents
 cp 04-subagents/*.md ~/.claude/agents/
 ```
 
-### 验证
+### 驗證
 
-- 运行 `/agents`
-- 检查对应 agent 是否出现在列表中
-- 试着让 Claude 委派一个简单任务
+- 執行 `/agents`
+- 檢查對應 agent 是否出現在列表中
+- 試著讓 Claude 委派一個簡單任務
 
-## 文件结构
+## 檔案結構
 
 ```text
 .claude/agents/
@@ -372,7 +372,7 @@ cp 04-subagents/*.md ~/.claude/agents/
 └── README.md
 ```
 
-## 相关概念
+## 相關概念
 
 - [Skills 中文指南](../03-skills/README.md)
 - [Memory 中文指南](../02-memory/README.md)
