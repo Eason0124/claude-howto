@@ -5,9 +5,19 @@
 
 # CLI 參考
 
+> 🔎 **權威速查**:[flags-reference.md](flags-reference.md) 依官方 cli-reference 整理完整 flag 對照表。若本檔與該檔衝突,以 `flags-reference.md` 為準。
+> 📖 **Print 模式深度用法**:[print-mode.md](print-mode.md)。
+>
+> **已知本檔歷史性失準**(請以 `flags-reference.md` 為準):
+> - `--enable-auto-mode` 已在 v2.1.111 移除,用 `--permission-mode auto` 取代
+> - `--mcp-list`、`--mcp` 官方沒有,用 `claude mcp list` / `claude mcp add` 子命令
+> - `--working-directory` 官方沒有,用 `--add-dir` 或 `cd` 後啟動 `claude`
+> - `--session`、`--new-session`、`--resume-last` 官方沒有,用 `--name`、`-c`、`-r`
+> - `--dry-run`、`--unsafe`、`--interactive`、`--disable-auto-checkpoints` 等未在官方清單中
+
 ## 概覽
 
-Claude Code 的 CLI（命令列介面）是與 Claude Code 互動的主要方式。它提供了強大的引數和命令，用於執行查詢、管理會話、配置模型，並把 Claude 整合進你的開發工作流。
+Claude Code 的 CLI(命令列介面)是與 Claude Code 互動的主要方式。它提供了強大的引數和命令,用於執行查詢、管理會話、配置模型,並把 Claude 整合進你的開發工作流。
 
 ## 架構
 
@@ -62,8 +72,8 @@ graph TD
 | `--teleport` | 將 web session 恢復到本地 | `claude --teleport` |
 | `--teammate-mode` | agent team 顯示模式 | `claude --teammate-mode tmux` |
 | `--bare` | 極簡模式，跳過 hooks、skills、plugins、MCP、自動記憶和 `CLAUDE.md` | `claude --bare` |
-| `--enable-auto-mode` | 解鎖 auto permission mode | `claude --enable-auto-mode` |
-| `--channels` | 訂閱 MCP channel 外掛 | `claude --channels discord,telegram` |
+| ~~`--enable-auto-mode`~~ | ⚠️ **已在 v2.1.111 移除**,改用 `--permission-mode auto` | — |
+| `--channels` | 訂閱 MCP channel 外掛(研究預覽) | `claude --channels plugin:x@marketplace` |
 | `--chrome` / `--no-chrome` | 啟用 / 禁用 Chrome 瀏覽器整合 | `claude --chrome` |
 | `--effort` | 設定推理強度 | `claude --effort high` |
 | `--init` / `--init-only` | 執行初始化 hooks | `claude --init` |
@@ -172,7 +182,7 @@ claude -p --system-prompt-file ./prompts/code-reviewer.txt "review main.py"
 | `--dangerously-skip-permissions` | 跳過所有許可權提示 | `claude --dangerously-skip-permissions` |
 | `--permission-mode` | 以指定許可權模式啟動 | `claude --permission-mode auto` |
 | `--permission-prompt-tool` | 用於許可權處理的 MCP tool | `claude -p --permission-prompt-tool mcp_auth "query"` |
-| `--enable-auto-mode` | 解鎖 auto permission mode | `claude --enable-auto-mode` |
+| ~~`--enable-auto-mode`~~ | ⚠️ **已在 v2.1.111 移除**,改用 `--permission-mode auto` | — |
 
 ### 許可權示例
 

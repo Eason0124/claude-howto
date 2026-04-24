@@ -5,6 +5,8 @@
 
 # Agent Skills 指南
 
+> 📖 **權威欄位與變數表**:[skills-reference.md](skills-reference.md) — 15 個 frontmatter 欄位、完整 string substitution、優先順序、bundled skills 清單、`ultrathink` 與 shell 執行控制。
+
 ## 概覽
 
 Skills 是可以複用、可自動觸發的能力包。一個 skill 通常包含 `SKILL.md`、參考檔案、指令碼和模板。Claude 在合適的場景下會自動載入它。
@@ -68,16 +70,22 @@ description: 這個 skill 的用途，以及什麼時候觸發
 ## Examples
 ```
 
-### 必填欄位
+### Frontmatter 欄位
 
-- `name`
-- `description`
+> ⚠️ **官方規範**:**所有欄位都可選**(舊版文件誤標 `name` / `description` 為必填)。`name` 省略時用目錄名;`description` 強烈建議(Claude 依此自動觸發)。
 
-### 可選 frontmatter 欄位
+完整 15 個欄位 + 說明見 [skills-reference.md](skills-reference.md)。最常用:
 
-- `argument-hint`
-- `allowed-tools`
-- `model`
+- `name` / `description`(非必填,強烈建議)
+- `when_to_use` — 補充觸發條件 / 示例請求
+- `argument-hint`、`arguments`
+- `allowed-tools` — 免許可提示的工具白名單
+- `model`、`effort`
+- `paths` — glob 限制自動觸發條件
+- `shell` — `bash` / `powershell`
+- `disable-model-invocation`、`user-invocable`
+- `context: fork` + `agent` — 在隔離 subagent 執行
+- `hooks`
 - `disable-model-invocation`
 - `user-invocable`
 - `context`
@@ -237,7 +245,17 @@ Skills 支援 `$ARGUMENTS`、`$0`、`$1` 等引數替換。
 
 ## 內建 Skills
 
-Claude Code 自帶一些 Skills，例如批處理、除錯、簡化和 Claude API 相關內容。
+Claude Code 內建的 bundled skills:
+
+| Skill | 用途 |
+|-------|------|
+| `/simplify` | 簡化程式碼 |
+| `/batch` | 批次處理 |
+| `/debug` | 除錯工作流 |
+| `/loop` | 遞迴執行任務 |
+| `/claude-api` | Claude API / Anthropic SDK 輔助 |
+
+差異:bundled skill 是**給 Claude 參考的 playbook**(prompt-based),不是執行固定邏輯的內建命令(如 `/help`、`/compact`)。
 
 ## 共享 Skills
 

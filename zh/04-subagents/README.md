@@ -5,6 +5,10 @@
 
 # Subagents 完整參考
 
+> 📖 **深度參考**:
+> - [frontmatter-reference.md](frontmatter-reference.md) — 完整 16 個 frontmatter 欄位、Permission Modes、Hooks 事件、`Agent(agent_type)` 工具限制語法
+> - [builtin-agents.md](builtin-agents.md) — 內建 Explore / Plan / general-purpose / statusline-setup / Claude Code Guide 詳解
+
 ## 概覽
 
 Subagents 是專門處理某類任務的獨立 AI 助手。它們擁有隔離的上下文、自己的提示詞和工具許可權，適合把複雜工作拆分給不同角色。
@@ -37,16 +41,28 @@ tools: Read, Grep, Bash
 # Code Reviewer
 ```
 
-### 配置欄位
+### 配置欄位(節選)
+
+本表只列最常用欄位,**完整 16 個欄位**請見 [frontmatter-reference.md](frontmatter-reference.md)。
 
 | 欄位 | 說明 |
 |------|------|
-| `name` | subagent 名稱 |
-| `description` | 何時該呼叫它 |
-| `tools` | 允許使用的工具 |
-| `model` | 指定模型 |
-| `prompt` | 任務提示詞 |
-| `context` | 上下文策略 |
+| `name` | subagent 名稱(小寫 / 連字號) |
+| `description` | 何時該呼叫它(自動委派依據) |
+| `tools` | 允許使用的工具陣列 |
+| `disallowedTools` | 要拒絕的工具(從繼承或 `tools` 扣除) |
+| `model` | 指定模型(`sonnet` / `opus` / `haiku` / `inherit`) |
+| `permissionMode` | `default` / `acceptEdits` / `auto` / `dontAsk` / `bypassPermissions` / `plan` |
+| `isolation` | 設為 `worktree` 即在臨時 git worktree 執行 |
+| `background` | 是否以背景模式執行 |
+| `initialPrompt` | 第一個 user turn 自動送出的 prompt |
+| `effort` | 推理強度 |
+| `color` | 顯示顏色 |
+| `mcpServers` | 可用 MCP servers |
+| `skills` | 啟動時注入的 skill |
+| `hooks` | subagent 生命週期 hooks |
+
+> ⚠️ 早期教材或 markdown body 常見的 `prompt:` / `context:` frontmatter 欄位**不在官方清單**。Subagent 的 system prompt 寫在 YAML 後面的 markdown body,不是 `prompt:` 欄位。
 
 ### 工具配置選項
 
@@ -60,14 +76,15 @@ tools: Read, Grep, Bash
 
 ## 內建 Subagents
 
-Claude Code 自帶一些常見角色，例如：
+Claude Code 內建(詳見 [builtin-agents.md](builtin-agents.md)):
 
-- 通用助手
-- Planning agent
-- Explore agent
-- Bash agent
-- Statusline 相關 agent
-- Claude Code Guide agent
+- `Explore` — 快速唯讀搜尋(Haiku)
+- `Plan` — Plan mode 下蒐集 context(繼承主會話模型)
+- `general-purpose` — 複雜多步任務、讀寫皆可
+- `statusline-setup` — 執行 `/statusline` 時自動派出
+- `Claude Code Guide` — 問 Claude Code 本身功能時自動派出
+
+> ⚠️ 舊版教材提到的「Bash agent」**不在官方內建清單**。
 
 ## 管理 Subagents
 

@@ -159,11 +159,32 @@ User: 太好了，我現在有兩個 schema 可以選擇
 
 ## Checkpoint 保留策略
 
-Claude Code 會自動管理你的 checkpoints：
+Claude Code 會自動管理你的 checkpoints:
 
 - 每次使用者輸入都會自動建立 checkpoint
-- 舊 checkpoint 最多保留 30 天
-- 系統會自動清理，避免儲存無限增長
+- 舊 checkpoint 預設保留 **30 天**,可由 `settings.json` 的 `cleanupPeriodDays` 調整(最小 1 天)
+- 系統自動清理,避免儲存無限增長
+
+```json
+// settings.json
+{
+  "cleanupPeriodDays": 14
+}
+```
+
+## 追蹤範圍與限制
+
+Checkpoints **只追蹤 Claude 用內建編輯工具**(`Write` / `Edit`)的檔案改動。
+
+**不追蹤**:
+
+- Bash 命令改的檔案(`rm`、`mv`、`cp`、重導向輸出等)
+- 會話外的手動編輯(用你自己的編輯器改)
+- 其他平行會話的改動
+
+若 Claude 用 `Bash` 跑 `rm important.txt`,`/rewind` **無法復原**。這類情境仍需靠 git 或系統備份。
+
+> 實務建議:把高風險 bash 操作用 hook 擋下(見 [06-hooks](../06-hooks/events-reference.md) 的 `PreToolUse`)。
 
 ## 工作流模式
 
