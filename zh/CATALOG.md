@@ -507,6 +507,15 @@ claude mcp add github -- npx -y @modelcontextprotocol/server-github
 
 ---
 
+## Output Styles 與 Status Line
+
+新增兩個主題資料夾,對應官方獨立章節:
+
+| 主題 | 位置 | 用途 |
+|------|------|------|
+| Output Styles | `11-output-styles/` | 切換 Default / Explanatory / Learning,或自訂工作模式 |
+| Status Line | `12-status-line/` | 底部狀態列,顯示 context / cost / git 等 |
+
 ## 其他資源
 
 - [Claude Code Documentation](https://code.claude.com/docs/en/overview)

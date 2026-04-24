@@ -443,25 +443,47 @@ documentation/
 
 ---
 
-## 10. CLI Usage（1 個檔案）
+## 10. CLI Usage(3 個檔案)
 
 命令列介面使用方式與參考。
 
 | 檔案 | 說明 | 內容 |
 |------|------|------|
-| `README.md` | CLI 檔案 | 引數、選項與使用模式 |
+| `README.md` | CLI 指南 | 引數、選項與使用模式 |
+| `flags-reference.md` | **完整 flag 對照表** | 官方 cli-reference 整理 + 已移除 flag 清單 |
+| `print-mode.md` | `-p` 深度用法 | CI / script / stream-json 聯動 |
 
-**核心 CLI 功能**：
+**核心 CLI 功能**:
 - `claude` - 啟動互動式會話
 - `claude -p "prompt"` - 無頭/非互動模式
 - `claude web` - 開啟 Web 會話
-- `claude --model` - 選擇模型（Sonnet 4.6、Opus 4.6）
-- `claude --permission-mode` - 設定許可權模式
+- `claude --model` - 選擇模型(Sonnet 4.6、Opus 4.6)
+- `claude --permission-mode` - 設定許可權模式(包含 `auto` — 舊 `--enable-auto-mode` 已移除)
 - `claude --remote` - 透過 WebSocket 啟用遠端控制
 
 ---
 
-## 檔案檔案（13 個檔案）
+## 11. Output Styles(1 個檔案)
+
+改變 Claude 回應的**風格**(Default / Explanatory / Learning)或自訂工作模式。
+
+| 檔案 | 說明 |
+|------|------|
+| `README.md` | 三種預設 style + 自訂 frontmatter + 與 system prompt 覆寫的差異 |
+
+---
+
+## 12. Status Line(1 個檔案)
+
+底部狀態列,用 shell script 顯示 context / cost / git / 當前模型 / 自訂指標。
+
+| 檔案 | 說明 |
+|------|------|
+| `README.md` | stdin/stdout 協議 + 3 個範例腳本 + 與 Hook 的差異 |
+
+---
+
+## 檔案檔案(19 個主要檔案)
 
 | 檔案 | 位置 | 說明 |
 |------|------|------|
@@ -478,6 +500,17 @@ documentation/
 | `README.md` | `/08-checkpoints/` | Checkpoints 指南 |
 | `README.md` | `/09-advanced-features/` | Advanced Features 指南 |
 | `README.md` | `/10-cli/` | CLI 指南 |
+| `flags-reference.md` | `/10-cli/` | CLI 完整 flag 對照表(權威) |
+| `print-mode.md` | `/10-cli/` | `-p` 深度用法 |
+| `events-reference.md` | `/06-hooks/` | 27 個 hook 事件完整參考 |
+| `transports.md` | `/05-mcp/` | MCP transport 參考 |
+| `oauth-setup.md` | `/05-mcp/` | MCP OAuth 設定 |
+| `managed-mcp.md` | `/05-mcp/` | 企業受管 MCP |
+| `frontmatter-reference.md` | `/04-subagents/` | Subagent 16 欄位完整表 |
+| `builtin-agents.md` | `/04-subagents/` | 內建 subagent 清單 |
+| `skills-reference.md` | `/03-skills/` | Skills 完整欄位 / 變數 / bundled |
+| `README.md` | `/11-output-styles/` | Output Styles 指南 |
+| `README.md` | `/12-status-line/` | Status Line 指南 |
 
 ---
 
