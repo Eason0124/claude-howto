@@ -1,5 +1,83 @@
 # 更新日誌
 
+## v2.4.0 — 2026-04-27
+
+### 與 Claude Code v2.1.109 → v2.1.119（2026-04-15 ~ 2026-04-23）同步
+
+#### 模型 / Auto Mode
+
+- **Opus 4.7** 取代 Opus 4.6 為高階預設模型(v2.1.111)
+- 新增 **`xhigh` effort tier**(v2.1.111),`xhigh` 與 `max` 需 Opus 4.7
+- Auto mode 對 Max 訂閱用戶開放使用 Opus 4.7(v2.1.111)
+- Auto mode 規則新增 `$defaults` 變數,可繼承內建分類器規則(v2.1.118)
+
+#### 新指令(5 個)
+
+- `/tui` — 無閃爍全螢幕渲染(v2.1.110)
+- `/focus` — focus view,隱藏 UI 元素(v2.1.110)
+- `/usage` — 合併 `/cost` + `/stats`(v2.1.118),舊指令仍保留
+- `/ultrareview` — 雲端全面 code review skill(v2.1.111)
+- `/less-permission-prompts` — 減少權限提示 skill(v2.1.111)
+
+#### Hooks 新增
+
+- Hook 通用欄位 `duration_ms`(v2.1.119),工具執行時間限制
+- 新增 `mcp_tool` hook 型別(v2.1.118),直接呼叫 MCP server 工具
+- 至此 hook 型別共 5 種:`command` / `http` / `prompt` / `agent` / `mcp_tool`
+
+#### Subagents / MCP
+
+- 新增 `CLAUDE_CODE_FORK_SUBAGENT=1` 環境變數,啟用 forked subagents(v2.1.117)
+- Agent frontmatter `mcpServers` 載入於主執行緒會話,啟動更快(v2.1.117)
+- MCP servers 啟動時並行連線(v2.1.117),序列連線數秒 → <1 秒
+
+#### Settings / 環境變數
+
+- `prUrlTemplate` 自訂 PR / MR URL 樣板(v2.1.119)
+- `sandbox.network.deniedDomains` 沙盒網路黑名單(v2.1.113)
+- `autoScrollEnabled` 控制 TUI 自動捲動(v2.1.110)
+- `CLAUDE_CODE_HIDE_CWD` 隱藏 cwd(v2.1.119)
+- `DISABLE_UPDATES` 禁用自動更新(v2.1.118)
+- `CLAUDE_CODE_USE_POWERSHELL_TOOL` Windows PowerShell 工具(v2.1.111)
+- `--from-pr` 擴充支援 GitLab / Bitbucket / GitHub Enterprise(v2.1.119)
+- `--print` 模式尊重 agent frontmatter `tools:` / `disallowedTools:`(v2.1.119)
+- `/config` 持久化到 `settings.json` 並支援 project / local / user / policy 優先級(v2.1.119)
+
+#### UI / 主題 / 鍵盤
+
+- 自訂主題 JSON,`/theme` + `~/.claude/themes/`(v2.1.118)
+- "Auto (match terminal)" 主題自動跟隨終端機 dark / light(v2.1.111)
+- Vim visual mode (`v`) 與 visual-line mode (`V`)(v2.1.118)
+- Vim INSERT 模式 Esc 不再拉取佇列訊息(v2.1.119)
+- Ctrl+U 清空整個輸入緩衝區(v2.1.111)
+- Ctrl+O 切換 verbose transcript(v2.1.110,行為變更)
+- Fullscreen Shift+↑/↓ 捲動 viewport(v2.1.113)
+- Thinking spinner 內嵌進度提示(v2.1.109 / v2.1.116)
+
+#### 平台
+
+- macOS / Linux 原生二進位檔(v2.1.113),取代捆綁 JavaScript runtime
+- 嵌入式 `bfs` / `ugrep`(v2.1.117)
+- WSL 繼承 Windows 受管設定(v2.1.118)
+- PowerShell 工具指令可在 permission mode 中自動批准(v2.1.119)
+
+#### 其他
+
+- Plan 檔案以提示詞自動命名(v2.1.111),例如 `fix-auth-race-snug-otter.md`
+- Push notification tool(v2.1.110)
+- Plugin 依賴從市集自動安裝(v2.1.117)
+- `/resume` 在大型會話速度提升 67%(v2.1.116)
+- `/doctor` 可在 Claude 回應時開啟(v2.1.116)
+
+### 教材檔案改動
+
+- 新增 `10-cli/config-and-env-reference.md` — 集中收錄新 settings 與環境變數
+- 新增 `13-ui-and-keyboard/README.md` — 主題、Vim、鍵盤快捷鍵
+- 模型版本更新:Opus 4.6 → Opus 4.7(全教材 6 處)
+- 版本徽章 / 文件 metadata 更新到 v2.1.119
+
+---
+
 ## v2.3.0 — 2026-04-07
 
 ### 功能

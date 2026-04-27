@@ -55,7 +55,7 @@ Claude Code 共 **27 個 hook 事件**,依用途分類如下。
 
 ---
 
-## 4 種 Hook 型別
+## 5 種 Hook 型別
 
 `type` 欄位決定 hook 執行方式:
 
@@ -107,6 +107,26 @@ URL 與 headers 中的 `$VAR` 會被展開。
 
 用完整 subagent 驗證。預設 timeout 60 秒、上限 50 turns。
 
+### 5. `mcp_tool`（v2.1.118)
+
+直接呼叫 MCP server 的工具,不需經過 shell。適合把 hook 結果直接送到外部系統(GitHub PR 評論、Slack 通知、Issue 建立等)。
+
+```json
+{
+  "type": "mcp_tool",
+  "server": "github",
+  "tool": "create_issue_comment",
+  "arguments": {
+    "issue_number": "$ISSUE_NUMBER",
+    "body": "Hook triggered at $(date)"
+  }
+}
+```
+
+- `server` — MCP server 名稱（必須已在 `.mcp.json` / `~/.claude.json` 註冊)
+- `tool` — server 提供的工具名
+- `arguments` — 傳給工具的參數,可含環境變數
+
 ---
 
 ## 通用 Config 欄位
@@ -118,6 +138,7 @@ URL 與 headers 中的 `$VAR` 會被展開。
 | `matcher` | 過濾條件(見下方「Matcher 語法」) |
 | `if` | 權限規則,細粒度工具篩選(需較新版本,使用前請驗證支援版本) |
 | `timeout` | 秒數。預設 `command=600`、`prompt=30`、`agent=60` |
+| `duration_ms` | 工具執行時間限制,毫秒(v2.1.119)。超過會被視為 timeout |
 | `statusMessage` | 執行中顯示的訊息 |
 | `once` | 每個 session 只跑一次(主要用於 skill / agent frontmatter) |
 

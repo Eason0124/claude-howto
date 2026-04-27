@@ -457,7 +457,7 @@ documentation/
 - `claude` - 啟動互動式會話
 - `claude -p "prompt"` - 無頭/非互動模式
 - `claude web` - 開啟 Web 會話
-- `claude --model` - 選擇模型(Sonnet 4.6、Opus 4.6)
+- `claude --model` - 選擇模型(Sonnet 4.6、Opus 4.7)
 - `claude --permission-mode` - 設定許可權模式(包含 `auto` — 舊 `--enable-auto-mode` 已移除)
 - `claude --remote` - 透過 WebSocket 啟用遠端控制
 
@@ -483,6 +483,16 @@ documentation/
 
 ---
 
+## 13. UI / Keyboard(1 個檔案)
+
+主題、Vim 模式、鍵盤快捷鍵的彙整(v2.1.109 ~ v2.1.119 變更)。
+
+| 檔案 | 說明 |
+|------|------|
+| `README.md` | 自訂主題 JSON、Vim visual mode、Ctrl+U/O、Shift+↑↓、Thinking spinner |
+
+---
+
 ## 檔案檔案(19 個主要檔案)
 
 | 檔案 | 位置 | 說明 |
@@ -502,6 +512,7 @@ documentation/
 | `README.md` | `/10-cli/` | CLI 指南 |
 | `flags-reference.md` | `/10-cli/` | CLI 完整 flag 對照表(權威) |
 | `print-mode.md` | `/10-cli/` | `-p` 深度用法 |
+| `config-and-env-reference.md` | `/10-cli/` | Settings、環境變數與 `/config`(v2.1.119) |
 | `events-reference.md` | `/06-hooks/` | 27 個 hook 事件完整參考 |
 | `transports.md` | `/05-mcp/` | MCP transport 參考 |
 | `oauth-setup.md` | `/05-mcp/` | MCP OAuth 設定 |
@@ -511,6 +522,7 @@ documentation/
 | `skills-reference.md` | `/03-skills/` | Skills 完整欄位 / 變數 / bundled |
 | `README.md` | `/11-output-styles/` | Output Styles 指南 |
 | `README.md` | `/12-status-line/` | Status Line 指南 |
+| `README.md` | `/13-ui-and-keyboard/` | UI / 主題 / Vim / 鍵盤(v2.1.111+) |
 
 ---
 
@@ -925,7 +937,7 @@ claude -p "Run tests and report results"
 
 ---
 
-**最後更新**：2026 年 3 月
+**最後更新**：2026 年 4 月 27 日(v2.1.119 同步)
 **總示例數**：100+ 檔案
 **分類數**：10 個功能
 **Hooks**：8 個自動化指令碼

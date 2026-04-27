@@ -1535,6 +1535,6 @@ claude -r "Feature"
 
 ---
 
-*最後更新：2026 年 3 月*
-*適用於 Claude Haiku 4.5、Sonnet 4.6、Opus 4.6*
+*最後更新：2026 年 4 月*
+*適用於 Claude Haiku 4.5、Sonnet 4.6、Opus 4.7*
 *現已覆蓋：Hooks、Checkpoints、Planning Mode、Extended Thinking、Background Tasks、Permission Modes、Headless Mode、Session Management、Auto Memory、Agent Teams、Scheduled Tasks、Chrome Integration、Bundled Skills 等概念。*

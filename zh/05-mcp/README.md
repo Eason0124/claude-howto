@@ -185,6 +185,14 @@ MCP server 發出 `list_changed` 通知時,Claude 會自動刷新工具清單。
 - HTTP / SSE server:指數退避,最多 5 次(1s → 2s → 4s → 8s → 16s)
 - Stdio server:**不自動重連**
 
+## 並行連線（v2.1.117）
+
+Claude Code v2.1.117 起,啟動時會**並行**連線所有已註冊的 MCP servers,而非依序連線。多個 MCP server 的工作流可顯著加速(過去序列連線數秒,現在通常 <1 秒完成)。
+
+- 不需特別設定,預設啟用
+- 連線失敗的 server 不再阻塞其他 server 的初始化
+- Stdio servers 仍個別啟動子程序,只是啟動時機平行化
+
 ## Windows 注意
 
 原生 Windows 執行 `npx`、`npm` 等 Node.js 工具時,常需要 `cmd /c` wrapper:

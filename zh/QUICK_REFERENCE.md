@@ -399,7 +399,7 @@ cp -r 03-skills/code-review ~/.claude/skills/
 | **Task List** | 管理後臺任務 | `/task list`、`/task status <id>` |
 | **Auto Memory** | 從對話中自動儲存記憶 | Claude 會自動儲存關鍵上下文到 `CLAUDE.md` |
 | **Git Worktrees** | 用於並行開發的隔離工作區 | 使用 `/worktree` 建立隔離空間 |
-| **Model Selection** | 在 Sonnet 4.6 和 Opus 4.6 之間切換 | `/model` 或 `--model` 引數 |
+| **Model Selection** | 在 Sonnet 4.6 和 Opus 4.7 之間切換 | `/model` 或 `--model` 引數 |
 | **Agent Teams** | 協調多個 agent 執行任務 | 透過環境變數 `CLAUDE_AGENT_TEAMS=1` 啟用 |
 | **Scheduled Tasks** | 使用 `/loop` 執行週期任務 | `/loop 5m /command` 或 CronCreate 工具 |
 | **Chrome Integration** | 瀏覽器自動化 | `--chrome` 引數或 `/chrome` 命令 |

@@ -25,7 +25,7 @@ YAML frontmatter 後接 markdown 說明 / system prompt。
 | `permissionMode` | ❌ | 見下方 Permission Modes | 繼承主會話 |
 | `maxTurns` | ❌ | subagent 停止前的最大輪數 | 無上限 |
 | `skills` | ❌ | 啟動時要注入 context 的 skill 名稱 | — |
-| `mcpServers` | ❌ | 可用的 MCP servers(內聯定義或字串參照) | 繼承主會話 |
+| `mcpServers` | ❌ | 可用的 MCP servers(內聯定義或字串參照);**v2.1.117 起載入於主執行緒會話**,啟動更快 | 繼承主會話 |
 | `hooks` | ❌ | subagent 生命週期的 hooks(見下方 Hooks) | — |
 | `memory` | ❌ | 持久記憶範圍:`user` / `project` / `local` | — |
 | `background` | ❌ | 是否以背景模式執行 | `false` |

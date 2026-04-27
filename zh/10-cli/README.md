@@ -120,12 +120,12 @@ claude -p "列出待辦事項" | grep "URGENT"
 | `--fallback-model` | 當前模型負載過高時自動切換的後備模型 | `claude -p --fallback-model sonnet "query"` |
 | `--agent` | 為當前會話指定 agent | `claude --agent my-custom-agent` |
 | `--agents` | 透過 JSON 定義自定義 subagents | 見 [Agents Configuration](#subagents-配置) |
-| `--effort` | 設定推理級別（low、medium、high、max） | `claude --effort high` |
+| `--effort` | 設定推理級別（low、medium、high、xhigh、max；`xhigh`/`max` 需 Opus 4.7） | `claude --effort xhigh` |
 
 ### 模型選擇示例
 
 ```bash
-# 複雜任務使用 Opus 4.6
+# 複雜任務使用 Opus 4.7
 claude --model opus "設計一個快取策略"
 
 # 快速任務使用 Haiku 4.5
@@ -553,7 +553,7 @@ claude --model opusplan "design and implement the caching layer"
 claude --model haiku --effort low
 ```
 
-### Effort 級別（Opus 4.6）
+### Effort 級別（Opus 4.7，含 `xhigh` tier）
 
 ```bash
 # 透過 CLI 引數設定 effort

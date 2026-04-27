@@ -36,12 +36,15 @@ Claude Code 共 **27 個 hook 事件**,依用途分 4 類:
 
 ## Hook 型別
 
-不只是 shell script,共有 4 種 `type`:
+不只是 shell script,共有 5 種 `type`:
 
 - `command`(最常用) — 執行 shell script
 - `http` — POST 到外部 endpoint
 - `prompt` — 讓小模型做單輪判斷
 - `agent`(實驗性) — 用 subagent 多輪驗證
+- `mcp_tool`(v2.1.118) — 直接呼叫 MCP server 的工具
+
+> **`duration_ms` 新欄位（v2.1.119）**：用於替工具呼叫設定毫秒級執行時間限制,超時視為 timeout。詳細欄位定義見 [events-reference.md](events-reference.md#通用-config-欄位)。
 
 ## 設定檔位置(由高到低優先)
 

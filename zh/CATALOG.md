@@ -76,8 +76,12 @@
 | `/copy` | 複製最後一次回覆到剪貼簿 | 快速分享輸出 |
 | `/teleport` | 將會話轉移到另一臺機器 | 遠端繼續工作 |
 | `/desktop` | 開啟 Claude Desktop 應用 | 切換桌面介面 |
-| `/theme` | 更改顏色主題 | 自定義外觀 |
-| `/usage` | 顯示 API 使用統計 | 監控配額和消耗 |
+| `/theme` | 更改顏色主題（v2.1.118 起支援 `~/.claude/themes/` JSON 自訂） | 自定義外觀 |
+| `/tui` | 無閃爍全螢幕渲染（v2.1.110） | TUI 全螢幕模式 |
+| `/focus` | 進入 focus view（v2.1.110） | 隱藏 UI 專注工作 |
+| `/ultrareview` | 雲端全面 code review skill（v2.1.111） | 高階程式碼審查 |
+| `/less-permission-prompts` | 減少權限提示 skill（v2.1.111） | 自動授權常用操作 |
+| `/usage` | 合併 `/cost` + `/stats`（v2.1.118） | 統一 API 使用監控 |
 | `/fork` | 分叉當前對話 | 探索替代方案 |
 | `/stats` | 顯示會話統計 | 檢視會話指標 |
 | `/statusline` | 配置狀態列 | 自定義狀態顯示 |
@@ -507,14 +511,16 @@ claude mcp add github -- npx -y @modelcontextprotocol/server-github
 
 ---
 
-## Output Styles 與 Status Line
+## Output Styles、Status Line 與 UI / Keyboard
 
-新增兩個主題資料夾,對應官方獨立章節:
+新增三個主題資料夾,對應官方獨立章節:
 
 | 主題 | 位置 | 用途 |
 |------|------|------|
 | Output Styles | `11-output-styles/` | 切換 Default / Explanatory / Learning,或自訂工作模式 |
 | Status Line | `12-status-line/` | 底部狀態列,顯示 context / cost / git 等 |
+| UI / Keyboard | `13-ui-and-keyboard/` | 主題 JSON、Vim visual mode、鍵盤快捷鍵(v2.1.109+) |
+| Settings & Env | `10-cli/config-and-env-reference.md` | settings.json 持久化、環境變數、`--from-pr` 擴充(v2.1.119) |
 
 ## 其他資源
 
@@ -526,5 +532,5 @@ claude mcp add github -- npx -y @modelcontextprotocol/server-github
 
 ---
 
-**最後更新**: 2026 年 4 月 9 日
-**Claude Code 版本**: 2.1.97
+**最後更新**: 2026 年 4 月 27 日
+**Claude Code 版本**: 2.1.119

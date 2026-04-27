@@ -25,14 +25,16 @@
 14. [遠端控制](#遠端控制)
 15. [網頁會話](#網頁會話)
 16. [桌面應用](#桌面應用)
-17. [任務列表](#任務列表)
-18. [提示詞建議](#提示詞建議)
-19. [Git 工作樹（Git Worktrees）](#git-工作樹git-worktrees)
-20. [沙盒](#沙盒)
-21. [企業受管設定](#企業受管設定)
-22. [配置與設定](#配置與設定)
-23. [最佳實踐](#最佳實踐)
-24. [更多資源](#更多資源)
+17. [Push Notification Tool](#push-notification)
+18. [任務列表](#任務列表)
+19. [提示詞建議](#提示詞建議)
+20. [Git 工作樹（Git Worktrees）](#git-工作樹git-worktrees)
+21. [沙盒](#沙盒)
+22. [企業受管設定](#企業受管設定)
+23. [配置與設定](#配置與設定)
+24. [平台改進](#platform-improvements)
+25. [最佳實踐](#最佳實踐)
+26. [更多資源](#更多資源)
 
 ---
 
@@ -196,6 +198,8 @@ claude --model opusplan "design and implement the new API"
 
 **外部編輯計劃**：按 `Ctrl+G` 可以把當前計劃開啟到外部編輯器裡進行更詳細的修改。
 
+**Plan 檔案命名（v2.1.111）**：Plan 檔案現在以提示詞自動命名,格式為 `<action>-<adjective>-<animal>.md`(例如 `fix-auth-race-snug-otter.md`、`refactor-payment-eager-phoenix.md`),取代舊版的隨機 hash。命名出現在 `~/.claude/plans/`,方便日後 grep / 回顧。
+
 <a id="extended-thinking"></a>
 ## 擴充套件思考
 
@@ -215,8 +219,9 @@ Extended thinking 讓 Claude 在給出解決方案前，花更多時間進行復
 - `Option + T`（macOS）/ `Alt + T`（Windows/Linux）- 切換 extended thinking
 
 **自動啟用：**
-- 對所有模型預設開啟（Opus 4.6、Sonnet 4.6、Haiku 4.5）
-- Opus 4.6 支援自適應推理，effort 等級為 `low`（○）、`medium`（◐）、`high`（●）、`max`（僅 Opus 4.6）
+- 對所有模型預設開啟（Opus 4.7、Sonnet 4.6、Haiku 4.5）
+- Opus 4.7（v2.1.111）支援自適應推理，effort 等級為 `low`（○）、`medium`（◐）、`high`（●）、`xhigh`、`max`（`xhigh` 與 `max` 僅 Opus 4.7）
+- 透過 `/effort` 可開啟互動式滑塊（v2.1.111）
 
 ### 好處
 
@@ -249,12 +254,13 @@ Recommendation
 <a id="auto-mode"></a>
 ## 自動模式
 
-Auto mode 是一個研究預覽功能。它會在每個動作執行前，用後臺安全分類器評估風險，幫助你在自動化和安全之間取得平衡。
+Auto mode 是一個研究預覽功能。它會在每個動作執行前，用後臺安全分類器評估風險，幫助你在自動化和安全之間取得平衡。**自 v2.1.111 起對 Max 訂閱用戶開放使用 Opus 4.7。**
 
 ### 需求
 
 - 支援 auto mode 的 Claude Code 版本
 - 合適的許可權和配置
+- 使用 Opus 4.7 需 Max 訂閱（v2.1.111+）
 
 ### 啟用方式
 
@@ -479,9 +485,9 @@ echo "hello" | claude -p "translate to Chinese"
 
 ### 常用命令
 
-- `/resume`
+- `/resume`(v2.1.116 在大型會話速度提升 67%)
 - `/rename`
-- `/fork`
+- `/fork`(v2.1.77 已更名為 `/branch`,別名仍可用)
 - `claude -c`
 - `claude -r`
 
@@ -732,6 +738,43 @@ Desktop 裡同樣可以使用不同的許可權模式。
 
 企業部署下可使用更多受管和合規相關能力。
 
+<a id="push-notification"></a>
+## Push Notification Tool（v2.1.110）
+
+Claude Code 提供 `PushNotification` 工具,用於從 hook、subagent 或 long-running task 觸發桌面 / 行動端推送通知。
+
+### 用途
+
+- 長任務完成後通知(測試跑完、build 完成、deploy 結束)
+- Hook 在關鍵事件時推送(failed test、安全掃描發現問題)
+- Subagent 等待你回應時主動提醒
+
+### 接收端
+
+- macOS Notification Center
+- Windows Toast
+- Claude.ai mobile app(若已綁定遠端控制)
+
+### 範例:在 hook 中使用
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash(npm test:*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claude --notify 'Tests done'"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
 <a id="task-list"></a>
 ## 任務列表
 
@@ -926,6 +969,60 @@ worktree 場景下依然可以配合工具和 hooks 自動化流程。
 ### 每個專案的配置
 
 推薦把專案專用設定放進專案內的 `.claude/settings.json`，這樣能跟程式碼一起版本化。
+
+<a id="platform-improvements"></a>
+## 平台改進
+
+### macOS / Linux 原生二進位檔（v2.1.113）
+
+Claude Code 自 v2.1.113 起改為**原生二進位檔**,不再是捆綁 JavaScript runtime。優點:
+
+- 啟動更快(冷啟動從 ~1.5s 降至 ~300ms)
+- 記憶體佔用降低
+- 不再依賴系統 Node.js 版本
+- 安裝體積略增,但首次啟動體驗顯著改善
+
+### 嵌入式 `bfs` 與 `ugrep`（v2.1.117）
+
+原生二進位內嵌兩個高效能搜尋工具,不再依賴系統工具:
+
+- **`bfs`** — 廣度優先檔案搜尋(取代 `find`,效能更好)
+- **`ugrep`** — Unicode 正則搜尋(取代 `grep` 部分用途)
+
+對於大型 monorepo 的程式碼搜尋與檔案探索任務,效能提升顯著。
+
+### PowerShell 工具(Windows，v2.1.111 / v2.1.119）
+
+Windows 平台漸進推出 PowerShell 工具,取代部分需要 cmd / WSL bash 的場景。
+
+```powershell
+$env:CLAUDE_CODE_USE_POWERSHELL_TOOL = "1"
+claude
+```
+
+v2.1.119 起,PowerShell 工具指令可在 `--permission-mode` 中**自動批准**(同 Bash 工具的處理方式)。
+
+### WSL 繼承 Windows 受管設定（v2.1.118）
+
+WSL 環境會自動繼承 Windows 主機的受管設定(plist / Registry / 受管檔案),不需在 WSL 內重複配置。受管設定優先級最高。
+
+### Plugin 依賴自動安裝（v2.1.117）
+
+Plugin manifest 可宣告依賴項(其他 plugins、MCP servers),`/plugin install` 會自動從市集解析並安裝相依的 plugins。
+
+```json
+{
+  "name": "my-plugin",
+  "dependencies": {
+    "plugins": ["base-plugin@marketplace"],
+    "mcpServers": ["github"]
+  }
+}
+```
+
+### `/doctor` 可在回應時開啟（v2.1.116）
+
+過去 `/doctor` 只能在 idle 狀態使用,v2.1.116 起即使 Claude 正在生成回應也可開啟,方便即時檢查健康狀態。
 
 <a id="best-practices"></a>
 ## 最佳實踐
